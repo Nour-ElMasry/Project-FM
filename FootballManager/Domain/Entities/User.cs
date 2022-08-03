@@ -37,5 +37,18 @@ public class User : Person
 
     public string Username { get; set; }
     public string Password { get; set; }
+
+    public override string? ToString()
+    {
+        return "User {" +
+            "\nUsername: " + Username +
+            "\nPassword: " + Password +
+            "\nPerson: {" +
+            "\n Name: " + Name +
+            "\n Birthdate: " + BirthDate.ToString() +
+            "\n Nationality: " + Nationality +
+            "\n Photo: " + Photo +
+            "\n}\n}";
+    }
 }
 

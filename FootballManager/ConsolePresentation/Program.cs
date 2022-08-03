@@ -3,7 +3,10 @@ using Domain.Entities;
 
 try
 {
-    Person m = new User("SlimFifi01", "A7fguyqweu12312", "nour", "2001-02-18", "Egyptian", "D:\\Stuff\\Work-stuff\\Project\\FootballManagerDomainModel.png");
+    User m = new("SlimFifi01", "A7fguyqw?eu12312", "nour", "2001-02-18", "Egyptian", "D:\\Stuff\\Work-stuff\\Project\\FootballManagerDomainModel.png");
+    HumanManager m1 = new(m, new Team("Real Madrid", "Spain", "Santiago Bernabeu"));
+
+    Console.WriteLine(m1.CurrentUser.ToString());
 }
 catch (Exception e)
 {

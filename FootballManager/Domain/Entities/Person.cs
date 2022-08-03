@@ -27,5 +27,10 @@ public class Person
         Nationality = nationality;
         Photo = photo;
     }
+
+    public Person() 
+    {
+        Id = _id++;
+    }
 }
 

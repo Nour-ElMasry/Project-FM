@@ -19,7 +19,6 @@ public class Player : Person
 
 
     public Roles Role { get; set; }
-    public Positions Position { get; set; }
-    
+    public Positions Position { get; set; }  
 }
 

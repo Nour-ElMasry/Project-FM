@@ -6,6 +6,11 @@ public abstract class Manager : Person
         Club = club;
     }
 
+    public Manager(Team club)
+    {
+        Club = club;
+    }
+
     public Team Club { get; set; }
 
     public abstract bool IsRobot();

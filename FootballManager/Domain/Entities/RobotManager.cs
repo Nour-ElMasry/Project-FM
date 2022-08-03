@@ -6,6 +6,5 @@ public class RobotManager : Manager
     }
 
     public override bool IsRobot() => true;
-
 }
 
