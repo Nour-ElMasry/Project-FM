@@ -17,3 +17,4 @@ User as a:
         1- View certain league standings
         2- View information about teams
         3- View information about players
+        4- View fixtures
