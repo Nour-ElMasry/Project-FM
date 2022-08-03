@@ -3,7 +3,7 @@ using Domain.Entities;
 
 try
 {
-    Person m = new User("SlimFifi01", "A7fguyqwe?u12312", "nour", "2001-02-18", "Egyptian", "D:\\Stuff\\Work-stuff\\Project\\FootballManagerDomainModel.png");
+    Person m = new User("SlimFifi01", "A7fguyqweu12312", "nour", "2001-02-18", "Egyptian", "D:\\Stuff\\Work-stuff\\Project\\FootballManagerDomainModel.png");
 }
 catch (Exception e)
 {

@@ -10,7 +10,7 @@ public class Player : Person
         if (!System.Enum.TryParse(role, out Roles pRole))
             throw new InncorectRoleException("Assigned role does not exist!");
 
-        if (!System.Enum.TryParse(role, out Positions pPosition))
+        if (!System.Enum.TryParse(position, out Positions pPosition))
             throw new IncorrectPositionException("Assigned Position does not exist!");
 
         Role = pRole;
