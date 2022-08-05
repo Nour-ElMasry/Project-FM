@@ -21,16 +21,11 @@ public class Person
         if (!File.Exists(photo))
             throw new FileNotFoundException("File doesn't exist");
 
-        Id = _id++;
+        Id = ++_id;
         Name = name;
         BirthDate = tempDate;
         Nationality = nationality;
         Photo = photo;
-    }
-
-    public Person() 
-    {
-        Id = _id++;
     }
 }
 

@@ -1,10 +1,12 @@
 ﻿namespace Domain.Entities;
-public class RobotManager : Manager
+public class RobotManager : Person, IManager
 {
-    public RobotManager(Team club, string name, string birthDate, string nationality, string photo) : base(club, name, birthDate, nationality, photo)
+    public RobotManager(string name, string birthDate, string nationality, string photo) : base(name, birthDate, nationality, photo)
     {
-    }
 
-    public override bool IsRobot() => true;
+    }
+    public Team? CurrentTeam { get; set; }
+
+    public bool IsRobot() => true;
 }
 
