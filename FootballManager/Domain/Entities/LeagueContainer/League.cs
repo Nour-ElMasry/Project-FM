@@ -30,7 +30,7 @@ public class League
     {
         AddSeasonHistory(CurrentSeason);
         Teams.ForEach(t => t.ResetSeasonStats());
-        CurrentSeason = new Season(++CurrentSeason.Year, Teams);
+        CurrentSeason = new Season(++CurrentSeason.Year, this);
     }
 
     public void AddTeam(Team t)
