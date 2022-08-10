@@ -9,7 +9,7 @@ public abstract class Player
         if (pos == null)
             throw new ArgumentNullException(nameof(pos));
 
-        if (!PlayerPositions.IsCorrectPosition(pos, this.GetType().Name.ToLower()))
+        if (!PlayerPositions.IsCorrectPosition(pos, this.GetType().Name))
             throw new IncorrectPositionException("Incorrect position assigned to role!"); 
 
         PlayerPerson = p ?? throw new ArgumentNullException(nameof(p));
@@ -19,7 +19,7 @@ public abstract class Player
 
     public Player(Person p, string pos, PlayerStats ps)
     {
-        if (!PlayerPositions.IsCorrectPosition(pos, this.GetType().Name.ToLower()))
+        if (!PlayerPositions.IsCorrectPosition(pos, this.GetType().Name))
             throw new IncorrectPositionException("Incorrect position assigned to role!");
 
         PlayerPerson = p ?? throw new ArgumentNullException(nameof(p));

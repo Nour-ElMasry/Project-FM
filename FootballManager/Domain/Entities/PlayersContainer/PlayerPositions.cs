@@ -13,8 +13,10 @@ public static class PlayerPositions
     public static bool IsMidfielder(string pos) => MidfieldPos.Contains(pos.ToUpper());
     public static bool IsGoalkeeper(string pos) => GoalkeeperPos.Equals(pos.ToUpper());
 
-    public static bool IsCorrectPosition(string pos, string playerRole)
+    public static bool IsCorrectPosition(string pos, string pr)
     {
+        var playerRole = pr.ToLower();
+
         if (playerRole == "attacker")
             return IsAttacker(pos);
         else if (playerRole == "midfielder")
