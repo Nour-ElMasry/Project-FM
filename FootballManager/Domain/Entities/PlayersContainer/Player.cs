@@ -1,0 +1,35 @@
+﻿using Domain.Exceptions;
+
+namespace Domain.Entities.PlayersContainer;
+public abstract class Player
+{
+
+    public Player(Person p, string pos)
+    {
+        if (pos == null)
+            throw new ArgumentNullException(nameof(pos));
+
+        if (!PlayerPositions.IsCorrectPosition(pos, this.GetType().Name.ToLower()))
+            throw new IncorrectPositionException("Incorrect position assigned to role!"); 
+
+        PlayerPerson = p ?? throw new ArgumentNullException(nameof(p));
+        Position = pos;
+        PlayerStats = PlayerStatsFactory.GenerateStats(Position);
+    }
+
+    public Player(Person p, string pos, PlayerStats ps)
+    {
+        if (!PlayerPositions.IsCorrectPosition(pos, this.GetType().Name.ToLower()))
+            throw new IncorrectPositionException("Incorrect position assigned to role!");
+
+        PlayerPerson = p ?? throw new ArgumentNullException(nameof(p));
+        Position = pos;
+        PlayerStats = ps ?? throw new ArgumentNullException(nameof(ps));
+    }
+
+    public Person PlayerPerson { get; set; }
+    public PlayerStats PlayerStats { get; set; }
+    public Team? CurrentTeam { get; set; }
+    public string Position { get; set; }
+}
+

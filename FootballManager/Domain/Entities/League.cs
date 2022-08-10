@@ -3,8 +3,6 @@
 namespace Domain.Entities;
 public class League
 {
-    private static int _id = 0;
-    public int Id { get; set; }
     public string Name { get; set; }
 
     public List<Team> Teams { get; set; }
@@ -17,7 +15,6 @@ public class League
 
     public League(string name, List<Team> teams)
     {
-        Id = ++_id;
         Name = name;
         Teams = teams;
         CurrentSeason = new Season(DateTime.Now.Year, Teams);
@@ -36,12 +33,13 @@ public class League
         t.CurrentLeague = this;
     }
 
-    public void RemoveTeam(long tId) {
-        var teamToRemove = Teams.Find(t => t.Id == tId);
+    public void RemoveTeam(Team t)
+    {
+        var teamToRemove = Teams.Find(te => t == te);
         if (teamToRemove == null)
             throw new NullReferenceException("Team doesn't exist in this League!");
         Teams.Remove(teamToRemove);
     }
-    
+
 }
 

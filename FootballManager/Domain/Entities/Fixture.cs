@@ -1,8 +1,6 @@
 ﻿namespace Domain.Entities;
 public class Fixture
 {
-    private static int _id = 0;
-    public int Id { get; set; }
     public string Venue { get; set; }
     public DateTime Date { get; set; }
     public Team HomeTeam { get; set; }
@@ -12,7 +10,6 @@ public class Fixture
 
     public Fixture(string venue, DateTime date, Team homeTeam, Team awayTeam)
     {
-        Id = ++_id;
         Venue = venue;
         Date = date;
         HomeTeam = homeTeam;

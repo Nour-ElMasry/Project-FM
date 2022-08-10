@@ -1,8 +1,6 @@
 ﻿namespace Domain.Entities;
 public class SeasonStats
 {
-    private static int _id = 0;
-    public int Id { get; set; }
     public int Points { get; set; }
     public int GamesPlayed { get; set; }
     public int HomeGamesPlayed { get; set; }
@@ -12,7 +10,6 @@ public class SeasonStats
 
     public SeasonStats(int points, int gamesPlayed, int homeGamesPlayed, int awayGamesPlayed, int goalsFor, int goalsAgainst)
     {
-        Id = ++_id;
         Points = points;
         GamesPlayed = gamesPlayed;
         HomeGamesPlayed = homeGamesPlayed;
@@ -23,7 +20,6 @@ public class SeasonStats
 
     public SeasonStats()
     {
-        Id = ++_id;
         Points = 0;
         GamesPlayed = 0;
         HomeGamesPlayed = 0;
