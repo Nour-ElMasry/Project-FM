@@ -1,8 +1,11 @@
-﻿namespace Domain.Entities.ManagerContainer;
+﻿using Domain.Entities.PersonContainer;
+
+namespace Domain.Entities.ManagerContainer;
 public class FakeManager : Manager
 {
-    public FakeManager(Person managerPerson) : base(managerPerson)
+    public FakeManager(FakePerson managerPerson)
     {
+        ManagerPerson = managerPerson;
     }
 }
 

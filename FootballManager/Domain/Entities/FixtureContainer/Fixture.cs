@@ -1,4 +1,6 @@
-﻿namespace Domain.Entities;
+﻿using Domain.Entities.TeamContainer;
+
+namespace Domain.Entities.FixtureContainer;
 public class Fixture
 {
     public string Venue { get; set; }

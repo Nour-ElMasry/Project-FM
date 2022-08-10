@@ -2,9 +2,9 @@
 using System;
 using System.IO;
 
-namespace Domain.Entities;
+namespace Domain.Entities.PersonContainer;
 
-public class Person
+public abstract class Person
 {
     public string Name { get; set; }
     public DateTime BirthDate { get; set; }

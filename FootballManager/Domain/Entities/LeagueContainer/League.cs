@@ -1,6 +1,9 @@
-﻿using Domain.Exceptions;
+﻿using Domain.Entities.FixtureContainer;
+using Domain.Entities.SeasonContainer;
+using Domain.Entities.TeamContainer;
+using Domain.Exceptions;
 
-namespace Domain.Entities;
+namespace Domain.Entities.LeagueContainer;
 public class League
 {
     public string Name { get; set; }
@@ -17,13 +20,18 @@ public class League
     {
         Name = name;
         Teams = teams;
-        CurrentSeason = new Season(DateTime.Now.Year, Teams);
+        CurrentSeason = new Season(DateTime.Now.Year, this);
         SeasonsHistory = new();
         Fixtures = new(); //Will implement an algorithm to generate the fixtures
     }
 
     public void AddSeasonHistory(Season s) => SeasonsHistory.Add(s);
-    public void NextSeason() => CurrentSeason = new Season(++CurrentSeason.Year, Teams);
+    public void NextSeason()
+    {
+        AddSeasonHistory(CurrentSeason);
+        Teams.ForEach(t => t.ResetSeasonStats());
+        CurrentSeason = new Season(++CurrentSeason.Year, Teams);
+    }
 
     public void AddTeam(Team t)
     {

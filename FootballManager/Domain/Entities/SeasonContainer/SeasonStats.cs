@@ -1,4 +1,4 @@
-﻿namespace Domain.Entities;
+﻿namespace Domain.Entities.SeasonContainer;
 public class SeasonStats
 {
     public int Points { get; set; }

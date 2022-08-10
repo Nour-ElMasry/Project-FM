@@ -1,9 +1,11 @@
-﻿using Domain.Exceptions;
+﻿using Domain.Entities.PersonContainer;
+using Domain.Exceptions;
 using System.Text.RegularExpressions;
 
-namespace Domain.Entities;
+namespace Domain.Entities.UserContianer;
 
-public class User { 
+public class User
+{
     public User(string username, string password, Person p)
     {
         Username = username ?? throw new ArgumentNullException(nameof(username));

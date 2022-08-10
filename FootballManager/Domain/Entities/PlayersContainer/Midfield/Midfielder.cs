@@ -1,4 +1,5 @@
-﻿using Domain.Exceptions;
+﻿using Domain.Entities.PersonContainer;
+using Domain.Exceptions;
 
 namespace Domain.Entities.PlayersContainer.Midfield;
 public class Midfielder : Player
