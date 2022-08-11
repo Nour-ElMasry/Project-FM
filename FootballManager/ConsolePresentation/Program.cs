@@ -14,19 +14,9 @@ try
     InMemoryDB.SavePlayer(ptest);
     InMemoryDB.SavePlayer(ptest2);
 
-    PrintList<Player>(InMemoryDB.Players);
+    InMemoryDB.WriteToFile();
 
-    InMemoryDB.RemovePlayer(ptest2);
-
-
-    Console.WriteLine("Players in database after removal: \n");
-    PrintList<Player>(InMemoryDB.Players);
-
-
-    var InMemoryDB2 = InMemoryPlayerDatabase.GetInstance();
-
-    Console.WriteLine("Players in second database instance: \n");
-    PrintList<Player>(InMemoryDB2.Players);
+    InMemoryDB.ReadPlayersFile();
 
     Console.ReadKey();
 
@@ -34,8 +24,3 @@ try
     Console.WriteLine(e);
 }
 
-static void PrintList<T>(List<T> list)
-{
-    for(int i = 0; i < list.Count; i++)
-        Console.WriteLine($"{i + 1}:\n{list[i]}");
-}
