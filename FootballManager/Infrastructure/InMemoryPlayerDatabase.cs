@@ -7,8 +7,6 @@ public class InMemoryPlayerDatabase
     private static InMemoryPlayerDatabase? _database;
     private static readonly object _locker = new();
     private string file = Path.Combine(Directory.GetCurrentDirectory(), "Players.txt");
-    private FileStream? Fs;
-
     public List<Player> Players { get; set; }
     private InMemoryPlayerDatabase()
     {
@@ -44,16 +42,14 @@ public class InMemoryPlayerDatabase
 
     public async void WriteToFile()
     {
-        Fs = File.OpenWrite(file);
-        using var sw = new StreamWriter(Fs);
+        using var sw = new StreamWriter(file);
         for (int i = 0; i < Players.Count; i++)
             await sw.WriteLineAsync($"Player {i + 1} => \n {Players[i]}");
     }
 
     public void ReadPlayersFile()
     {
-        Fs = File.OpenRead(file);
-        using var sr = new StreamReader(Fs);
+        using var sr = new StreamReader(file);
         Console.Write(sr.ReadToEnd());
     }
 }
