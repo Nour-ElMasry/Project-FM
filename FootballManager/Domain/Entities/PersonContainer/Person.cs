@@ -24,5 +24,10 @@ public abstract class Person
         Nationality = nationality;
         Photo = photo;
     }
+
+    public override string? ToString()
+    {
+        return $"\n Name: {Name},\n BirthDate: {BirthDate.Date},\n Nationality: {Nationality},\n Photo: { Photo != null }";
+    }
 }
 

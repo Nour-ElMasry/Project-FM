@@ -18,6 +18,6 @@ public abstract class PlayerStats
 
     public override string? ToString()
     {
-        return $" Attacking: {Attacking} \n PlayMaking: {PlayMaking} \n Defending: {Defending} \n Goalkeeping: {Goalkeeping} \n";
+        return $"\n Attacking: {Attacking} \n PlayMaking: {PlayMaking} \n Defending: {Defending} \n Goalkeeping: {Goalkeeping} \n";
     }
 }

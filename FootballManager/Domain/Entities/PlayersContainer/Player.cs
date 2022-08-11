@@ -33,5 +33,10 @@ public abstract class Player
     public PlayerStats PlayerStats { get; set; }
     public Team? CurrentTeam { get; set; }
     public string Position { get; set; }
+
+    public override string? ToString()
+    {
+        return $"Player details: {PlayerPerson}, \nPlayer Position: {Position}, \nPlayer Stats: {PlayerStats}";
+    }
 }
 
