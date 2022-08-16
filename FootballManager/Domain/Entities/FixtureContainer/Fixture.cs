@@ -1,8 +1,10 @@
-﻿using Domain.Entities.TeamContainer;
+﻿using Domain.Entities.LeagueContainer;
+using Domain.Entities.TeamContainer;
 
 namespace Domain.Entities.FixtureContainer;
 public class Fixture
 {
+    public League League { get; set; }
     public string Venue { get; set; }
     public DateTime Date { get; set; }
     public Team HomeTeam { get; set; }
@@ -10,8 +12,9 @@ public class Fixture
     public int HomeTeamScore { get; set; }
     public int AwayTeamScore { get; set; }
 
-    public Fixture(string venue, DateTime date, Team homeTeam, Team awayTeam)
+    public Fixture(League league, string venue, DateTime date, Team homeTeam, Team awayTeam)
     {
+        League = league;
         Venue = venue;
         Date = date;
         HomeTeam = homeTeam;
