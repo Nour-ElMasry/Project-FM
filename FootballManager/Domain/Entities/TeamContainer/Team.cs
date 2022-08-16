@@ -17,6 +17,7 @@ public class Team
     private List<SeasonStats> SeasonStatsHistory { get; set; }
     private List<Player> Players { get; set; }
     private List<Fixture> Fixtures { get; set; }
+    private TeamSheet CurrentTeamSheet { get; set; }
 
 
     public Team(string name, string country, string venue, Manager manager)
@@ -29,8 +30,9 @@ public class Team
         CurrentSeasonStats = new();
         SeasonStatsHistory = new();
 
-        Players = new List<Player>();
-        Fixtures = new List<Fixture>();
+        Players = new();
+        Fixtures = new();
+        CurrentTeamSheet = new();
     }
 
     public void AddPlayer(Player p)
