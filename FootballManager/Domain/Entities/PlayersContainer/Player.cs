@@ -36,7 +36,7 @@ public abstract class Player
 
     public override string? ToString()
     {
-        return $"Player details: {PlayerPerson}, \nPlayer Position: {Position}, \nPlayer Stats: {PlayerStats}";
+        return $"Player details: {PlayerPerson}, \nPlayer Position: {Position}, \nPlayer Stats: {PlayerStats}, \nTeam: {(CurrentTeam != null ? CurrentTeam.Name : "No Team")}\n";
     }
 }
 
