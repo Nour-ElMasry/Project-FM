@@ -1,12 +1,12 @@
 ﻿
-using Domain.Entities.PlayersContainer;
+using Domain.Entities;
 
 namespace Infrastructure;
 public class InMemoryPlayerDatabase
 {
     private static InMemoryPlayerDatabase? _database;
     private static readonly object _locker = new();
-    private string file = Path.Combine(Directory.GetCurrentDirectory(), "Players.txt");
+    private readonly string File = Path.Combine(Directory.GetCurrentDirectory(), "Players.txt");
     public List<Player> Players { get; set; }
     private InMemoryPlayerDatabase()
     {
@@ -42,14 +42,14 @@ public class InMemoryPlayerDatabase
 
     public async void WriteToFile()
     {
-        using var sw = new StreamWriter(file);
+        using var sw = new StreamWriter(File);
         for (int i = 0; i < Players.Count; i++)
             await sw.WriteLineAsync($"Player {i + 1} => \n {Players[i]}");
     }
 
     public void ReadPlayersFile()
     {
-        using var sr = new StreamReader(file);
+        using var sr = new StreamReader(File);
         Console.Write(sr.ReadToEnd());
     }
 }
