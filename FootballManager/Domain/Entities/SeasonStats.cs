@@ -45,6 +45,6 @@ public class SeasonStats
 
     public override string ToString()
     {
-        return $"\n             Points: {Points}, Games Played: {GamesPlayed}pts, Home Games: {HomeGamesPlayed}, Away Games: {AwayGamesPlayed}, Goals For: {GoalsFor}, Goals Against: {GoalsAgainst}";
+        return $"\n             Points: {Points}pts, Games Played: {GamesPlayed}, Home Games: {HomeGamesPlayed}, Away Games: {AwayGamesPlayed}, Goals For: {GoalsFor}, Goals Against: {GoalsAgainst}";
     }
 }

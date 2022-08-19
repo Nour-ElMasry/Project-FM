@@ -10,13 +10,13 @@ public class Fixture
     public int HomeTeamScore { get; set; }
     public int AwayTeamScore { get; set; }
 
-    public Fixture(League league, string venue, DateTime date, Team homeTeam, Team awayTeam)
+    public Fixture(League league, Team homeTeam, Team awayTeam)
     {
-        League = league;
-        Venue = venue;
-        Date = date;
+        League = league;       
         HomeTeam = homeTeam;
         AwayTeam = awayTeam;
+
+        Venue = HomeTeam.Venue;
 
         HomeTeam.AddFixture(this);
         AwayTeam.AddFixture(this);

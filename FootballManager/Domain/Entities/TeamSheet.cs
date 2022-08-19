@@ -1,9 +1,18 @@
 ﻿namespace Domain.Entities;
 public class TeamSheet
 {
-    public int AttackingRating { get; set; }
-    public int DefendingRating { get; set; }
-    public Tactic TeamTactic { get; set; }
+    private Tactic _teamTactic = new BalancedTactic();
+    public ICollection<Player> Players { get; set; } = new List<Player>();
+    public int AttackingRating { get; set; } = 0;
+    public int DefendingRating { get; set; } = 0;
+    public Tactic TeamTactic { 
+        get => _teamTactic; 
+        set 
+        {
+            _teamTactic = value;
+            UpdateRating(Players);
+        } 
+    }
 
     public TeamSheet()
     {
@@ -11,24 +20,30 @@ public class TeamSheet
     }
 
     public void UpdateRating(ICollection<Player> players) {
-        AttackingRating = CalculateAttackingRating(players);
-        DefendingRating = CalculateDefendingRating(players);
+        if (players.Count > 0)
+        {
+            Players = players;
+            AttackingRating = CalculateAttackingRating();
+            DefendingRating = CalculateDefendingRating();
+        }
     }
 
-    public int CalculateAttackingRating(ICollection<Player> p)
+    public int CalculateAttackingRating()
     {
         var calculation = 0;
-        var playersList = p.Where(p => p.GetType().Name != "Defender" && p.GetType().Name != "Goalkeeper").ToList();
+        var playersList = Players.Where(p => p.GetType().Name != "Defender" && p.GetType().Name != "Goalkeeper").ToList();
         playersList.ForEach(pl => calculation += pl.PlayerStats.Attacking);
-        return (calculation / playersList.Count) + TeamTactic.AttackingWeight;
+        var rating = (calculation / playersList.Count) + TeamTactic.AttackingWeight;
+        return  (rating > 100) ? 100 : rating;
     }
 
-    public int CalculateDefendingRating(ICollection<Player> p)
+    public int CalculateDefendingRating()
     {
         var calculation = 0;
-        var playersList = p.Where(p => p.GetType().Name != "Attacker").ToList();
-        playersList.ForEach(pl => calculation += (pl.GetType().Name == "Goalkeeper") ? pl.PlayerStats.Goalkeeping : pl.PlayerStats.Defending);
-        return (calculation / playersList.Count) + TeamTactic.DefendingWeight;
+        var playersList = Players.Where(p => p.GetType().Name != "Attacker").ToList();
+        playersList.ForEach(pl => calculation += (pl.GetType().Name == "Goalkeeper") ? pl.PlayerStats.Goalkeeping / 5 : pl.PlayerStats.Defending);
+        var rating = (calculation / playersList.Count) + TeamTactic.DefendingWeight;
+        return (rating > 100) ? 100 : rating;
     }
 }
 

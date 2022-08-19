@@ -1,7 +1,7 @@
 ﻿namespace Domain.Entities;
 public class FakeManager : Manager
 {
-    public FakeManager(FakePerson managerPerson)
+    public FakeManager(Person managerPerson)
     {
         ManagerPerson = managerPerson;
     }

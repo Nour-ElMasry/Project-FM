@@ -44,5 +44,8 @@ public class League
         Teams.Remove(teamToRemove);
     }
 
+    public void CreateFixtures() {
+        Fixtures = FixtureGenerator.Generate(this);
+    }
 }
 
