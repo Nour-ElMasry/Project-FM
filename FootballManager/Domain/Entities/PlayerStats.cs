@@ -15,9 +15,4 @@ public abstract class PlayerStats
         Defending = defending;
         Goalkeeping = goalkeeping;
     }
-
-    public override string? ToString()
-    {
-        return $"\n Attacking: {Attacking} \n PlayMaking: {PlayMaking} \n Defending: {Defending} \n Goalkeeping: {Goalkeeping} \n";
-    }
 }

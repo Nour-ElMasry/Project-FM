@@ -29,11 +29,22 @@ public class SeasonStats
     }
 
     public void AddPoints(int pts) => Points += pts;
-    public void AddGamesPlayed(int gms) => GamesPlayed += gms;
-    public void AddHomeGamesPlayed(int hgp) => HomeGamesPlayed += hgp;
-    public void AddAwayGamesPlayed(int agp) => AwayGamesPlayed += agp;
+    public void AddHomeGame()
+    {
+        HomeGamesPlayed += 1;
+        GamesPlayed += 1;
+    }
+    public void AddAwayGame()
+    {
+        AwayGamesPlayed += 1;
+        GamesPlayed += 1;
+    }
 
     public void AddGoalsFor(int gf) => GoalsFor += gf;
     public void AddGoalsAgainst(int ga) => GoalsAgainst += ga;
 
+    public override string ToString()
+    {
+        return $"\n             Points: {Points}, Games Played: {GamesPlayed}pts, Home Games: {HomeGamesPlayed}, Away Games: {AwayGamesPlayed}, Goals For: {GoalsFor}, Goals Against: {GoalsAgainst}";
+    }
 }

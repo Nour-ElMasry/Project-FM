@@ -3,6 +3,11 @@
 namespace Domain.Entities;
 public abstract class Player
 {
+    public long PlayerId { get; set; }
+    public Person PlayerPerson { get; set; }
+    public PlayerStats PlayerStats { get; set; }
+    public Team CurrentTeam { get; set; } = null;
+    public string Position { get; set; }
 
     public Player(Person p, string pos)
     {
@@ -25,16 +30,6 @@ public abstract class Player
         PlayerPerson = p ?? throw new ArgumentNullException(nameof(p));
         Position = pos;
         PlayerStats = ps ?? throw new ArgumentNullException(nameof(ps));
-    }
-
-    public Person PlayerPerson { get; set; }
-    public PlayerStats PlayerStats { get; set; }
-    public Team? CurrentTeam { get; set; }
-    public string Position { get; set; }
-
-    public override string? ToString()
-    {
-        return $"Player details: {PlayerPerson}, \nPlayer Position: {Position}, \nPlayer Stats: {PlayerStats}, \nTeam: {(CurrentTeam != null ? CurrentTeam.Name : "No Team")}\n";
     }
 }
 

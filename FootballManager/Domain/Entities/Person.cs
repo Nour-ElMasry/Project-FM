@@ -6,12 +6,13 @@ namespace Domain.Entities;
 
 public abstract class Person
 {
+    public long PersonId { get; set; }
     public string Name { get; set; }
     public DateTime BirthDate { get; set; }
-    public string Nationality { get; set; }
+    public string Country { get; set; }
     public string Photo { get; set; }
 
-    public Person(string name, string birthDate, string nationality, string photo)
+    public Person(string name, string birthDate, string country, string photo)
     {
         if (!DateTime.TryParse(birthDate, out DateTime tempDate))
             throw new IncorrectDateException("Invalid date! please input a correct date!");
@@ -21,13 +22,8 @@ public abstract class Person
 
         Name = name;
         BirthDate = tempDate;
-        Nationality = nationality;
+        Country = country;
         Photo = photo;
-    }
-
-    public override string? ToString()
-    {
-        return $"\n Name: {Name},\n BirthDate: {BirthDate.Date},\n Nationality: {Nationality},\n Photo: {Photo != null}";
     }
 }
 

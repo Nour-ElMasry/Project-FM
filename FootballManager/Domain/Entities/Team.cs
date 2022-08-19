@@ -3,17 +3,17 @@
 namespace Domain.Entities;
 public class Team
 {
+    public long TeamId { get; set; }
     public string Name { get; set; }
     public string Country { get; set; }
     public string Venue { get; set; }
     public Manager TeamManager { get; set; }
-    public League? CurrentLeague { get; set; }
+    public League CurrentLeague { get; set; } = null;
     public SeasonStats CurrentSeasonStats { get; set; }
-    private List<SeasonStats> SeasonStatsHistory { get; set; }
-    private List<Player> Players { get; set; }
-    private List<Fixture> Fixtures { get; set; }
-    private TeamSheet CurrentTeamSheet { get; set; }
-
+    public ICollection<SeasonStats> SeasonStatsHistory { get; set; } = new List<SeasonStats>();
+    public ICollection<Player> Players { get; set; } = new List<Player>();
+    public ICollection<Fixture> Fixtures { get; set; } = new List<Fixture>();
+    public TeamSheet CurrentTeamSheet { get; set; }
 
     public Team(string name, string country, string venue, Manager manager)
     {
@@ -21,13 +21,9 @@ public class Team
         Country = country;
         Venue = venue;
         TeamManager = manager;
-
-        CurrentSeasonStats = new();
-        SeasonStatsHistory = new();
-
-        Players = new();
-        Fixtures = new();
-        CurrentTeamSheet = new();
+        TeamManager.CurrentTeam = this;
+        CurrentSeasonStats = new SeasonStats();
+        CurrentTeamSheet = new TeamSheet();
     }
 
     public void AddPlayer(Player p)
@@ -36,14 +32,18 @@ public class Team
             throw new AlreadyExistsException("Player already exists in this team!");
         Players.Add(p);
         p.CurrentTeam = this;
+
+        CurrentTeamSheet.UpdateRating(Players);
     }
 
     public void RemovePlayer(Player p)
     {
-        var playerToRemove = Players.Find(pl => p == pl);
+        var playerToRemove = Players.First(pl => p == pl);
         if (playerToRemove == null)
             throw new NullReferenceException("Player doesn't exist in this team!");
         Players.Remove(playerToRemove);
+
+        CurrentTeamSheet.UpdateRating(Players);
     }
 
     public void AddFixture(Fixture f)

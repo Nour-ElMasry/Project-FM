@@ -1,6 +1,7 @@
 ﻿namespace Domain.Entities;
 public class Fixture
 {
+    public long FixtureId { get; set; }
     public League League { get; set; }
     public string Venue { get; set; }
     public DateTime Date { get; set; }
@@ -19,6 +20,12 @@ public class Fixture
 
         HomeTeam.AddFixture(this);
         AwayTeam.AddFixture(this);
+    }
+
+    public void SimulateFixture()
+    {
+        FixtureSimulation.Simulate(this);
+        Console.WriteLine($"\nScore is: {HomeTeam.Name} {HomeTeamScore} - {AwayTeamScore} {AwayTeam.Name}");
     }
 }
 

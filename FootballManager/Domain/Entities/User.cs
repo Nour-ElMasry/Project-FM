@@ -2,14 +2,17 @@
 
 public class User
 {
-    public User(string username, string password, Person p)
-    {
-        Username = username ?? throw new ArgumentNullException(nameof(username));
-        Password = password ?? throw new ArgumentNullException(nameof(username));
-        UserPerson = p ?? throw new ArgumentNullException(nameof(p));
-    }
+    public long UserId { get; set; }
     public string Username { get; set; }
     public string Password { get; set; }
+    public long PersonId { get; set; }
     public Person UserPerson { get; set; }
+
+    public User(string username, string password, Person userPerson)
+    {
+        Username = username;
+        Password = password;
+        UserPerson = userPerson;
+    }
 }
 

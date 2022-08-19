@@ -3,30 +3,28 @@
 namespace Domain.Entities;
 public class League
 {
+    public long LeagueId { get; set; }
     public string Name { get; set; }
 
-    public List<Team> Teams { get; set; }
+    public ICollection<Team> Teams { get; set; } = new List<Team>();
 
     public Season CurrentSeason { get; set; }
 
-    public List<Season> SeasonsHistory { get; set; }
+    public ICollection<Season> SeasonsHistory { get; set; } = new List<Season>();
+         
+    public ICollection<Fixture> Fixtures { get; set; } = new List<Fixture>();
 
-    public List<Fixture> Fixtures { get; set; }
-
-    public League(string name, List<Team> teams)
+    public League(string name)
     {
         Name = name;
-        Teams = teams;
         CurrentSeason = new Season(DateTime.Now.Year, this);
-        SeasonsHistory = new();
-        Fixtures = new(); //Will implement an algorithm to generate the fixtures
     }
 
     public void AddSeasonHistory(Season s) => SeasonsHistory.Add(s);
     public void NextSeason()
     {
         AddSeasonHistory(CurrentSeason);
-        Teams.ForEach(t => t.ResetSeasonStats());
+        foreach (var team in Teams) team.ResetSeasonStats();
         CurrentSeason = new Season(++CurrentSeason.Year, this);
     }
 
@@ -40,7 +38,7 @@ public class League
 
     public void RemoveTeam(Team t)
     {
-        var teamToRemove = Teams.Find(te => t == te);
+        var teamToRemove = Teams.First(te => t == te);
         if (teamToRemove == null)
             throw new NullReferenceException("Team doesn't exist in this League!");
         Teams.Remove(teamToRemove);
