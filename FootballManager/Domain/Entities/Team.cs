@@ -9,11 +9,11 @@ public class Team
     public string Venue { get; set; }
     public Manager TeamManager { get; set; }
     public League CurrentLeague { get; set; } = null;
-    public SeasonStats CurrentSeasonStats { get; set; }
+    public SeasonStats CurrentSeasonStats { get; set; } = new();
     public ICollection<SeasonStats> SeasonStatsHistory { get; set; } = new List<SeasonStats>();
     public ICollection<Player> Players { get; set; } = new List<Player>();
     public ICollection<Fixture> Fixtures { get; set; } = new List<Fixture>();
-    public TeamSheet CurrentTeamSheet { get; set; }
+    public TeamSheet CurrentTeamSheet { get; set; } = new TeamSheet();
 
     public Team(string name, string country, string venue, Manager manager)
     {
@@ -22,8 +22,6 @@ public class Team
         Venue = venue;
         TeamManager = manager;
         TeamManager.CurrentTeam = this;
-        CurrentSeasonStats = new SeasonStats();
-        CurrentTeamSheet = new TeamSheet();
     }
 
     public void AddPlayer(Player p)

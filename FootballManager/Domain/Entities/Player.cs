@@ -8,6 +8,7 @@ public abstract class Player
     public PlayerStats PlayerStats { get; set; }
     public Team CurrentTeam { get; set; } = null;
     public string Position { get; set; }
+    public Record PlayerRecord { get; set; } = new();
 
     public Player(Person p, string pos)
     {
