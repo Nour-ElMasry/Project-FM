@@ -8,9 +8,8 @@ User as a:
         1- Create a Team
         2- Create his own player with his own stats
         3- Manage his team through a season
-        4- Train players
-        5- View his teams stats and league standing for that respective season.
-        6- View his achievements in his profile section
+        4- View his teams stats and league standing for that respective season.
+        5- View his achievements in his profile section
 
 - Normal user can ->
 
