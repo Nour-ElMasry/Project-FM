@@ -1,14 +1,9 @@
 ﻿using Domain.Entities;
 using MediatR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Application.Queries
 {
-    public class GetAllTeams : IRequest<ICollection<Team>>
+    public class GetAllTeams : IRequest<List<Team>>
     {
     }
 }

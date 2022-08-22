@@ -8,12 +8,12 @@ public class Team
     public string Country { get; set; }
     public string Venue { get; set; }
     public Manager TeamManager { get; set; }
-    public League CurrentLeague { get; set; } = null;
-    public SeasonStats CurrentSeasonStats { get; set; } = new();
-    public ICollection<SeasonStats> SeasonStatsHistory { get; set; } = new List<SeasonStats>();
-    public ICollection<Player> Players { get; set; } = new List<Player>();
-    public ICollection<Fixture> Fixtures { get; set; } = new List<Fixture>();
-    public TeamSheet CurrentTeamSheet { get; set; } = new TeamSheet();
+    public List<League> Leagues { get; set; } = new ();
+    public SeasonStats CurrentSeasonStats { get; set; } = new ();
+    public List<SeasonStats> SeasonStatsHistory { get; set; } = new ();
+    public List<Player> Players { get; set; } = new ();
+    public List<Fixture> Fixtures { get; set; } = new ();
+    public TeamSheet CurrentTeamSheet { get; set; } = new ();
 
     public Team(string name, string country, string venue, Manager manager)
     {

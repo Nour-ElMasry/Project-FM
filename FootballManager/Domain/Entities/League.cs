@@ -6,13 +6,13 @@ public class League
     public long LeagueId { get; set; }
     public string Name { get; set; }
 
-    public ICollection<Team> Teams { get; set; } = new List<Team>();
+    public List<Team> Teams { get; set; } = new ();
 
     public Season CurrentSeason { get; set; }
 
-    public ICollection<Season> SeasonsHistory { get; set; } = new List<Season>();
+    public List<Season> SeasonsHistory { get; set; } = new ();
          
-    public ICollection<Fixture> Fixtures { get; set; } = new List<Fixture>();
+    public List<Fixture> Fixtures { get; set; } = new ();
 
     public League(string name)
     {
@@ -33,7 +33,7 @@ public class League
         if (Teams.Contains(t))
             throw new AlreadyExistsException("Team already exists in this league!");
         Teams.Add(t);
-        t.CurrentLeague = this;
+        t.Leagues.Add(this);
     }
 
     public void RemoveTeam(Team t)

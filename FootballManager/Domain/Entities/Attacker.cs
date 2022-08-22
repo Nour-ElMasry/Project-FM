@@ -1,6 +1,4 @@
-﻿using Domain.Exceptions;
-
-namespace Domain.Entities;
+﻿namespace Domain.Entities;
 public class Attacker : Player
 {
     public Attacker(Person p, string position) : base(p, position)

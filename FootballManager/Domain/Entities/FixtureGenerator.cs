@@ -3,7 +3,7 @@ public static class FixtureGenerator
 {
     private static readonly Random rnd = new();
     private static List<Fixture> fixtures;
-    public static ICollection<Fixture> Generate(League league)
+    public static List<Fixture> Generate(League league)
     {
         fixtures = new List<Fixture>();
         

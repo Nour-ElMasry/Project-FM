@@ -64,13 +64,19 @@ public static class FixtureSimulation
     private static void AddPointsToTeams()
     {
         if (fixture.HomeTeamScore > fixture.AwayTeamScore)
-            fixture.HomeTeam.CurrentSeasonStats.AddPoints(3);
+        {
+            fixture.HomeTeam.CurrentSeasonStats.AddWin();
+            fixture.AwayTeam.CurrentSeasonStats.AddLose();
+        }
         else if (fixture.HomeTeamScore < fixture.AwayTeamScore)
-            fixture.AwayTeam.CurrentSeasonStats.AddPoints(3);
+        {
+            fixture.HomeTeam.CurrentSeasonStats.AddLose();
+            fixture.AwayTeam.CurrentSeasonStats.AddWin();
+        }
         else
         {
-            fixture.HomeTeam.CurrentSeasonStats.AddPoints(1);
-            fixture.AwayTeam.CurrentSeasonStats.AddPoints(1);
+            fixture.HomeTeam.CurrentSeasonStats.AddDraw();
+            fixture.AwayTeam.CurrentSeasonStats.AddDraw();
         }
     }
 
@@ -97,7 +103,7 @@ public static class FixtureSimulation
         else
             ScoreGoal(RandomDefender());
 
-        if(randomNum < 750)
+        if (randomNum < 750)
             AssistGoal(RandomPlayer());
     }
 
@@ -124,7 +130,7 @@ public static class FixtureSimulation
 
     private static Player RandomPlayer()
     {
-        var players = AttackingTeam.Players.ToList();
+        var players = AttackingTeam.Players;
         return players[rnd.Next(players.Count)];
     }
 }

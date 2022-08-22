@@ -31,21 +31,21 @@ public class Fixture
 
     private void PlayerStatsAddition()
     {
-        var HomeTeamPlayers = HomeTeam.Players.ToList();
-        var AwayTeamPlayers = AwayTeam.Players.ToList();
+        var HomeTeamPlayers = HomeTeam.Players;
+        var AwayTeamPlayers = AwayTeam.Players;
 
         HomeTeamPlayers.ForEach(p => p.PlayerRecord.AddGamePlayed());
         AwayTeamPlayers.ForEach(p => p.PlayerRecord.AddGamePlayed());
 
         if (AwayTeamScore == 0)
         {
-            var CleanSheetPlayers = HomeTeamPlayers.Where(p => p.GetType().Name != "Attacker");
-            CleanSheetPlayers.ToList().ForEach(p => p.PlayerRecord.AddCleanSheet());
+            var CleanSheetPlayers = HomeTeamPlayers.Where(p => p.GetType().Name != "Attacker").ToList();
+            CleanSheetPlayers.ForEach(p => p.PlayerRecord.AddCleanSheet());
         }
         else
         {
-            var CleanSheetPlayers = AwayTeamPlayers.Where(p => p.GetType().Name != "Attacker");
-            CleanSheetPlayers.ToList().ForEach(p => p.PlayerRecord.AddCleanSheet());
+            var CleanSheetPlayers = AwayTeamPlayers.Where(p => p.GetType().Name != "Attacker").ToList();
+            CleanSheetPlayers.ForEach(p => p.PlayerRecord.AddCleanSheet());
         }
     }
 }

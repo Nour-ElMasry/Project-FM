@@ -2,16 +2,17 @@
 public class TeamSheet
 {
     private Tactic _teamTactic = new BalancedTactic();
-    public ICollection<Player> Players { get; set; } = new List<Player>();
+    public List<Player> Players { get; set; } = new();
     public int AttackingRating { get; set; } = 0;
     public int DefendingRating { get; set; } = 0;
-    public Tactic TeamTactic { 
-        get => _teamTactic; 
-        set 
+    public Tactic TeamTactic
+    {
+        get => _teamTactic;
+        set
         {
             _teamTactic = value;
             UpdateRating(Players);
-        } 
+        }
     }
 
     public TeamSheet()
@@ -19,10 +20,11 @@ public class TeamSheet
         TeamTactic = new BalancedTactic();
     }
 
-    public void UpdateRating(ICollection<Player> players) {
-        if (players.Count > 0)
+    public void UpdateRating(List<Player> p)
+    {
+        if (p.Count > 0)
         {
-            Players = players;
+            Players = p;
             AttackingRating = CalculateAttackingRating();
             DefendingRating = CalculateDefendingRating();
         }
@@ -34,7 +36,7 @@ public class TeamSheet
         var playersList = Players.Where(p => p.GetType().Name != "Defender" && p.GetType().Name != "Goalkeeper").ToList();
         playersList.ForEach(pl => calculation += pl.PlayerStats.Attacking);
         var rating = (calculation / playersList.Count) + TeamTactic.AttackingWeight;
-        return  (rating > 100) ? 100 : rating;
+        return (rating > 100) ? 100 : rating;
     }
 
     public int CalculateDefendingRating()

@@ -1,6 +1,4 @@
 ﻿using Domain.Exceptions;
-using System;
-using System.IO;
 
 namespace Domain.Entities;
 
