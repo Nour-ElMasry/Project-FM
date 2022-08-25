@@ -1,11 +1,8 @@
 ﻿namespace Domain.Entities;
 public class Goalkeeper : Player
 {
-    public Goalkeeper(Person p, string position) : base(p, position)
-    {
-    }
-
-    public Goalkeeper(Person p, string position, GoalkeepingStats gps) : base(p, position, gps)
+    public Goalkeeper() { }
+    public Goalkeeper(long p, string position) : base(p, position)
     {
     }
 }

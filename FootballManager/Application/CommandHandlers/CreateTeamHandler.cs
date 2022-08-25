@@ -16,8 +16,10 @@ namespace Application.CommandHandlers
 
         public async Task<Team> Handle(CreateTeam request, CancellationToken cancellationToken)
         {
-            var team = new Team(request.Name, request.Country, request.Venue, request.TeamManager);
-
+            var seasonStats = new SeasonStats();
+            var team = new Team(request.Name, request.Country, request.Venue, request.TeamManagerId) { CurrentSeasonStats = seasonStats };
+            
+   
             await _unitOfWork.TeamRepository.AddTeam(team);
             await _unitOfWork.Save();
 

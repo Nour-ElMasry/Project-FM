@@ -5,8 +5,7 @@ namespace Application.Commands
 {
     public class CreateAttacker : IRequest<Attacker>
     {
-        public Person PlayerPerson { get; set; }
+        public long PlayerPersonId { get; set; }
         public string Position { get; set; }
-        public AttackingStats Stats { get; set; }
     }
 }

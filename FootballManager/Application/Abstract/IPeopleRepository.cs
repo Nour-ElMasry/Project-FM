@@ -6,7 +6,7 @@ namespace Application.Abstract
     {
         Task Save();
         Task AddPerson(Person u);
-        Task UpdatePerson(Person u);
+        Task UpdatePerson(long id, Person u);
         Task DeletePerson(Person u);
         Task<Person> GetPersonById(long id);
         Task<List<Person>> GetAllPeople();

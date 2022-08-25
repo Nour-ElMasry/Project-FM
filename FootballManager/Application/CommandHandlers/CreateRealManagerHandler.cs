@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Application.CommandHandlers
 {
-    public class CreateRealManagerHandler : IRequestHandler<CreateRealManager, Manager>
+    public class CreateRealManagerHandler : IRequestHandler<CreateRealManager, RealManager>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -14,7 +14,7 @@ namespace Application.CommandHandlers
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Manager> Handle(CreateRealManager request, CancellationToken cancellationToken)
+        public async Task<RealManager> Handle(CreateRealManager request, CancellationToken cancellationToken)
         {
             var manager = new RealManager(request.UserManager);
 

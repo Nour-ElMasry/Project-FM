@@ -6,7 +6,7 @@ namespace Application.Abstract
     {
         Task Save();
         Task AddLeague(League u);
-        Task UpdateLeague(League u);
+        Task UpdateLeague(long id, League u);
         Task DeleteLeague(League u);
         Task<League> GetLeagueById(long id);
         Task<List<League>> GetAllLeagues();

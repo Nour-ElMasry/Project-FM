@@ -8,24 +8,21 @@ public class League
 
     public List<Team> Teams { get; set; } = new ();
 
+    public long CurrentSeasonId { get; set; }
     public Season CurrentSeason { get; set; }
-
-    public List<Season> SeasonsHistory { get; set; } = new ();
          
     public List<Fixture> Fixtures { get; set; } = new ();
 
+    public League() { }
     public League(string name)
     {
         Name = name;
-        CurrentSeason = new Season(DateTime.Now.Year, this);
+        CurrentSeason = new Season(DateTime.Now.Year);
     }
-
-    public void AddSeasonHistory(Season s) => SeasonsHistory.Add(s);
     public void NextSeason()
     {
-        AddSeasonHistory(CurrentSeason);
         foreach (var team in Teams) team.ResetSeasonStats();
-        CurrentSeason = new Season(++CurrentSeason.Year, this);
+        CurrentSeason = new Season(++CurrentSeason.Year);
     }
 
     public void AddTeam(Team t)
@@ -33,7 +30,7 @@ public class League
         if (Teams.Contains(t))
             throw new AlreadyExistsException("Team already exists in this league!");
         Teams.Add(t);
-        t.Leagues.Add(this);
+        t.CurrentLeague = this;
     }
 
     public void RemoveTeam(Team t)

@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Application.CommandHandlers
 {
-    public class CreateDefenderHandler : IRequestHandler<CreateDefender, Player>
+    public class CreateDefenderHandler : IRequestHandler<CreateDefender, Defender>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -14,9 +14,9 @@ namespace Application.CommandHandlers
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Player> Handle(CreateDefender request, CancellationToken cancellationToken)
+        public async Task<Defender> Handle(CreateDefender request, CancellationToken cancellationToken)
         {
-            var player = new Defender(request.PlayerPerson, request.Position, request.Stats);
+            var player = new Defender(request.PlayerPersonId, request.Position);
 
             await _unitOfWork.PlayerRepository.AddPlayer(player);
             await _unitOfWork.Save();

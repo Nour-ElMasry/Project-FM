@@ -6,7 +6,7 @@ namespace Application.Abstract
     {
         Task Save();
         Task AddPlayer(Player u);
-        Task UpdatePlayer(Player u);
+        Task UpdatePlayer(long id, Player u);
         Task DeletePlayer(Player u);
         Task<Player> GetPlayerById(long id);
         Task<List<Player>> GetAllPlayers();

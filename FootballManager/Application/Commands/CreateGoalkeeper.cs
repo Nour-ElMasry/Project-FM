@@ -5,7 +5,6 @@ namespace Application.Commands
 {
     public class CreateGoalkeeper : IRequest<Goalkeeper>
     {
-        public Person PlayerPerson { get; set; }
-        public GoalkeepingStats Stats { get; set; }
+        public long PlayerPersonId{ get; set; }
     }
 }

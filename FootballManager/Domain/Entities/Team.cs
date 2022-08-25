@@ -1,59 +1,37 @@
-﻿using Domain.Exceptions;
-
-namespace Domain.Entities;
+﻿namespace Domain.Entities;
 public class Team
 {
     public long TeamId { get; set; }
     public string Name { get; set; }
     public string Country { get; set; }
     public string Venue { get; set; }
+    public long TeamManagerId { get; set; }
     public Manager TeamManager { get; set; }
-    public List<League> Leagues { get; set; } = new ();
-    public SeasonStats CurrentSeasonStats { get; set; } = new ();
-    public List<SeasonStats> SeasonStatsHistory { get; set; } = new ();
-    public List<Player> Players { get; set; } = new ();
-    public List<Fixture> Fixtures { get; set; } = new ();
-    public TeamSheet CurrentTeamSheet { get; set; } = new ();
 
-    public Team(string name, string country, string venue, Manager manager)
+    public Team() { }
+    public Team(string name, string country, string venue, long teamManagerId)
     {
         Name = name;
         Country = country;
         Venue = venue;
-        TeamManager = manager;
-        TeamManager.CurrentTeam = this;
+        TeamManagerId = teamManagerId;
+        CurrentTeamSheet = new TeamSheet();
     }
 
-    public void AddPlayer(Player p)
-    {
-        if (Players.Contains(p))
-            throw new AlreadyExistsException("Player already exists in this team!");
-        Players.Add(p);
-        p.CurrentTeam = this;
+    public long CurrentSeasonStatsId { get; set; }
+    public SeasonStats CurrentSeasonStats { get; set; } = new();
 
-        CurrentTeamSheet.UpdateRating(Players);
-    }
+    public long CurrentTeamSheetId { get; set; }
+    public TeamSheet CurrentTeamSheet { get; set; }
 
-    public void RemovePlayer(Player p)
-    {
-        var playerToRemove = Players.First(pl => p == pl);
-        if (playerToRemove == null)
-            throw new NullReferenceException("Player doesn't exist in this team!");
-        Players.Remove(playerToRemove);
+    public long? CurrentLeagueId { get; set; }
+    public League? CurrentLeague { get; set; }
 
-        CurrentTeamSheet.UpdateRating(Players);
-    }
-
-    public void AddFixture(Fixture f)
-    {
-        if (Fixtures.Contains(f))
-            throw new AlreadyExistsException("Player already exists in this team!");
-        Fixtures.Add(f);
-    }
+    public List<Player> Players { get; set; } = new();
+    public List<Fixture> Fixtures { get; set; } = new();
 
     public void ResetSeasonStats()
     {
-        SeasonStatsHistory.Add(CurrentSeasonStats);
         CurrentSeasonStats = new();
     }
 }

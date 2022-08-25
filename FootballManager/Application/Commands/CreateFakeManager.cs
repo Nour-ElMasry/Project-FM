@@ -5,7 +5,7 @@ namespace Application.Commands
 {
     public class CreateFakeManager : IRequest<FakeManager>
     {
-        public Person ManagerPerson { get; set; }
+        public long ManagerPersonId { get; set; }
 
     }
 }

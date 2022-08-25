@@ -20,7 +20,11 @@ namespace Application.CommandHandlers
 
             if (player != null && team != null)
             {
-                team.RemovePlayer(player);
+                var playerToRemove = team.Players.First(p => p.PlayerId == player.PlayerId);
+                if (playerToRemove == null)
+                    throw new NullReferenceException("Player doesn't exist in this team!");
+                team.Players.Remove(playerToRemove);
+    
                 await _unitOfWork.Save();
             }
 

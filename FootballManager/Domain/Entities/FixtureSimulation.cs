@@ -3,18 +3,27 @@ public static class FixtureSimulation
 {
     private static readonly Random rnd = new();
     private static Fixture fixture;
+
+    private static Team HomeTeam;
+    private static Team AwayTeam;
+
     private static Team AttackingTeam;
     private static Team DefendingTeam;
+
     private static double AttackChance;
     public static void Simulate(Fixture f)
     {
         fixture = f;
+
+        HomeTeam = f.teams[0];
+        AwayTeam = f.teams[1];
+
         var numberOfEvents = rnd.Next(0, 10);
 
 
         for (int i = 0; i < numberOfEvents; i++)
         {
-            TeamSelection(fixture.HomeTeam, fixture.AwayTeam);
+            TeamSelection(fixture.teams[0], fixture.teams[1]);
             RandomChance(AttackChance);
         }
 
@@ -52,7 +61,7 @@ public static class FixtureSimulation
 
         if (chance <= AttackingSuccessPercentage * range)
         {
-            if (fixture.HomeTeam == AttackingTeam)
+            if (HomeTeam == AttackingTeam)
                 fixture.HomeTeamScore += 1;
             else
                 fixture.AwayTeamScore += 1;
@@ -65,31 +74,31 @@ public static class FixtureSimulation
     {
         if (fixture.HomeTeamScore > fixture.AwayTeamScore)
         {
-            fixture.HomeTeam.CurrentSeasonStats.AddWin();
-            fixture.AwayTeam.CurrentSeasonStats.AddLose();
+            HomeTeam.CurrentSeasonStats.AddWin();
+            AwayTeam.CurrentSeasonStats.AddLose();
         }
         else if (fixture.HomeTeamScore < fixture.AwayTeamScore)
         {
-            fixture.HomeTeam.CurrentSeasonStats.AddLose();
-            fixture.AwayTeam.CurrentSeasonStats.AddWin();
+            HomeTeam.CurrentSeasonStats.AddLose();
+            AwayTeam.CurrentSeasonStats.AddWin();
         }
         else
         {
-            fixture.HomeTeam.CurrentSeasonStats.AddDraw();
-            fixture.AwayTeam.CurrentSeasonStats.AddDraw();
+            HomeTeam.CurrentSeasonStats.AddDraw();
+            AwayTeam.CurrentSeasonStats.AddDraw();
         }
     }
 
     private static void AddGoalsAndGames()
     {
-        fixture.HomeTeam.CurrentSeasonStats.AddGoalsFor(fixture.HomeTeamScore);
-        fixture.HomeTeam.CurrentSeasonStats.AddGoalsAgainst(fixture.AwayTeamScore);
+        HomeTeam.CurrentSeasonStats.AddGoalsFor(fixture.HomeTeamScore);
+        HomeTeam.CurrentSeasonStats.AddGoalsAgainst(fixture.AwayTeamScore);
 
-        fixture.AwayTeam.CurrentSeasonStats.AddGoalsFor(fixture.AwayTeamScore);
-        fixture.AwayTeam.CurrentSeasonStats.AddGoalsAgainst(fixture.HomeTeamScore);
+        AwayTeam.CurrentSeasonStats.AddGoalsFor(fixture.AwayTeamScore);
+        AwayTeam.CurrentSeasonStats.AddGoalsAgainst(fixture.HomeTeamScore);
 
-        fixture.HomeTeam.CurrentSeasonStats.AddHomeGame();
-        fixture.AwayTeam.CurrentSeasonStats.AddAwayGame();
+        HomeTeam.CurrentSeasonStats.AddHomeGame();
+        AwayTeam.CurrentSeasonStats.AddAwayGame();
     }
 
     private static void PlayerContributions()

@@ -1,11 +1,13 @@
 ﻿namespace Domain.Entities;
 public abstract class PlayerStats
 {
+    public long PlayerStatsId { get; set; }
     public int Attacking { get; set; }
     public int PlayMaking { get; set; }
     public int Defending { get; set; }
     public int Goalkeeping { get; set; }
 
+    public PlayerStats() { }
     public PlayerStats(int attacking, int playMaking, int defending, int goalkeeping)
     {
         if (attacking >= 100 || playMaking >= 100 || defending >= 100 || goalkeeping >= 100)

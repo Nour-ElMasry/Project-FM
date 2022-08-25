@@ -1,11 +1,8 @@
 ﻿namespace Domain.Entities;
 public class Attacker : Player
 {
-    public Attacker(Person p, string position) : base(p, position)
-    {
-    }
-
-    public Attacker(Person p, string position, AttackingStats aps) : base(p, position, aps)
+    public Attacker() { }
+    public Attacker(long personId, string position) : base(personId, position)
     {
     }
 }

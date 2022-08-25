@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Application.CommandHandlers
 {
-    public class CreateAttackerHandler : IRequestHandler<CreateAttacker, Player>
+    public class CreateAttackerHandler : IRequestHandler<CreateAttacker, Attacker>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -14,9 +14,9 @@ namespace Application.CommandHandlers
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Player> Handle(CreateAttacker request, CancellationToken cancellationToken)
+        public async Task<Attacker> Handle(CreateAttacker request, CancellationToken cancellationToken)
         {
-            var player = new Attacker(request.PlayerPerson, request.Position, request.Stats);
+            var player = new Attacker(request.PlayerPersonId, request.Position);
 
             await _unitOfWork.PlayerRepository.AddPlayer(player);
             await _unitOfWork.Save();

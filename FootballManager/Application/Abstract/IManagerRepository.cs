@@ -6,10 +6,8 @@ namespace Application.Abstract
     {
         Task Save();
         Task AddManager(Manager u);
-        Task UpdateManager(Manager u);
         Task DeleteManager(Manager u);
         Task<Manager> GetManagerById(long id);
         Task<List<Manager>> GetAllManagers();
-
     }
 }

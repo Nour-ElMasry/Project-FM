@@ -20,7 +20,9 @@ namespace Application.CommandHandlers
 
             if(player != null && team != null)
             {
-                team.AddPlayer(player);
+                team.Players.Add(player);
+                team.CurrentTeamSheet.UpdateRating(team.Players);
+
                 await _unitOfWork.Save();
             }
 

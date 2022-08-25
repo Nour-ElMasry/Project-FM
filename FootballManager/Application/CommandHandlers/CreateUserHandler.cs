@@ -16,12 +16,17 @@ namespace Application.CommandHandlers
 
         public async Task<User> Handle(CreateUser request, CancellationToken cancellationToken)
         {
-            var user = new User(request.Username, request.Password, request.UserPerson);
+            var uniqueCheck = await _unitOfWork.UserRepository.GetUserByName(request.Username) == null;
 
-            await _unitOfWork.UserRepository.AddUser(user);
-            await _unitOfWork.Save();
+            if (uniqueCheck)
+            {
+                var user = new User(request.Username, request.Password, request.UserPerson);
 
-            return user;
+                await _unitOfWork.UserRepository.AddUser(user);
+                await _unitOfWork.Save();
+            }
+
+            return null;
         }
     }
 }

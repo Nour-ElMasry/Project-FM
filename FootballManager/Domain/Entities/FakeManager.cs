@@ -1,9 +1,10 @@
 ﻿namespace Domain.Entities;
 public class FakeManager : Manager
 {
-    public FakeManager(Person managerPerson)
+    public FakeManager() { }
+    public FakeManager(long personId)
     {
-        ManagerPerson = managerPerson;
+        ManagerPersonId = personId;
     }
 }
 

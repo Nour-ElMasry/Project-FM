@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Application.CommandHandlers
 {
-    public class CreateGoalkeeperHandler : IRequestHandler<CreateGoalkeeper, Player>
+    public class CreateGoalkeeperHandler : IRequestHandler<CreateGoalkeeper, Goalkeeper>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -14,9 +14,9 @@ namespace Application.CommandHandlers
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Player> Handle(CreateGoalkeeper request, CancellationToken cancellationToken)
+        public async Task<Goalkeeper> Handle(CreateGoalkeeper request, CancellationToken cancellationToken)
         {
-            var player = new Goalkeeper(request.PlayerPerson, "GK", request.Stats);
+            var player = new Goalkeeper(request.PlayerPersonId, "GK");
 
             await _unitOfWork.PlayerRepository.AddPlayer(player);
             await _unitOfWork.Save();

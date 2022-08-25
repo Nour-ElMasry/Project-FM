@@ -6,9 +6,9 @@ namespace Application.Abstract
     {
         Task Save();
         Task AddUser(User u);
-        Task UpdateUser(User u);
-        Task DeleteUser(User u);
+        Task UpdateUser(long id, User u);
         Task<User> GetUserById(long id);
+        Task<User> GetUserByName(string name);
         Task<List<User>> GetAllUsers();
     }
 }

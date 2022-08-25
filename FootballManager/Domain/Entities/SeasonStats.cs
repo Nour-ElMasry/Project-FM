@@ -1,6 +1,7 @@
 ﻿namespace Domain.Entities;
 public class SeasonStats
 {
+    public long SeasonStatsId { get; set; }
     public int Points { get; set; } = 0;
     public int GamesPlayed { get; set; } = 0;
     public int GamesWon { get; set; } = 0;

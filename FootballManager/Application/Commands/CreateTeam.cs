@@ -8,6 +8,6 @@ namespace Application.Commands
         public string Name { get; set; }
         public string Country { get; set; }
         public string Venue { get; set; }
-        public Manager TeamManager { get; set; }
+        public long TeamManagerId { get; set; }
     }
 }

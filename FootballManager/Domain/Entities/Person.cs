@@ -9,6 +9,7 @@ public class Person
     public DateTime BirthDate { get; set; }
     public string Country { get; set; }
 
+    public Person() { }
     public Person(string name, string birthDate, string country)
     {
         if (!DateTime.TryParse(birthDate, out DateTime tempDate))
