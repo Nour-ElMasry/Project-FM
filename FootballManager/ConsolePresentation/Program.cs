@@ -102,7 +102,7 @@ namespace ConsolePresentation
                 LeagueId = league.LeagueId
             });
 
-            fixtures.ForEach(f => Console.WriteLine($"{f.teams[0].Name} vs {f.teams[1].Name}"));
+            fixtures.ForEach(f => Console.WriteLine($"{f.Teams[0].Name} vs {f.Teams[1].Name}"));
 
             await mediator.Send(new SimulateAllFixtures
             {

@@ -25,7 +25,7 @@ namespace Infrastructure.Repository
         public async Task<List<Fixture>> GetAllFixtures()
         {
             return await _context.Fixtures
-                .Include(f => f.teams)
+                .Include(f => f.Teams)
                 .Include(f => f.LeagueFixture)
                 .Take(100).ToListAsync();
         }

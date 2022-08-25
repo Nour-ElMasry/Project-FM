@@ -15,15 +15,15 @@ public static class FixtureSimulation
     {
         fixture = f;
 
-        HomeTeam = f.teams[0];
-        AwayTeam = f.teams[1];
+        HomeTeam = f.Teams[0];
+        AwayTeam = f.Teams[1];
 
         var numberOfEvents = rnd.Next(0, 10);
 
 
         for (int i = 0; i < numberOfEvents; i++)
         {
-            TeamSelection(fixture.teams[0], fixture.teams[1]);
+            TeamSelection(fixture.Teams[0], fixture.Teams[1]);
             RandomChance(AttackChance);
         }
 

@@ -3,7 +3,7 @@ public class Fixture
 {
     public long FixtureId { get; set; }
     public League LeagueFixture { get; set; }
-    public List<Team> teams { get; set; } = new();
+    public List<Team> Teams { get; set; } = new();
     public string Venue { get; set; } = "";
     public DateTime? Date { get; set; } = null;
     public int HomeTeamScore { get; set; }
@@ -14,23 +14,23 @@ public class Fixture
     public Fixture(League leagueFixture, Team homeTeam, Team awayTeam)
     {
         LeagueFixture = leagueFixture;
-        teams.Add(homeTeam);
-        teams.Add(awayTeam);
+        Teams.Add(homeTeam);
+        Teams.Add(awayTeam);
 
-        Venue = teams[0].Venue;
+        Venue = Teams[0].Venue;
     }
 
     public void SimulateFixture()
     {
         FixtureSimulation.Simulate(this);
-        Console.WriteLine($"\nScore is: {teams[0].Name} {HomeTeamScore} - {AwayTeamScore} {teams[1].Name}");
+        Console.WriteLine($"\nScore is: {Teams[0].Name} {HomeTeamScore} - {AwayTeamScore} {Teams[1].Name}");
         PlayerStatsAddition();
     }
 
     private void PlayerStatsAddition()
     {
-        var HomeTeamPlayers = teams[0].Players;
-        var AwayTeamPlayers = teams[1].Players;
+        var HomeTeamPlayers = Teams[0].Players;
+        var AwayTeamPlayers = Teams[1].Players;
 
         HomeTeamPlayers.ForEach(p => p.PlayerRecord.AddGamePlayed());
         AwayTeamPlayers.ForEach(p => p.PlayerRecord.AddGamePlayed());
