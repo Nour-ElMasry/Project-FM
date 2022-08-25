@@ -22,7 +22,7 @@ public class Team
     public SeasonStats CurrentSeasonStats { get; set; } = new();
 
     public long CurrentTeamSheetId { get; set; }
-    public TeamSheet CurrentTeamSheet { get; set; }
+    public TeamSheet CurrentTeamSheet { get; set; } = new ();
 
     public long? CurrentLeagueId { get; set; }
     public League? CurrentLeague { get; set; }

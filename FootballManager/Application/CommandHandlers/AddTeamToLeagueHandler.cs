@@ -20,7 +20,8 @@ namespace Application.CommandHandlers
 
             if (league != null && team != null)
             {
-                league.AddTeam(team);
+                league.Teams.Add(team);
+                team.CurrentLeague = league;
                 await _unitOfWork.Save();
             }
 

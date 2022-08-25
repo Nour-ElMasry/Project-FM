@@ -2,7 +2,6 @@
 public class TeamSheet
 {
     public long TeamSheetId { get; set; }
-    public long TeamSheetPlayersId { get; set; }
     public List<Player> TeamSheetPlayers { get; set; }
     public int AttackingRating { get; set; } = 0;
     public int DefendingRating { get; set; } = 0;

@@ -2,6 +2,7 @@
 public class Fixture
 {
     public long FixtureId { get; set; }
+    public long LeagueFixtureId { get; set; }
     public League LeagueFixture { get; set; }
     public List<Team> Teams { get; set; } = new();
     public string Venue { get; set; } = "";
@@ -23,7 +24,6 @@ public class Fixture
     public void SimulateFixture()
     {
         FixtureSimulation.Simulate(this);
-        Console.WriteLine($"\nScore is: {Teams[0].Name} {HomeTeamScore} - {AwayTeamScore} {Teams[1].Name}");
         PlayerStatsAddition();
     }
 

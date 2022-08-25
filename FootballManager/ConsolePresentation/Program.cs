@@ -32,252 +32,207 @@ namespace ConsolePresentation
 
             var mediator = diContainer.GetRequiredService<IMediator>();
 
-            var person1 = await mediator.Send(new CreatePerson
+            var flag = true;
+
+            var flag1 = false;
+
+            long userId = 0;
+
+            while (flag)
             {
-                Name = "Ancheloti",
-                BirthDate = "1959-06-10",
-                Country = "Italy"
-            });
+                Console.WriteLine("1 - Log In");
+                Console.WriteLine("2- Register user");
+                Console.WriteLine("3- Exit");
 
-            var person2 = await mediator.Send(new CreatePerson
+                var input = Console.ReadKey().KeyChar.ToString();
+
+                switch (input)
+                {
+                    case "1":
+                        Console.Write("\nUserName: ");
+                        var username = Console.ReadLine();
+                        Console.Write("Password: ");
+                        var password = Console.ReadLine();
+
+                        var authUser = await mediator.Send(new AuthUser
+                        {
+                            UserName = username,
+                            Password = password
+                        });
+
+                        flag = authUser != null;
+
+                        if (flag == false)
+                            Console.Write("\n--------Wrong credentials!--------\n");
+                        else
+                        {
+                            Console.Write("\n--------Successfully logged in!--------\n");
+                            flag1 = true;
+                            flag = false;
+                            userId = authUser.UserId;
+                        }
+                        break;
+
+                    case "2":
+                        Console.Write("\nName: ");
+                        var nameRegister = Console.ReadLine();
+                        Console.Write("Country: ");
+                        var countryRegister = Console.ReadLine();
+                        Console.Write("DateOfBirth: ");
+                        var dateOfBirthRegister = Console.ReadLine();
+
+                        var personRegister = await mediator.Send(new CreatePerson
+                        {
+                            Name = nameRegister,
+                            Country = countryRegister,
+                            BirthDate = dateOfBirthRegister
+                        });
+
+                        Console.Write("\nUserName: ");
+                        var usernameRegister = Console.ReadLine();
+                        Console.Write("Password: ");
+                        var passwordRegister = Console.ReadLine();
+
+                        var newUser = await mediator.Send(new CreateUser
+                        {
+                            Username = usernameRegister,
+                            Password = passwordRegister,
+                            UserPerson = personRegister
+                        });
+
+                        flag = newUser != null;
+
+                        if (flag == false)
+                            Console.Write("\n--------Username Already exists!--------\n");
+                        else
+                        {
+                            Console.Write("\n--------Successfully registered!--------\n");
+                            flag1 = true;
+                            flag = false;
+                            userId = newUser.UserId;
+                        }
+                        break;
+
+                    case "3":
+                        flag = false;
+                        break;
+                    default:
+                        Console.WriteLine("Not a command!!");
+                        break;
+                }
+            }
+
+            while (flag1)
             {
-                Name = "Xavi",
-                BirthDate = "1980-01-25",
-                Country = "Spain"
-            });
+                var league = await mediator.Send(new GetLeagueById
+                {
+                    LeagueId = 1
+                });
 
-            var manager1 = await mediator.Send(new CreateFakeManager
-            {
-                ManagerPersonId = person1.PersonId
-            });
+                var user = await mediator.Send(new GetUserById
+                {
+                    UserId = userId,
+                });
 
-            var manager2 = await mediator.Send(new CreateFakeManager
-            {
-                ManagerPersonId = person2.PersonId
-            });
+                Console.WriteLine("\n1 - Create Team");
+                Console.WriteLine("2 - View League Fixtures");
+                Console.WriteLine("3 - View League Standings");
+                Console.WriteLine("4 - Simulate Fixtures");
+                Console.WriteLine("5 - Exit\n");
 
-            var team1 = await mediator.Send(new CreateTeam
-            {
-                Name = "Real Madrid",
-                Country = "Spain",
-                Venue = "Santiago Bernabeu",
-                TeamManagerId = manager1.ManagerId
-            });
+                var input = Console.ReadKey().KeyChar.ToString();
 
-            var team2 = await mediator.Send(new CreateTeam
-            {
-                Name = "Barcelona",
-                Country = "Spain",
-                Venue = "Spotify Camp Nou",
-                TeamManagerId = manager2.ManagerId
-            });
+                switch (input)
+                {
+                    case "1":
+                        Console.Write("\nTeam Name:");
+                        var teamName = Console.ReadLine();
+                        Console.Write("Country: ");
+                        var teamCountry = Console.ReadLine();
+                        Console.Write("Venue: ");
+                        var teamVenue = Console.ReadLine();
 
-            await AddPlayersToTeam(team1.TeamId, mediator, 1);
-            await AddPlayersToTeam(team2.TeamId, mediator, 2);
+                        var manager = await mediator.Send(new CreateRealManager
+                        {
+                            UserManager = user
+                        });
 
-            var league = await mediator.Send(new CreateLeague
-            {
-                Name = "Amdaris League"
-            });
-
-            await mediator.Send(new AddTeamToLeague
-            {
-                LeagueId = league.LeagueId,
-                TeamId = team1.TeamId
-            });
-
-            await mediator.Send(new AddTeamToLeague
-            {
-                LeagueId = league.LeagueId,
-                TeamId = team2.TeamId
-            });
-
-            await mediator.Send(new GenerateLeagueFixtures
-            {
-                LeagueId = league.LeagueId,
-            });
-
-            var fixtures = await mediator.Send(new GetFixturesByLeague
-            {
-                LeagueId = league.LeagueId
-            });
-
-            fixtures.ForEach(f => Console.WriteLine($"{f.Teams[0].Name} vs {f.Teams[1].Name}"));
-
-            await mediator.Send(new SimulateAllFixtures
-            {
-                LeagueId = league.LeagueId
-            });
-
-            var fixturesSimulated = await mediator.Send(new GetFixturesByLeague
-            {
-                LeagueId = league.LeagueId
-            });
-
-            //var flag = true;
-
-            //var flag1 = false;
-
-            //long userId = 0;
-
-            //while (flag)
-            //{
-            //    Console.WriteLine("1 - Log In");
-            //    Console.WriteLine("2- Register user");
-            //    Console.WriteLine("3- Exit");
-
-            //    var input = Console.ReadKey().KeyChar.ToString();
-
-            //    switch (input)
-            //    {
-            //        case "1":
-            //            Console.Write("\nUserName: ");
-            //            var username = Console.ReadLine();
-            //            Console.Write("Password: ");
-            //            var password = Console.ReadLine();
-
-            //            var authUser = await mediator.Send(new AuthUser
-            //            {
-            //                UserName = username,
-            //                Password = password
-            //            });
-
-            //            flag = authUser != null;
-
-            //            if (flag == false)
-            //                Console.Write("\n--------Wrong credentials!--------\n");
-            //            else
-            //            {
-            //                Console.Write("\n--------Successfully logged in!--------\n");
-            //                flag1 = true;
-            //                flag = false;
-            //                userId = authUser.UserId;
-            //            }
-            //            break;
-
-            //        case "2":
-            //            Console.Write("\nName: ");
-            //            var nameRegister = Console.ReadLine();
-            //            Console.Write("Country: ");
-            //            var countryRegister = Console.ReadLine();
-            //            Console.Write("DateOfBirth: ");
-            //            var dateOfBirthRegister = Console.ReadLine();
-
-            //            var personRegister = await mediator.Send(new CreatePerson
-            //            {
-            //                Name = nameRegister,
-            //                Country = countryRegister,
-            //                BirthDate = dateOfBirthRegister
-            //            });
-
-            //            Console.Write("\nUserName: ");
-            //            var usernameRegister = Console.ReadLine();
-            //            Console.Write("Password: ");
-            //            var passwordRegister = Console.ReadLine();
-
-            //            var newUser = await mediator.Send(new CreateUser
-            //            {
-            //                Username = usernameRegister,
-            //                Password = passwordRegister,
-            //                UserPerson = personRegister
-            //            });
-
-            //            flag = newUser != null;
-
-            //            if (flag == false)
-            //                Console.Write("\n--------Username Already exists!--------\n");
-            //            else
-            //            {
-            //                Console.Write("\n--------Successfully registered!--------\n");
-            //                flag1 = true;
-            //                flag = false;
-            //                userId = newUser.UserId;
-            //            }
-            //            break;
-
-            //        case "3":
-            //            flag = false;
-            //            break;
-            //        default:
-            //            Console.WriteLine("Not a command!!");
-            //            break;
-            //    }
-            //}
-
-            //while (flag1)
-            //{
-            //    var league = await mediator.Send(new GetLeagueById
-            //    {
-            //        LeagueId = 1
-            //    });
-
-            //    var user = await mediator.Send(new GetUserById
-            //    {
-            //        UserId = userId,
-            //    });
-
-            //    await mediator.Send(new GenerateLeagueFixtures { 
-            //        LeagueId = league.LeagueId });
-
-            //    Console.WriteLine("1 - Create Team");
-            //    Console.WriteLine("2 - View League Fixtures");
-            //    Console.WriteLine("3 - Simulate Fixtures");
-            //    Console.WriteLine("4 - Exit");
-
-            //    var input = Console.ReadKey().KeyChar.ToString();
-
-            //    switch (input)
-            //    {
-            //        case "1":
-            //            Console.Write("\nTeam Name:");
-            //            var teamName = Console.ReadLine();
-            //            Console.Write("Country: ");
-            //            var teamCountry = Console.ReadLine();
-            //            Console.Write("Venue: ");
-            //            var teamVenue = Console.ReadLine();
-
-            //            var manager = await mediator.Send(new CreateRealManager
-            //            {
-            //                UserManager = user
-            //            });
-
-            //            var team = await mediator.Send(new CreateTeam
-            //            {
-            //                Name = teamName,
-            //                Country = teamCountry,
-            //                Venue = teamVenue,
-            //                TeamManagerId = manager.ManagerId
-            //            });
+                        var team = await mediator.Send(new CreateTeam
+                        {
+                            Name = teamName,
+                            Country = teamCountry,
+                            Venue = teamVenue,
+                            TeamManagerId = manager.ManagerId
+                        });
 
 
-            //            await Task.Run(() => AddPlayersToTeam(team.TeamId, mediator));
+                        await AddPlayersToTeam(team.TeamId, mediator);
 
-            //            await mediator.Send(new AddTeamToLeague
-            //            {
-            //                LeagueId = league.LeagueId,
-            //                TeamId = team.TeamId,
-            //            });
+                        await mediator.Send(new AddTeamToLeague
+                        {
+                            LeagueId = league.LeagueId,
+                            TeamId = team.TeamId,
+                        });
 
-            //            break;
+                        break;
 
-            //        case "2":
-            //            Console.WriteLine($"\n{league.Name}'s Fixtues\n");
-            //            league.Fixtures
-            //                .ForEach(f => Console.WriteLine($"{f.teams[0]} vs {f.teams[1]}"));
-            //            break;
+                    case "2":
+                        Console.WriteLine($"\n{league.Name}'s Fixtues\n");
+                        await mediator.Send(new GenerateLeagueFixtures
+                        {
+                            LeagueId = league.LeagueId
+                        });
 
-            //        case "3":
-            //            Console.WriteLine($"\n{league.Name}'s Fixtue results\n");
-            //            await mediator.Send(new SimulateAllFixtures
-            //            {
-            //                LeagueId = 1
-            //            });
-            //            league.Fixtures
-            //                .ForEach(f => Console.WriteLine($"{f.teams[0]} {f.HomeTeamScore} - {f.AwayTeamScore} {f.teams[1]}"));
-            //            break;
-            //    }
-            //}
+                        var fixtures = await mediator.Send(new GetFixturesByLeague
+                        {
+                            LeagueId = league.LeagueId
+                        });
 
+                        fixtures
+                            .ForEach(f => Console.WriteLine($"{f.Teams[0].Name} vs {f.Teams[1].Name}"));
+                        break;
+                    case "3":
+                        Console.WriteLine($"\n{league.Name}'s Standings\n");
+                        var teams = await mediator.Send(new GetTeamsByLeague
+                        {
+                            LeagueId = league.LeagueId
+                        });
+
+                        teams
+                            .OrderByDescending(t => t.CurrentSeasonStats.Points)
+                            .ThenByDescending(t => t.CurrentSeasonStats.GoalsFor - t.CurrentSeasonStats.GoalsAgainst)
+                            .ToList()
+                            .ForEach(t => Console.WriteLine($"{t.Name} => \n{t.CurrentSeasonStats}"));
+                        break;
+                    case "4":
+                        Console.WriteLine($"\n{league.Name}'s Fixtue results\n");
+                        await mediator.Send(new SimulateAllFixtures
+                        {
+                            LeagueId = league.LeagueId
+                        });
+
+                        var Simfixtures = await mediator.Send(new GetFixturesByLeague
+                        {
+                            LeagueId = league.LeagueId
+                        });
+
+                        Simfixtures
+                            .ForEach(f => Console.WriteLine($"{f.Teams[0].Name} {f.HomeTeamScore} - {f.AwayTeamScore} {f.Teams[1].Name}"));
+                        break;
+
+                    case "5":
+                        flag1 = false;
+                        break;
+                }
+            }
+        }
+
+        public static async Task AddPlayersToTeam(long teamId, IMediator mediator)
+        {
+            await AddAttackerToCreatedTeam(mediator, teamId, "Cristiano Ronaldo", "Portugal", "1985-02-05", "ST");
+            await AddMidfielderToCreatedTeam(mediator, teamId, "Kevin De Bruyne", "Belgium", "1991-06-28", "CAM");
+            await AddDefenderToCreatedTeam(mediator, teamId, "Sergio Ramos", "Spain", "1986-03-30", "CB");
+            await AddGoalkeeperToCreatedTeam(mediator, teamId, "Neuer", "Germany", "1986-03-27", "GK");
         }
 
         public static async Task AddPlayersToTeam(long teamId, IMediator mediator, long teamNumber)

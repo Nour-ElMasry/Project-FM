@@ -24,15 +24,6 @@ public class League
         foreach (var team in Teams) team.ResetSeasonStats();
         CurrentSeason = new Season(++CurrentSeason.Year);
     }
-
-    public void AddTeam(Team t)
-    {
-        if (Teams.Contains(t))
-            throw new AlreadyExistsException("Team already exists in this league!");
-        Teams.Add(t);
-        t.CurrentLeague = this;
-    }
-
     public void RemoveTeam(Team t)
     {
         var teamToRemove = Teams.First(te => t == te);

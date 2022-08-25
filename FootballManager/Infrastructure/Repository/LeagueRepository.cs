@@ -30,7 +30,10 @@ namespace Infrastructure.Repository
 
         public async Task<League> GetLeagueById(long id)
         {
-            return await _context.Leagues.SingleOrDefaultAsync(l => l.LeagueId == id);
+            return await _context.Leagues
+                .Include(l => l.Teams)
+                .Include(l => l.Fixtures)
+                .SingleOrDefaultAsync(l => l.LeagueId == id);
         }
 
         public async Task Save()

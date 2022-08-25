@@ -24,6 +24,8 @@ namespace Application.CommandHandlers
 
                 await _unitOfWork.UserRepository.AddUser(user);
                 await _unitOfWork.Save();
+
+                return user;
             }
 
             return null;

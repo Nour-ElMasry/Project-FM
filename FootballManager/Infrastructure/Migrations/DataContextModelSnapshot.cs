@@ -39,7 +39,7 @@ namespace Infrastructure.Migrations
                     b.Property<int>("HomeTeamScore")
                         .HasColumnType("int");
 
-                    b.Property<long?>("LeagueFixtureLeagueId")
+                    b.Property<long>("LeagueFixtureId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Venue")
@@ -47,7 +47,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("FixtureId");
 
-                    b.HasIndex("LeagueFixtureLeagueId");
+                    b.HasIndex("LeagueFixtureId");
 
                     b.ToTable("Fixtures");
                 });
@@ -363,9 +363,6 @@ namespace Infrastructure.Migrations
                     b.Property<int>("DefendingRating")
                         .HasColumnType("int");
 
-                    b.Property<long>("TeamSheetPlayersId")
-                        .HasColumnType("bigint");
-
                     b.Property<long>("TeamTacticId")
                         .HasColumnType("bigint");
 
@@ -405,12 +402,12 @@ namespace Infrastructure.Migrations
                     b.Property<long>("FixturesFixtureId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("teamsTeamId")
+                    b.Property<long>("TeamsTeamId")
                         .HasColumnType("bigint");
 
-                    b.HasKey("FixturesFixtureId", "teamsTeamId");
+                    b.HasKey("FixturesFixtureId", "TeamsTeamId");
 
-                    b.HasIndex("teamsTeamId");
+                    b.HasIndex("TeamsTeamId");
 
                     b.ToTable("FixtureTeam");
                 });
@@ -515,7 +512,9 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Domain.Entities.League", "LeagueFixture")
                         .WithMany("Fixtures")
-                        .HasForeignKey("LeagueFixtureLeagueId");
+                        .HasForeignKey("LeagueFixtureId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("LeagueFixture");
                 });
@@ -645,7 +644,7 @@ namespace Infrastructure.Migrations
 
                     b.HasOne("Domain.Entities.Team", null)
                         .WithMany()
-                        .HasForeignKey("teamsTeamId")
+                        .HasForeignKey("TeamsTeamId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });

@@ -153,7 +153,6 @@ namespace Infrastructure.Migrations
                 {
                     TeamSheetId = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TeamSheetPlayersId = table.Column<long>(type: "bigint", nullable: false),
                     AttackingRating = table.Column<int>(type: "int", nullable: false),
                     DefendingRating = table.Column<int>(type: "int", nullable: false),
                     TeamTacticId = table.Column<long>(type: "bigint", nullable: false)
@@ -202,7 +201,7 @@ namespace Infrastructure.Migrations
                 {
                     FixtureId = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    LeagueFixtureLeagueId = table.Column<long>(type: "bigint", nullable: true),
+                    LeagueFixtureId = table.Column<long>(type: "bigint", nullable: false),
                     Venue = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: true),
                     HomeTeamScore = table.Column<int>(type: "int", nullable: false),
@@ -212,10 +211,11 @@ namespace Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Fixtures", x => x.FixtureId);
                     table.ForeignKey(
-                        name: "FK_Fixtures_Leagues_LeagueFixtureLeagueId",
-                        column: x => x.LeagueFixtureLeagueId,
+                        name: "FK_Fixtures_Leagues_LeagueFixtureId",
+                        column: x => x.LeagueFixtureId,
                         principalTable: "Leagues",
-                        principalColumn: "LeagueId");
+                        principalColumn: "LeagueId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -265,11 +265,11 @@ namespace Infrastructure.Migrations
                 columns: table => new
                 {
                     FixturesFixtureId = table.Column<long>(type: "bigint", nullable: false),
-                    teamsTeamId = table.Column<long>(type: "bigint", nullable: false)
+                    TeamsTeamId = table.Column<long>(type: "bigint", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FixtureTeam", x => new { x.FixturesFixtureId, x.teamsTeamId });
+                    table.PrimaryKey("PK_FixtureTeam", x => new { x.FixturesFixtureId, x.TeamsTeamId });
                     table.ForeignKey(
                         name: "FK_FixtureTeam_Fixtures_FixturesFixtureId",
                         column: x => x.FixturesFixtureId,
@@ -277,8 +277,8 @@ namespace Infrastructure.Migrations
                         principalColumn: "FixtureId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_FixtureTeam_Teams_teamsTeamId",
-                        column: x => x.teamsTeamId,
+                        name: "FK_FixtureTeam_Teams_TeamsTeamId",
+                        column: x => x.TeamsTeamId,
                         principalTable: "Teams",
                         principalColumn: "TeamId",
                         onDelete: ReferentialAction.Cascade);
@@ -332,14 +332,14 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Fixtures_LeagueFixtureLeagueId",
+                name: "IX_Fixtures_LeagueFixtureId",
                 table: "Fixtures",
-                column: "LeagueFixtureLeagueId");
+                column: "LeagueFixtureId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FixtureTeam_teamsTeamId",
+                name: "IX_FixtureTeam_TeamsTeamId",
                 table: "FixtureTeam",
-                column: "teamsTeamId");
+                column: "TeamsTeamId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Leagues_CurrentSeasonId",

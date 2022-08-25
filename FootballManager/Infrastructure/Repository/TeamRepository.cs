@@ -26,12 +26,15 @@ namespace Infrastructure.Repository
         public async Task<List<Team>> GetAllTeams()
         {
             return await _context.Teams
+                .Include(t => t.Players)
                 .Take(100).ToListAsync();
         }
 
         public async Task<Team> GetTeamById(long id)
         {
-            return await _context.Teams.SingleOrDefaultAsync(t => t.TeamId == id);
+            return await _context.Teams
+                .Include(t => t.Players)
+                .SingleOrDefaultAsync(t => t.TeamId == id);
         }
 
         public async Task Save()
