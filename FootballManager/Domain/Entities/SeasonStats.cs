@@ -1,6 +1,9 @@
-﻿namespace Domain.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Domain.Entities;
 public class SeasonStats
 {
+    [Key]
     public long SeasonStatsId { get; set; }
     public int Points { get; set; } = 0;
     public int GamesPlayed { get; set; } = 0;

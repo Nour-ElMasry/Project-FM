@@ -16,7 +16,7 @@ namespace Application.CommandHandlers
 
         public async Task<Attacker> Handle(CreateAttacker request, CancellationToken cancellationToken)
         {
-            var player = new Attacker(request.PlayerPersonId, request.Position);
+            var player = new Attacker(request.PlayerPerson, request.Position);
 
             await _unitOfWork.PlayerRepository.AddPlayer(player);
             await _unitOfWork.Save();

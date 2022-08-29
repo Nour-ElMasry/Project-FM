@@ -16,7 +16,7 @@ namespace Application.CommandHandlers
 
         public async Task<FakeManager> Handle(CreateFakeManager request, CancellationToken cancellationToken)
         {
-            var manager = new FakeManager(request.ManagerPersonId);
+            var manager = new FakeManager(request.ManagerPerson);
 
             await _unitOfWork.ManagerRepository.AddManager(manager);
             await _unitOfWork.Save();

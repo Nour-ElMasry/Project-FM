@@ -32,6 +32,8 @@ namespace Infrastructure.Repository
         {
             return await _context.Leagues
                 .Include(l => l.Teams)
+                .Include(l => l.Teams).ThenInclude(t => t.CurrentTeamSheet)
+                .Include(l => l.Teams).ThenInclude(t => t.CurrentSeasonStats)
                 .Include(l => l.Fixtures)
                 .SingleOrDefaultAsync(l => l.LeagueId == id);
         }

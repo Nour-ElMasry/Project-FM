@@ -28,11 +28,6 @@ namespace Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Manager>()
-                .HasOne(m => m.CurrentTeam)
-                .WithOne(t => t.TeamManager)
-                .HasForeignKey<Team>(t => t.TeamManagerId);
-
             modelBuilder.Entity<Team>()
                .HasMany(t => t.Players)
                .WithOne(p => p.CurrentTeam)

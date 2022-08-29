@@ -1,12 +1,17 @@
-﻿namespace Domain.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Domain.Entities;
 public class TeamSheet
 {
+    [Key]
     public long TeamSheetId { get; set; }
     public List<Player> TeamSheetPlayers { get; set; }
     public int AttackingRating { get; set; } = 0;
     public int DefendingRating { get; set; } = 0;
-    public long TeamTacticId { get; set; }
-    public Tactic TeamTactic { get; set; } = new BalancedTactic();
+
+    [ForeignKey("TeamTacticId")]
+    public Tactic TeamTactic { get; set; }
 
     public TeamSheet() {
         TeamTactic = new BalancedTactic();

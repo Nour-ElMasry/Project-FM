@@ -1,6 +1,9 @@
-﻿namespace Domain.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Domain.Entities;
 public abstract class PlayerStats
 {
+    [Key]
     public long PlayerStatsId { get; set; }
     public int Attacking { get; set; }
     public int PlayMaking { get; set; }

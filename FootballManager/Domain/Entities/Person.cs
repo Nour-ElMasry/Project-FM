@@ -1,9 +1,11 @@
 ﻿using Domain.Exceptions;
+using System.ComponentModel.DataAnnotations;
 
 namespace Domain.Entities;
 
 public class Person
 {
+    [Key]
     public long PersonId { get; set; }
     public string Name { get; set; }
     public DateTime BirthDate { get; set; }

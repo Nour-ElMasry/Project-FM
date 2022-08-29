@@ -16,7 +16,7 @@ namespace Application.CommandHandlers
 
         public async Task<Defender> Handle(CreateDefender request, CancellationToken cancellationToken)
         {
-            var player = new Defender(request.PlayerPersonId, request.Position);
+            var player = new Defender(request.PlayerPerson, request.Position);
 
             await _unitOfWork.PlayerRepository.AddPlayer(player);
             await _unitOfWork.Save();

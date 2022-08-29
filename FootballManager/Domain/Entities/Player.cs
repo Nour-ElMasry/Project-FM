@@ -1,18 +1,21 @@
 ﻿using Domain.Exceptions;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities;
 public abstract class Player
 {
+    [Key]
     public long PlayerId { get; set; }
 
-    public long PlayerPersonId { get; set; }
+    [ForeignKey("PlayerPersonId")]
     public Person PlayerPerson { get; set; }
 
-    public long PlayerStatsId { get; set; }
+    [ForeignKey("PlayerStatsId")]
     public PlayerStats PlayerStats { get; set; }
 
-    public long? CurrentTeamId { get; set; }
-    public Team? CurrentTeam { get; set; }
+    [ForeignKey("CurrentTeamId")]
+    public Team CurrentTeam { get; set; }
 
     public string Position { get; set; }
 
@@ -21,7 +24,7 @@ public abstract class Player
 
     public Player() { }
 
-    public Player(long personId, string pos)
+    public Player(Person person, string pos)
     {
         if (pos == null)
             throw new ArgumentNullException(nameof(pos));
@@ -29,7 +32,7 @@ public abstract class Player
         if (!PlayerPositions.IsCorrectPosition(pos, GetType().Name))
             throw new IncorrectPositionException("Incorrect position assigned to role!");
 
-        PlayerPersonId = personId;
+        PlayerPerson = person;
         Position = pos;
         PlayerStats = PlayerStatsFactory.GenerateStats(pos);
     }

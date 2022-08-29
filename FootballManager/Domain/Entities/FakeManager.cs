@@ -2,9 +2,9 @@
 public class FakeManager : Manager
 {
     public FakeManager() { }
-    public FakeManager(long personId)
+    public FakeManager(Person p)
     {
-        ManagerPersonId = personId;
+        ManagerPerson = p;
     }
 }
 

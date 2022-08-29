@@ -26,7 +26,7 @@ namespace Infrastructure.Repository
         {
             return await _context.Fixtures
                 .Include(f => f.Teams)
-                .Include(f => f.LeagueFixture)
+                .Include(f => f.FixtureLeague)
                 .Take(100).ToListAsync();
         }
 

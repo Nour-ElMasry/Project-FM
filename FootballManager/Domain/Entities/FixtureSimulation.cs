@@ -29,6 +29,28 @@ public static class FixtureSimulation
 
         AddGoalsAndGames();
         AddPointsToTeams();
+        PlayerStatsAddition();
+    }
+
+    private static void PlayerStatsAddition()
+    {
+        var HomeTeamPlayers = HomeTeam.Players;
+        var AwayTeamPlayers = AwayTeam.Players;
+
+        HomeTeamPlayers.ForEach(p => p.PlayerRecord.AddGamePlayed());
+        AwayTeamPlayers.ForEach(p => p.PlayerRecord.AddGamePlayed());
+
+        if (fixture.AwayTeamScore == 0)
+        {
+            var CleanSheetPlayers = HomeTeamPlayers.Where(p => p.GetType().Name != "Attacker").ToList();
+            CleanSheetPlayers.ForEach(p => p.PlayerRecord.AddCleanSheet());
+        }
+
+        if (fixture.HomeTeamScore == 0)
+        {
+            var CleanSheetPlayers = AwayTeamPlayers.Where(p => p.GetType().Name != "Attacker").ToList();
+            CleanSheetPlayers.ForEach(p => p.PlayerRecord.AddCleanSheet());
+        }
     }
 
     private static void TeamSelection(Team homeTeam, Team AwayTeam)

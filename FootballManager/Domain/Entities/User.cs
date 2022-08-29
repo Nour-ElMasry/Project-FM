@@ -1,11 +1,16 @@
-﻿namespace Domain.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace Domain.Entities;
 
 public class User
 {
+    [Key]
     public long UserId { get; set; }
     public string Username { get; set; }
     public string Password { get; set; }
-    public long UserPersonId { get; set; }
+
+    [ForeignKey("UserPersonId")]
     public Person UserPerson { get; set; }
 
     public User() { }

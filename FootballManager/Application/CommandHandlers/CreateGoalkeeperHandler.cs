@@ -16,7 +16,7 @@ namespace Application.CommandHandlers
 
         public async Task<Goalkeeper> Handle(CreateGoalkeeper request, CancellationToken cancellationToken)
         {
-            var player = new Goalkeeper(request.PlayerPersonId, "GK");
+            var player = new Goalkeeper(request.PlayerPerson, "GK");
 
             await _unitOfWork.PlayerRepository.AddPlayer(player);
             await _unitOfWork.Save();

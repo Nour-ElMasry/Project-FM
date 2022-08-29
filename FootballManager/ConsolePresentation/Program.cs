@@ -32,6 +32,40 @@ namespace ConsolePresentation
 
             var mediator = diContainer.GetRequiredService<IMediator>();
 
+            //var person = await mediator.Send(new CreatePerson
+            //{ 
+            //    Name = "Someone",
+            //    Country = "Somewhere",
+            //    BirthDate = "1960-01-01"
+            //});
+
+            //var manager = await mediator.Send(new CreateFakeManager
+            //{
+            //    ManagerPerson = person
+            //});
+
+            //var team = await mediator.Send(new CreateTeam
+            //{
+            //    Name = "A7a FC",
+            //    Country = "Egypt",
+            //    Venue = "A7a 3ala dema8ak",
+            //});
+
+            //await mediator.Send(new AddManagerToTeam
+            //{
+            //    ManagerId = manager.ManagerId,
+            //    TeamId = team.TeamId
+            //});
+
+            //await AddPlayersToTeam(team.TeamId, mediator);
+
+            //await mediator.Send(new AddTeamToLeague
+            //{
+            //    LeagueId = 1,
+            //    TeamId = team.TeamId,
+            //});
+
+
             var flag = true;
 
             var flag1 = false;
@@ -162,9 +196,13 @@ namespace ConsolePresentation
                             Name = teamName,
                             Country = teamCountry,
                             Venue = teamVenue,
-                            TeamManagerId = manager.ManagerId
                         });
 
+                        await mediator.Send(new AddManagerToTeam
+                        {
+                            ManagerId = manager.ManagerId,
+                            TeamId = team.TeamId
+                        });
 
                         await AddPlayersToTeam(team.TeamId, mediator);
 
@@ -235,29 +273,6 @@ namespace ConsolePresentation
             await AddGoalkeeperToCreatedTeam(mediator, teamId, "Neuer", "Germany", "1986-03-27", "GK");
         }
 
-        public static async Task AddPlayersToTeam(long teamId, IMediator mediator, long teamNumber)
-        {
-
-            switch (teamNumber)
-            {
-                case 1:
-                    await AddAttackerToCreatedTeam(mediator, teamId, "Karim Benzema", "France", "1987-09-19", "ST");
-                    await AddMidfielderToCreatedTeam(mediator, teamId, "Luka Modric", "Croatia", "1985-09-09", "CM");
-                    await AddDefenderToCreatedTeam(mediator, teamId, "Alaba", "Austria", "1992-06-24", "CB");
-                    await AddGoalkeeperToCreatedTeam(mediator, teamId, "Courtois", "Belgium", "1992-05-11", "GK");
-
-                    break;
-                case 2:
-                    await AddAttackerToCreatedTeam(mediator, teamId, "Lewandowski", "Poland", "1988-08-21", "ST");
-                    await AddMidfielderToCreatedTeam(mediator, teamId, "De Jong", "Netherlands", "1997-05-12", "CDM");
-                    await AddDefenderToCreatedTeam(mediator, teamId, "Pique", "Spain", "1987-02-02", "CB");
-                    await AddGoalkeeperToCreatedTeam(mediator, teamId, "Ter Stegen", "Germany", "1992-04-30", "GK");
-
-                    break;
-                default:
-                    break;
-            }
-        }
         private static async Task AddMidfielderToCreatedTeam(IMediator mediator, long teamId, string name, string country, string dateOfBirth, string position)
         {
             var playerPerson = await mediator.Send(new CreatePerson
@@ -270,7 +285,7 @@ namespace ConsolePresentation
             var player = await mediator.Send(new CreateMidfielder
             {
                 Position = position,
-                PlayerPersonId = playerPerson.PersonId,
+                PlayerPerson = playerPerson,
             });
 
             await mediator.Send(new AddPlayerToTeam
@@ -292,7 +307,7 @@ namespace ConsolePresentation
             var player = await mediator.Send(new CreateAttacker
             {
                 Position = position,
-                PlayerPersonId = playerPerson.PersonId,
+                PlayerPerson = playerPerson,
             });
 
             await mediator.Send(new AddPlayerToTeam
@@ -314,7 +329,7 @@ namespace ConsolePresentation
             var player = await mediator.Send(new CreateDefender
             {
                 Position = position,
-                PlayerPersonId = playerPerson.PersonId,
+                PlayerPerson = playerPerson,
             });
 
             await mediator.Send(new AddPlayerToTeam
@@ -335,7 +350,7 @@ namespace ConsolePresentation
 
             var player = await mediator.Send(new CreateGoalkeeper
             {
-                PlayerPersonId = playerPerson.PersonId,
+                PlayerPerson = playerPerson,
             });
 
             await mediator.Send(new AddPlayerToTeam

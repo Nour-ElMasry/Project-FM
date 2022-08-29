@@ -17,7 +17,15 @@ namespace Application.QueryHandlers
         public async Task<List<Team>> Handle(GetTeamsByLeague request, CancellationToken cancellationToken)
         {
             var league = await _unitOfWork.LeagueRepository.GetLeagueById(request.LeagueId);
-            return league.Teams;
+
+            if(league != null)
+            {
+                var teams = await _unitOfWork.TeamRepository.GetAllTeams();
+                var leagueTeams = teams.Where(t => t.CurrentLeague == league).ToList();
+                
+                return leagueTeams;
+            }
+            return null;
         }
     }
 }

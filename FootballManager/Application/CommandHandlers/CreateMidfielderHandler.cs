@@ -16,7 +16,7 @@ namespace Application.CommandHandlers
 
         public async Task<Midfielder> Handle(CreateMidfielder request, CancellationToken cancellationToken)
         {
-            var player = new Midfielder(request.PlayerPersonId, request.Position);
+            var player = new Midfielder(request.PlayerPerson, request.Position);
 
             await _unitOfWork.PlayerRepository.AddPlayer(player);
             await _unitOfWork.Save();

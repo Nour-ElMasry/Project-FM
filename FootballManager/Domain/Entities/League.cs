@@ -1,14 +1,17 @@
 ﻿using Domain.Exceptions;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities;
 public class League
 {
+    [Key]
     public long LeagueId { get; set; }
     public string Name { get; set; }
 
     public List<Team> Teams { get; set; } = new ();
 
-    public long CurrentSeasonId { get; set; }
+    [ForeignKey("CurrentSeasonId")]
     public Season CurrentSeason { get; set; }
          
     public List<Fixture> Fixtures { get; set; } = new ();

@@ -2,7 +2,7 @@
 public class Attacker : Player
 {
     public Attacker() { }
-    public Attacker(long personId, string position) : base(personId, position)
+    public Attacker(Person p, string position) : base(p, position)
     {
     }
 }

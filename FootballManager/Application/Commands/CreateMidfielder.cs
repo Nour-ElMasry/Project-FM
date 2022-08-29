@@ -5,7 +5,7 @@ namespace Application.Commands
 {
     public class CreateMidfielder : IRequest<Midfielder>
     {
-        public long PlayerPersonId{ get; set; }
+        public Person PlayerPerson{ get; set; }
         public string Position { get; set; }
     }
 }
