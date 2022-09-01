@@ -1,5 +1,4 @@
-﻿using Domain.Exceptions;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Entities;
@@ -24,7 +23,7 @@ public class League
     }
     public void NextSeason()
     {
-        foreach (var team in Teams) team.ResetSeasonStats();
+        foreach (var team in Teams) team.ResetSeason();
         CurrentSeason = new Season(++CurrentSeason.Year);
     }
     public void RemoveTeam(Team t)

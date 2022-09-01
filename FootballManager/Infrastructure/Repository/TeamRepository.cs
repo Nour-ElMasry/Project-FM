@@ -26,14 +26,25 @@ namespace Infrastructure.Repository
         public async Task<List<Team>> GetAllTeams()
         {
             return await _context.Teams
-                .Include(t => t.Players)
+                .Include(t => t.TeamManager).ThenInclude(tm => tm.ManagerPerson)
+                .Include(t => t.CurrentLeague)
+                .Include(t => t.CurrentSeasonStats)
+                .Include(t => t.CurrentTeamSheet)
                 .Take(100).ToListAsync();
         }
 
         public async Task<Team> GetTeamById(long id)
         {
             return await _context.Teams
-                .Include(t => t.Players)
+                .Include(t => t.Players).ThenInclude(p => p.PlayerPerson)
+                .Include(t => t.Players).ThenInclude(p => p.PlayerRecord)
+                .Include(t => t.Players).ThenInclude(p => p.PlayerStats)
+                .Include(t => t.Players).ThenInclude(p => p.PlayerRecord)
+                .Include(t => t.TeamManager).ThenInclude(tm => tm.ManagerPerson)
+                .Include(t => t.TeamManager)
+                .Include(t => t.CurrentLeague)
+                .Include(t => t.CurrentSeasonStats)
+                .Include(t => t.CurrentTeamSheet)
                 .SingleOrDefaultAsync(t => t.TeamId == id);
         }
 
@@ -42,17 +53,9 @@ namespace Infrastructure.Repository
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateTeam(long id, Team u)
+        public async Task UpdateTeam(Team u)
         {
-            var team = await GetTeamById(id);
-
-            if (team != null)
-            {
-                team.Name = u.Name;
-                team.Venue = u.Venue;
-                team.Country = u.Country;
-                team.TeamManager = u.TeamManager;
-            }
+            _context.Teams.Attach(u);
         }
     }
 }

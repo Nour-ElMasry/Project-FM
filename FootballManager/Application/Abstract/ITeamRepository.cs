@@ -6,7 +6,7 @@ namespace Application.Abstract
     {
         Task Save();
         Task AddTeam(Team u);
-        Task UpdateTeam(long id, Team u);
+        Task UpdateTeam(Team u);
         Task DeleteTeam(Team u);
         Task<Team> GetTeamById(long id);
         Task<List<Team>> GetAllTeams();

@@ -25,16 +25,21 @@ namespace Infrastructure.Repository
         public async Task<List<League>> GetAllLeagues()
         {
             return await _context.Leagues
+                .Include(l => l.CurrentSeason)
                 .Take(100).ToListAsync();
         }
 
         public async Task<League> GetLeagueById(long id)
         {
             return await _context.Leagues
-                .Include(l => l.Teams)
                 .Include(l => l.Teams).ThenInclude(t => t.CurrentTeamSheet)
                 .Include(l => l.Teams).ThenInclude(t => t.CurrentSeasonStats)
+                .Include(l => l.Teams).ThenInclude(t => t.Players).ThenInclude(p => p.PlayerPerson)
+                .Include(l => l.Teams).ThenInclude(t => t.Players).ThenInclude(p => p.PlayerRecord)
+                .Include(l => l.Teams).ThenInclude(t => t.Players).ThenInclude(p => p.PlayerStats)
+                .Include(l => l.Teams).ThenInclude(t => t.Players).ThenInclude(p => p.PlayerRecord)
                 .Include(l => l.Fixtures)
+                .Include(l => l.CurrentSeason)
                 .SingleOrDefaultAsync(l => l.LeagueId == id);
         }
 
@@ -43,14 +48,9 @@ namespace Infrastructure.Repository
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateLeague(long id, League u)
+        public async Task UpdateLeague(League u)
         {
-            var league = await GetLeagueById(id);
-
-            if (league != null)
-            {
-                league.Name = u.Name;
-            }
+            _context.Leagues.Attach(u);
         }
     }
 }

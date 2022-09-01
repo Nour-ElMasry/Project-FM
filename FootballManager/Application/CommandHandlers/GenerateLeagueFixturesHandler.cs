@@ -18,9 +18,12 @@ namespace Application.CommandHandlers
             var league = await _unitOfWork.LeagueRepository.GetLeagueById(request.LeagueId);
 
             if (league != null) {
+                league.Fixtures.ForEach(async f => await _unitOfWork.FixtureRepository.DeleteFixture(f));
+
                 league.CreateFixtures();
 
                 league.Fixtures.ForEach(async f => await _unitOfWork.FixtureRepository.AddFixture(f));
+
                 await _unitOfWork.Save();
             }
 

@@ -21,7 +21,6 @@ namespace ConsolePresentation
                 .AddMediatR(typeof(IUnitOfWork))
                 .AddScoped<IPlayerRepository, PlayerRepository>()
                 .AddScoped<IFixtureRepository, FixtureRepository>()
-                .AddScoped<IPeopleRepository, PeopleRepository>()
                 .AddScoped<IManagerRepository, ManagerRepository>()
                 .AddScoped<ITeamRepository, TeamRepository>()
                 .AddScoped<IUserRepository, UserRepository>()
@@ -114,14 +113,6 @@ namespace ConsolePresentation
                         var countryRegister = Console.ReadLine();
                         Console.Write("DateOfBirth: ");
                         var dateOfBirthRegister = Console.ReadLine();
-
-                        var personRegister = await mediator.Send(new CreatePerson
-                        {
-                            Name = nameRegister,
-                            Country = countryRegister,
-                            BirthDate = dateOfBirthRegister
-                        });
-
                         Console.Write("\nUserName: ");
                         var usernameRegister = Console.ReadLine();
                         Console.Write("Password: ");
@@ -131,7 +122,9 @@ namespace ConsolePresentation
                         {
                             Username = usernameRegister,
                             Password = passwordRegister,
-                            UserPerson = personRegister
+                            Name = nameRegister,
+                            Country = countryRegister,
+                            DateOfBirth = dateOfBirthRegister
                         });
 
                         flag = newUser != null;
@@ -188,7 +181,7 @@ namespace ConsolePresentation
 
                         var manager = await mediator.Send(new CreateRealManager
                         {
-                            UserManager = user
+                            UserManagerId = user.UserId
                         });
 
                         var team = await mediator.Send(new CreateTeam
@@ -275,17 +268,13 @@ namespace ConsolePresentation
 
         private static async Task AddMidfielderToCreatedTeam(IMediator mediator, long teamId, string name, string country, string dateOfBirth, string position)
         {
-            var playerPerson = await mediator.Send(new CreatePerson
-            {
-                Name = name,
-                BirthDate = dateOfBirth,
-                Country = country
-            });
-
-            var player = await mediator.Send(new CreateMidfielder
+            var player = await mediator.Send(new CreatePlayer
             {
                 Position = position,
-                PlayerPerson = playerPerson,
+                Name = name,
+                DateOfBirth = dateOfBirth,
+                Country = country,
+                PlayerRole = "Midfielder"
             });
 
             await mediator.Send(new AddPlayerToTeam
@@ -297,17 +286,13 @@ namespace ConsolePresentation
 
         private static async Task AddAttackerToCreatedTeam(IMediator mediator, long teamId, string name, string country, string dateOfBirth, string position)
         {
-            var playerPerson = await mediator.Send(new CreatePerson
-            {
-                Name = name,
-                BirthDate = dateOfBirth,
-                Country = country
-            });
-
-            var player = await mediator.Send(new CreateAttacker
+            var player = await mediator.Send(new CreatePlayer
             {
                 Position = position,
-                PlayerPerson = playerPerson,
+                Name = name,
+                DateOfBirth = dateOfBirth,
+                Country = country,
+                PlayerRole = "Attacker"
             });
 
             await mediator.Send(new AddPlayerToTeam
@@ -319,17 +304,13 @@ namespace ConsolePresentation
 
         private static async Task AddDefenderToCreatedTeam(IMediator mediator, long teamId, string name, string country, string dateOfBirth, string position)
         {
-            var playerPerson = await mediator.Send(new CreatePerson
-            {
-                Name = name,
-                BirthDate = dateOfBirth,
-                Country = country
-            });
-
-            var player = await mediator.Send(new CreateDefender
+            var player = await mediator.Send(new CreatePlayer
             {
                 Position = position,
-                PlayerPerson = playerPerson,
+                Name = name,
+                DateOfBirth = dateOfBirth,
+                Country = country,
+                PlayerRole = "Defender"
             });
 
             await mediator.Send(new AddPlayerToTeam
@@ -341,16 +322,13 @@ namespace ConsolePresentation
 
         private static async Task AddGoalkeeperToCreatedTeam(IMediator mediator, long teamId, string name, string country, string dateOfBirth, string position)
         {
-            var playerPerson = await mediator.Send(new CreatePerson
+            var player = await mediator.Send(new CreatePlayer
             {
                 Name = name,
-                BirthDate = dateOfBirth,
-                Country = country
-            });
-
-            var player = await mediator.Send(new CreateGoalkeeper
-            {
-                PlayerPerson = playerPerson,
+                DateOfBirth = dateOfBirth,
+                Country = country,
+                Position = position,
+                PlayerRole = "Goalkeeper"
             });
 
             await mediator.Send(new AddPlayerToTeam

@@ -27,13 +27,20 @@ namespace Infrastructure.Repository
         {
             return await _context.Players
                 .Include(p => p.PlayerPerson)
+                .Include(p => p.PlayerRecord)
+                .Include(p => p.CurrentTeam)
                 .Include(p => p.PlayerStats)
                 .Take(100).ToListAsync();
         }
 
         public async Task<Player> GetPlayerById(long id)
         {
-            return await _context.Players.SingleOrDefaultAsync(p => p.PlayerId == id);
+            return await _context.Players
+                .Include(p => p.PlayerPerson)
+                .Include(p => p.PlayerRecord)
+                .Include(p => p.CurrentTeam)
+                .Include(p => p.PlayerStats)
+                .SingleOrDefaultAsync(p => p.PlayerId == id);
         }
 
         public async Task Save()
@@ -41,15 +48,9 @@ namespace Infrastructure.Repository
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdatePlayer(long id, Player u)
+        public async Task UpdatePlayer(Player u)
         {
-            var player = await GetPlayerById(id);
-
-            if (player != null)
-            {
-                player.Position= u.Position;
-                player.PlayerStats = u.PlayerStats;
-            }
+            _context.Players.Attach(u);
         }
     }
 }

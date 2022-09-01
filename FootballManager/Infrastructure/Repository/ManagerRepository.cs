@@ -26,12 +26,16 @@ namespace Infrastructure.Repository
         {
             return await _context.Managers
                 .Include(m => m.ManagerPerson)
+                .Include(m => m.CurrentTeam)
                 .Take(100).ToListAsync();
         }
 
         public async Task<Manager> GetManagerById(long id)
         {
-            return await _context.Managers.SingleOrDefaultAsync(m => m.ManagerId == id);
+            return await _context.Managers
+                .Include(m => m.ManagerPerson)
+                .Include(m => m.CurrentTeam)
+                .SingleOrDefaultAsync(m => m.ManagerId == id);
         }
 
         public async Task Save()

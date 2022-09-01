@@ -19,7 +19,7 @@ public abstract class Player
 
     public string Position { get; set; }
 
-    public long PlayerRecordId { get; set; }
+    [ForeignKey("PlayerRecordId")]
     public Record PlayerRecord { get; set; } = new();
 
     public Player() { }
@@ -35,6 +35,10 @@ public abstract class Player
         PlayerPerson = person;
         Position = pos;
         PlayerStats = PlayerStatsFactory.GenerateStats(pos);
+    }
+
+    public void ResetPlayerRecord() {
+        PlayerRecord = new Record();
     }
 }
 

@@ -1,6 +1,7 @@
 ﻿using Application.Abstract;
 using Application.Commands;
 using Domain.Entities;
+using Domain.Exceptions;
 using MediatR;
 
 namespace Application.CommandHandlers
@@ -20,7 +21,9 @@ namespace Application.CommandHandlers
 
             if (uniqueCheck)
             {
-                var user = new User(request.Username, request.Password, request.UserPerson);
+                var person = new Person(request.Name, request.DateOfBirth, request.Country);
+
+                var user = new User(request.Username, request.Password, person);
 
                 await _unitOfWork.UserRepository.AddUser(user);
                 await _unitOfWork.Save();

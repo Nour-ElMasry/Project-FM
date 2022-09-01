@@ -21,7 +21,7 @@ public class Team
         CurrentSeasonStats = new SeasonStats();
     }
     
-    [ForeignKey("TeamManagerId")]
+    [ForeignKey("ManagerId")]
     public Manager TeamManager { get; set; }
 
     [ForeignKey("CurrentSeasonStatsId")]
@@ -36,8 +36,8 @@ public class Team
     public List<Player> Players { get; set; } = new();
     public List<Fixture> Fixtures { get; set; } = new();
 
-    public void ResetSeasonStats()
-    {
-        CurrentSeasonStats = new();
+    public void ResetSeason() {
+        CurrentSeasonStats = new SeasonStats();
+        Players.ForEach(p => p.ResetPlayerRecord());
     }
 }

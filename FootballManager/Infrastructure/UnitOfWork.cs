@@ -8,15 +8,14 @@ namespace Infrastructure
 
         public UnitOfWork(DataContext dataContext, IFixtureRepository fixtureRepository, 
             ILeagueRepository leagueRepository, IManagerRepository managerRepository, 
-            IPeopleRepository peopleRepository, IPlayerRepository playerRepository, 
-            ITeamRepository teamRepository, IUserRepository userRepository)
+            IPlayerRepository playerRepository, ITeamRepository teamRepository, 
+            IUserRepository userRepository)
         {
             _dataContext = dataContext;
 
             FixtureRepository = fixtureRepository; 
             LeagueRepository = leagueRepository;
             ManagerRepository = managerRepository;
-            PeopleRepository = peopleRepository;
             PlayerRepository = playerRepository;
             TeamRepository = teamRepository;
             UserRepository = userRepository;
@@ -25,7 +24,6 @@ namespace Infrastructure
         public IFixtureRepository FixtureRepository {  get; private set; }
         public ILeagueRepository LeagueRepository { get; private set; }
         public IManagerRepository ManagerRepository {  get; private set; }
-        public IPeopleRepository PeopleRepository {  get; private set; }
         public IPlayerRepository PlayerRepository {  get; private set; }
         public ITeamRepository TeamRepository {  get; private set; }
         public IUserRepository UserRepository {  get; private set; }

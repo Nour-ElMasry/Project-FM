@@ -3,10 +3,11 @@ using MediatR;
 
 namespace Application.Commands
 {
-    public class CreatePerson : IRequest<Person>
+    public class UpdateTeam : IRequest<Team>
     {
+        public long TeamId { get; set; }
         public string Name { get; set; }
-        public string BirthDate { get; set; }
         public string Country { get; set; }
+        public string Venue { get; set; }
     }
 }

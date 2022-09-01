@@ -19,7 +19,7 @@ namespace Infrastructure.Repository
 
         public async Task DeleteFixture(Fixture u)
         {
-            await Task.Run(() => _context.Fixtures.Remove(u));
+            _context.Fixtures.Remove(u);
         }
 
         public async Task<List<Fixture>> GetAllFixtures()
@@ -32,12 +32,20 @@ namespace Infrastructure.Repository
 
         public async Task<Fixture> GetFixtureById(long id)
         {
-            return await _context.Fixtures.SingleOrDefaultAsync(f => f.FixtureId == id);
+            return await _context.Fixtures
+                .Include(f => f.Teams)
+                .Include(f => f.FixtureLeague)
+                .SingleOrDefaultAsync(f => f.FixtureId == id);
         }
 
         public async Task Save()
         {
             await _context.SaveChangesAsync();
+        }
+
+        public async Task UpdateFixture(Fixture u)
+        {
+            _context.Fixtures.Attach(u);
         }
     }
 }

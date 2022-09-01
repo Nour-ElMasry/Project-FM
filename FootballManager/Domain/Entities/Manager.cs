@@ -10,7 +10,7 @@ public abstract class Manager
     [ForeignKey("ManagerPersonId")]
     public Person ManagerPerson { get; set; }
 
-    [ForeignKey("CurrentTeamId")]
+    [ForeignKey("TeamId")]
     public Team CurrentTeam { get; set; }
 }
 

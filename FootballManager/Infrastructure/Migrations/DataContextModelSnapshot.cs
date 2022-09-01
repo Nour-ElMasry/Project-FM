@@ -81,9 +81,6 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("ManagerId"), 1L, 1);
 
-                    b.Property<long?>("CurrentTeamId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("Discriminator")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -91,11 +88,16 @@ namespace Infrastructure.Migrations
                     b.Property<long?>("ManagerPersonId")
                         .HasColumnType("bigint");
 
+                    b.Property<long?>("TeamId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("ManagerId");
 
-                    b.HasIndex("CurrentTeamId");
-
                     b.HasIndex("ManagerPersonId");
+
+                    b.HasIndex("TeamId")
+                        .IsUnique()
+                        .HasFilter("[TeamId] IS NOT NULL");
 
                     b.ToTable("Managers");
 
@@ -121,7 +123,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("PersonId");
 
-                    b.ToTable("People");
+                    b.ToTable("Person");
                 });
 
             modelBuilder.Entity("Domain.Entities.Player", b =>
@@ -142,7 +144,7 @@ namespace Infrastructure.Migrations
                     b.Property<long?>("PlayerPersonId")
                         .HasColumnType("bigint");
 
-                    b.Property<long>("PlayerRecordId")
+                    b.Property<long?>("PlayerRecordId")
                         .HasColumnType("bigint");
 
                     b.Property<long?>("PlayerStatsId")
@@ -150,9 +152,6 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("Position")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<long?>("TeamSheetId")
-                        .HasColumnType("bigint");
 
                     b.HasKey("PlayerId");
 
@@ -163,8 +162,6 @@ namespace Infrastructure.Migrations
                     b.HasIndex("PlayerRecordId");
 
                     b.HasIndex("PlayerStatsId");
-
-                    b.HasIndex("TeamSheetId");
 
                     b.ToTable("Players");
 
@@ -328,11 +325,11 @@ namespace Infrastructure.Migrations
                     b.Property<long?>("CurrentTeamSheetId")
                         .HasColumnType("bigint");
 
+                    b.Property<long?>("ManagerId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<long?>("TeamManagerId")
-                        .HasColumnType("bigint");
 
                     b.Property<string>("Venue")
                         .HasColumnType("nvarchar(max)");
@@ -345,7 +342,9 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("CurrentTeamSheetId");
 
-                    b.HasIndex("TeamManagerId");
+                    b.HasIndex("ManagerId")
+                        .IsUnique()
+                        .HasFilter("[ManagerId] IS NOT NULL");
 
                     b.ToTable("Teams");
                 });
@@ -529,15 +528,13 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Manager", b =>
                 {
-                    b.HasOne("Domain.Entities.Team", "CurrentTeam")
-                        .WithMany()
-                        .HasForeignKey("CurrentTeamId");
-
                     b.HasOne("Domain.Entities.Person", "ManagerPerson")
                         .WithMany()
                         .HasForeignKey("ManagerPersonId");
 
-                    b.Navigation("CurrentTeam");
+                    b.HasOne("Domain.Entities.Team", null)
+                        .WithOne("TeamManager")
+                        .HasForeignKey("Domain.Entities.Manager", "TeamId");
 
                     b.Navigation("ManagerPerson");
                 });
@@ -555,17 +552,11 @@ namespace Infrastructure.Migrations
 
                     b.HasOne("Domain.Entities.Record", "PlayerRecord")
                         .WithMany()
-                        .HasForeignKey("PlayerRecordId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("PlayerRecordId");
 
                     b.HasOne("Domain.Entities.PlayerStats", "PlayerStats")
                         .WithMany()
                         .HasForeignKey("PlayerStatsId");
-
-                    b.HasOne("Domain.Entities.TeamSheet", null)
-                        .WithMany("TeamSheetPlayers")
-                        .HasForeignKey("TeamSheetId");
 
                     b.Navigation("CurrentTeam");
 
@@ -580,7 +571,8 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Domain.Entities.League", "CurrentLeague")
                         .WithMany("Teams")
-                        .HasForeignKey("CurrentLeagueId");
+                        .HasForeignKey("CurrentLeagueId")
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("Domain.Entities.SeasonStats", "CurrentSeasonStats")
                         .WithMany()
@@ -590,17 +582,15 @@ namespace Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("CurrentTeamSheetId");
 
-                    b.HasOne("Domain.Entities.Manager", "TeamManager")
-                        .WithMany()
-                        .HasForeignKey("TeamManagerId");
+                    b.HasOne("Domain.Entities.Manager", null)
+                        .WithOne("CurrentTeam")
+                        .HasForeignKey("Domain.Entities.Team", "ManagerId");
 
                     b.Navigation("CurrentLeague");
 
                     b.Navigation("CurrentSeasonStats");
 
                     b.Navigation("CurrentTeamSheet");
-
-                    b.Navigation("TeamManager");
                 });
 
             modelBuilder.Entity("Domain.Entities.TeamSheet", b =>
@@ -652,14 +642,16 @@ namespace Infrastructure.Migrations
                     b.Navigation("Teams");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Manager", b =>
+                {
+                    b.Navigation("CurrentTeam");
+                });
+
             modelBuilder.Entity("Domain.Entities.Team", b =>
                 {
                     b.Navigation("Players");
-                });
 
-            modelBuilder.Entity("Domain.Entities.TeamSheet", b =>
-                {
-                    b.Navigation("TeamSheetPlayers");
+                    b.Navigation("TeamManager");
                 });
 #pragma warning restore 612, 618
         }

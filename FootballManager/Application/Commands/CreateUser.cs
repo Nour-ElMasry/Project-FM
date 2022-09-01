@@ -7,6 +7,8 @@ namespace Application.Commands
     {
         public string Username { get; set; }
         public string Password { get; set; }
-        public Person UserPerson { get; set; }
+        public string Name { get; set; }
+        public string Country { get; set; }
+        public string DateOfBirth { get; set; }
     }
 }

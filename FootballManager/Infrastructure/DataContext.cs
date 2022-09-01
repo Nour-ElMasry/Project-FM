@@ -16,7 +16,6 @@ namespace Infrastructure
         public DbSet<User> Users { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<Player> Players { get; set; }
-        public DbSet<Person> People { get; set; }
         public DbSet<Manager> Managers { get; set; }
         public DbSet<League> Leagues { get; set; }
         public DbSet<Fixture> Fixtures { get; set; }
@@ -32,6 +31,21 @@ namespace Infrastructure
                .HasMany(t => t.Players)
                .WithOne(p => p.CurrentTeam)
                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<Team>()
+               .HasOne(t => t.TeamManager)
+               .WithOne()
+               .HasForeignKey<Manager>("TeamId");
+
+            modelBuilder.Entity<Manager>()
+               .HasOne(t => t.CurrentTeam)
+               .WithOne()
+               .HasForeignKey<Team>("ManagerId");
+
+            modelBuilder.Entity<League>()
+                .HasMany(l => l.Teams)
+                .WithOne(t => t.CurrentLeague)
+                .OnDelete(DeleteBehavior.NoAction);
 
             modelBuilder.Entity<RealManager>();
             modelBuilder.Entity<FakeManager>();
@@ -51,8 +65,6 @@ namespace Infrastructure
             modelBuilder.Entity<AttackingTactic>();
             modelBuilder.Entity<BalancedTactic>();
             modelBuilder.Entity<DefendingTactic>();
-
-            //modelBuilder.Seed();
         }
     }
 }
