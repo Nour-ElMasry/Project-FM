@@ -220,7 +220,7 @@ namespace ConsolePresentation
                         });
 
                         fixtures
-                            .ForEach(f => Console.WriteLine($"{f.Teams[0].Name} vs {f.Teams[1].Name}"));
+                            .ForEach(f => Console.WriteLine($"{f.HomeTeam.Name} vs {f.AwayTeam.Name}"));
                         break;
                     case "3":
                         Console.WriteLine($"\n{league.Name}'s Standings\n");
@@ -248,7 +248,7 @@ namespace ConsolePresentation
                         });
 
                         Simfixtures
-                            .ForEach(f => Console.WriteLine($"{f.Teams[0].Name} {f.HomeTeamScore} - {f.AwayTeamScore} {f.Teams[1].Name}"));
+                            .ForEach(f => Console.WriteLine($"{f.HomeTeam.Name} {f.HomeTeamScore} - {f.AwayTeamScore} {f.AwayTeam.Name}"));
                         break;
 
                     case "5":

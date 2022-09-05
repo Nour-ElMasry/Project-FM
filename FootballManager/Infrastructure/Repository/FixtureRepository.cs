@@ -25,7 +25,12 @@ namespace Infrastructure.Repository
         public async Task<List<Fixture>> GetAllFixtures()
         {
             return await _context.Fixtures
-                .Include(f => f.Teams)
+                .Include(l => l.HomeTeam).ThenInclude(t => t.CurrentTeamSheet)
+                .Include(l => l.AwayTeam).ThenInclude(t => t.CurrentTeamSheet)
+                .Include(l => l.HomeTeam).ThenInclude(t => t.CurrentSeasonStats)
+                .Include(l => l.AwayTeam).ThenInclude(t => t.CurrentSeasonStats)
+                .Include(l => l.HomeTeam).ThenInclude(t => t.Players).ThenInclude(p => p.PlayerRecord)
+                .Include(l => l.AwayTeam).ThenInclude(t => t.Players).ThenInclude(p => p.PlayerRecord)
                 .Include(f => f.FixtureLeague)
                 .Take(100).ToListAsync();
         }
@@ -33,7 +38,12 @@ namespace Infrastructure.Repository
         public async Task<Fixture> GetFixtureById(long id)
         {
             return await _context.Fixtures
-                .Include(f => f.Teams)
+                .Include(l => l.HomeTeam).ThenInclude(t => t.CurrentTeamSheet)
+                .Include(l => l.AwayTeam).ThenInclude(t => t.CurrentTeamSheet)
+                .Include(l => l.HomeTeam).ThenInclude(t => t.CurrentSeasonStats)
+                .Include(l => l.AwayTeam).ThenInclude(t => t.CurrentSeasonStats)
+                .Include(l => l.HomeTeam).ThenInclude(t => t.Players).ThenInclude(p => p.PlayerRecord)
+                .Include(l => l.AwayTeam).ThenInclude(t => t.Players).ThenInclude(p => p.PlayerRecord)
                 .Include(f => f.FixtureLeague)
                 .SingleOrDefaultAsync(f => f.FixtureId == id);
         }

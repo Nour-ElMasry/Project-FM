@@ -1,10 +1,11 @@
 ﻿using Application.Abstract;
 using Application.Commands;
+using Domain.Entities;
 using MediatR;
 
 namespace Application.CommandHandlers
 {
-    public class GenerateLeagueFixturesHandler : IRequestHandler<GenerateLeagueFixtures>
+    public class GenerateLeagueFixturesHandler : IRequestHandler<GenerateLeagueFixtures, League>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -13,22 +14,22 @@ namespace Application.CommandHandlers
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Unit> Handle(GenerateLeagueFixtures request, CancellationToken cancellationToken)
+        public async Task<League> Handle(GenerateLeagueFixtures request, CancellationToken cancellationToken)
         {
             var league = await _unitOfWork.LeagueRepository.GetLeagueById(request.LeagueId);
 
-            if (league != null) {
-                league.Fixtures.ForEach(async f => await _unitOfWork.FixtureRepository.DeleteFixture(f));
+            if (league == null)
+                return null;
 
-                league.CreateFixtures();
+            league.Fixtures.ForEach(async f => await _unitOfWork.FixtureRepository.DeleteFixture(f));
 
-                league.Fixtures.ForEach(async f => await _unitOfWork.FixtureRepository.AddFixture(f));
+            league.CreateFixtures();
 
-                await _unitOfWork.Save();
-            }
+            league.Fixtures.ForEach(async f => await _unitOfWork.FixtureRepository.AddFixture(f));
 
-            
-            return new Unit();
+            await _unitOfWork.Save();
+
+            return league;
         }
     }
 }

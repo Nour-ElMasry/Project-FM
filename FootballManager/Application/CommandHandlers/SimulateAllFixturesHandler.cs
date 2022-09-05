@@ -15,14 +15,17 @@ namespace Application.CommandHandlers
 
         public async Task<Unit> Handle(SimulateAllFixtures request, CancellationToken cancellationToken)
         {
-            var league = await _unitOfWork.LeagueRepository.GetLeagueById(request.LeagueId);
+            var fixtures = await _unitOfWork.FixtureRepository.GetAllFixtures();
 
-            if (league != null)
+            if (fixtures != null)
             {
-                league.Fixtures.ForEach(f => f.SimulateFixture());
+                var leagueFixtures = fixtures.Where(f => f.FixtureLeague.LeagueId == request.LeagueId).ToList();
+
+                leagueFixtures.ForEach(f => f.SimulateFixture());
 
                 await _unitOfWork.Save();
             }
+
             return new Unit();
         }
     }

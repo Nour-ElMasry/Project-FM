@@ -71,9 +71,67 @@ namespace FootballManagerAPI.Controllers
             return Ok(mappedResult);
         }
 
+        [HttpGet]
+        [Route("{id}/Fixtures")]
+        public async Task<IActionResult> GetLeagueFixturesById(int id)
+        {
+            var query = new GetFixturesByLeague { LeagueId = id };
+            var result = await _mediator.Send(query);
+
+            if (result == null)
+                return NotFound();
+
+            var mappedResult = _mapper.Map<List<FixtureGetDto>>(result);
+            return Ok(mappedResult);
+        }
 
         [HttpPut]
-        [Route("{id}")]
+        [Route("{id}/Fixtures/Simulate")]
+        public async Task<IActionResult> SimulateAllLeagueFixture(int id)
+        {
+            var query = new SimulateAllFixtures { LeagueId = id };
+            
+            await _mediator.Send(query);
+
+            return NoContent();
+        }
+
+
+        [HttpPut]
+        [Route("{id}/GenerateFixtures")]
+        public async Task<IActionResult>  GenerateLeagueFixture(int id)
+        {
+            var query = new GenerateLeagueFixtures { LeagueId = id };
+
+            var result = await _mediator.Send(query);
+
+            if (result == null)
+                return NotFound();
+
+            var mappedResult = _mapper.Map<LeagueGetDto>(result);
+
+            return Ok(mappedResult);
+        }
+
+        [HttpPut]
+        [Route("{id}/Fixtures/{fixtureId}/SimulateFixture")]
+        public async Task<IActionResult> SimulateALeagueFixture(int id, int fixtureId)
+        {
+            var query = new SimulateAFixture { LeagueId = id , FixtureID = fixtureId };
+
+            var result = await _mediator.Send(query);
+
+            if (result == null)
+                return NotFound();
+
+            var mappedResult = _mapper.Map<FixtureGetDto>(result);
+
+            return Ok(mappedResult);
+        }
+
+
+        [HttpPut]
+        [Route("{id}/NextSeason")]
         public async Task<IActionResult> NextLeagueSeason(int id)
         {
             var query = new NextSeason { LeagueId = id };

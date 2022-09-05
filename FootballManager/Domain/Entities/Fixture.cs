@@ -10,7 +10,12 @@ public class Fixture
     [ForeignKey("FixtureLeagueID")]
     public League FixtureLeague { get; set; }
 
-    public List<Team> Teams { get; set; } = new();
+    [ForeignKey("HomeTeamID")]
+    public Team HomeTeam { get; set; }
+
+    [ForeignKey("AwayTeamID")]
+    public Team AwayTeam { get; set; }
+
     public string Venue { get; set; } = "";
     public DateTime? Date { get; set; } = null;
     public int HomeTeamScore { get; set; }
@@ -21,10 +26,10 @@ public class Fixture
     public Fixture(League leagueFixture, Team homeTeam, Team awayTeam)
     {
         FixtureLeague = leagueFixture;
-        Teams.Add(homeTeam);
-        Teams.Add(awayTeam);
+        HomeTeam = homeTeam;
+        AwayTeam = awayTeam;
 
-        Venue = Teams[0].Venue;
+        Venue = HomeTeam.Venue;
     }
 
     public void SimulateFixture()

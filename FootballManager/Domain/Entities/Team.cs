@@ -34,7 +34,8 @@ public class Team
     public League CurrentLeague { get; set; }
 
     public List<Player> Players { get; set; } = new();
-    public List<Fixture> Fixtures { get; set; } = new();
+    public List<Fixture> HomeFixtures { get; set; } = new();
+    public List<Fixture> AwayFixtures { get; set; } = new();
 
     public void ResetSeason() {
         CurrentSeasonStats = new SeasonStats();

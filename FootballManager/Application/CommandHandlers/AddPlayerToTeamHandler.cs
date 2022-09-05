@@ -1,10 +1,11 @@
 ﻿using Application.Abstract;
 using Application.Commands;
+using Domain.Entities;
 using MediatR;
 
 namespace Application.CommandHandlers
 {
-    public class AddPlayerToTeamHandler : IRequestHandler<AddPlayerToTeam>
+    public class AddPlayerToTeamHandler : IRequestHandler<AddPlayerToTeam, Player>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -13,20 +14,20 @@ namespace Application.CommandHandlers
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Unit> Handle(AddPlayerToTeam request, CancellationToken cancellationToken)
+        public async Task<Player> Handle(AddPlayerToTeam request, CancellationToken cancellationToken)
         {
             var player = await _unitOfWork.PlayerRepository.GetPlayerById(request.PlayerId);
             var team = await _unitOfWork.TeamRepository.GetTeamById(request.TeamId);
 
-            if(player != null && team != null)
-            {
-                team.Players.Add(player);
-                team.CurrentTeamSheet.UpdateRating(team.Players);
+            if(player == null || team == null)
+                return null;
 
-                await _unitOfWork.Save();
-            }
+            team.Players.Add(player);
+            team.CurrentTeamSheet.UpdateRating(team.Players);
 
-            return new Unit();
+            await _unitOfWork.Save();
+            
+            return player;
         }
     }
 }

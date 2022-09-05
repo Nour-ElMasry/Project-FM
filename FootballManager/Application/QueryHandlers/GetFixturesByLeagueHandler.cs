@@ -16,8 +16,12 @@ namespace Application.QueryHandlers
 
         public async Task<List<Fixture>> Handle(GetFixturesByLeague request, CancellationToken cancellationToken)
         {
-            var league = await _unitOfWork.LeagueRepository.GetLeagueById(request.LeagueId);
-            return league.Fixtures;
+            var fixtures = await _unitOfWork.FixtureRepository.GetAllFixtures();
+            
+            if(fixtures == null)
+                return null;
+            
+            return fixtures.Where(f => f.FixtureLeague.LeagueId == request.LeagueId).ToList();
         }
     }
 }

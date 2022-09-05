@@ -30,7 +30,16 @@ namespace Infrastructure
             modelBuilder.Entity<Team>()
                .HasMany(t => t.Players)
                .WithOne(p => p.CurrentTeam)
-               .OnDelete(DeleteBehavior.NoAction);
+               .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Team>()
+                .HasMany(t => t.HomeFixtures)
+                .WithOne(f => f.HomeTeam);
+
+            modelBuilder.Entity<Team>()
+                .HasMany(t => t.AwayFixtures)
+                .WithOne(g => g.AwayTeam)
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Team>()
                .HasOne(t => t.TeamManager)
@@ -45,7 +54,7 @@ namespace Infrastructure
             modelBuilder.Entity<League>()
                 .HasMany(l => l.Teams)
                 .WithOne(t => t.CurrentLeague)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<RealManager>();
             modelBuilder.Entity<FakeManager>();

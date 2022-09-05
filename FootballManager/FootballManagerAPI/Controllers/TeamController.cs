@@ -30,7 +30,7 @@ namespace FootballManagerAPI.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<IActionResult> GetFixtureById(int id)
+        public async Task<IActionResult> GetTeamById(int id)
         {
             var query = new GetTeamById { TeamId = id };
             var result = await _mediator.Send(query);
@@ -55,6 +55,21 @@ namespace FootballManagerAPI.Controllers
             var mappedResult = _mapper.Map<List<PlayerGetDto>>(result);
             return Ok(mappedResult);
         }
+
+        [HttpGet]
+        [Route("{id}/Fixtures")]
+        public async Task<IActionResult> GetTeamFixturesById(int id)
+        {
+            var query = new GetFixturesByTeam { TeamId = id };
+            var result = await _mediator.Send(query);
+
+            if (result == null)
+                return NotFound();
+
+            var mappedResult = _mapper.Map<List<FixtureGetDto>>(result);
+            return Ok(mappedResult);
+        }
+
 
         [HttpPut]
         [Route("{teamId}")]
@@ -87,6 +102,18 @@ namespace FootballManagerAPI.Controllers
                 return NotFound();
 
             return NoContent();
+        }
+
+        [Route("{teamId}/Players/AddPlayer/{playerId}")]
+        [HttpPut]
+        public async Task<IActionResult> AddPlayerFromTeam(int teamId, int playerId)
+        {
+            var command = new AddPlayerToTeam { TeamId = teamId, PlayerId = playerId };
+            var result = await _mediator.Send(command);
+            if (result == null)
+                return NotFound();
+            
+           return NoContent();
         }
 
         [Route("{teamId}/Players/{playerId}")]
