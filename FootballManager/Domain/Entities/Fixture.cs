@@ -16,8 +16,8 @@ public class Fixture
     [ForeignKey("AwayTeamID")]
     public Team AwayTeam { get; set; }
 
-    public string Venue { get; set; } = "";
-    public DateTime? Date { get; set; } = null;
+    public string Venue { get; set; }
+    public DateTime? Date { get; set; }
     public int HomeTeamScore { get; set; }
     public int AwayTeamScore { get; set; }
 

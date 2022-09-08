@@ -56,6 +56,17 @@ namespace FootballManagerAPI.Controllers
             return Ok(mappedResult);
         }
 
+        [Route("{id}")]
+        [HttpDelete]
+        public async Task<IActionResult> DeletePlayer(int id)
+        {
+            var command = new DeletePlayer { PlayerId = id };
+
+            await _mediator.Send(command);
+
+            return NoContent();
+        }
+
         [HttpPut]
         [Route("{playerId}")]
         public async Task<IActionResult> UpdatePlayer(int playerId, [FromBody] PlayerPutPostDto updated)

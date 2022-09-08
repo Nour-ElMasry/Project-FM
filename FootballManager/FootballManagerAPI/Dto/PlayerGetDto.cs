@@ -4,7 +4,7 @@ namespace FootballManagerAPI.Dto
 {
     public class PlayerGetDto
     {
-        public int Id { get; set; }
+        public long Id { get; set; }
         public Person PlayerPerson { get; set; }
         public PlayerStats PlayerStats { get; set; }
         public string CurrentTeamName { get; set; }

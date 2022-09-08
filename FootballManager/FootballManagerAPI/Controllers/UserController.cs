@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace FootballManagerAPI.Controllers
 {
-    [Route("api/v1/")]
+    [Route("api/v1/Users")]
     [ApiController]
     public class UserController : ControllerBase
     {
@@ -20,6 +20,35 @@ namespace FootballManagerAPI.Controllers
             _mediator = mediator;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            var result = await _mediator.Send(new GetAllUsers());
+
+            if (result == null)
+                return NotFound();
+
+            var mappedResult = _mapper.Map<List<UserGetDto>>(result);
+            return Ok(mappedResult);
+        }
+
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> GetUserById(int id)
+        {
+            var command = new GetUserById
+            {
+                UserId = id
+            };
+
+            var result = await _mediator.Send(command);
+
+            if (result == null)
+                return NotFound();
+
+            var mappedResult = _mapper.Map<UserGetDto>(result);
+            return Ok(mappedResult);
+        }
 
         [HttpGet]
         [Route("{id}/Team")]
@@ -49,6 +78,19 @@ namespace FootballManagerAPI.Controllers
                 Password = user.Password
             };
 
+            var result = await _mediator.Send(command);
+
+            if (result == null)
+                return NotFound();
+
+            return NoContent();
+        }
+
+        [Route("{id}")]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteUser(int id)
+        {
+            var command = new DeleteUser { UserId = id };
             var result = await _mediator.Send(command);
 
             if (result == null)

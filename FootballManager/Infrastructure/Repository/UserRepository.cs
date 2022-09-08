@@ -18,6 +18,11 @@ namespace Infrastructure.Repository
             await _context.Users.AddAsync(u);
         }
 
+        public async Task DeleteUser(User u)
+        {
+            await Task.Run(() => _context.Users.Remove(u));
+        }
+
         public async Task<List<User>> GetAllUsers()
         {
             return await _context.Users

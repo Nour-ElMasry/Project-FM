@@ -1,5 +1,5 @@
+using Application;
 using Application.Abstract;
-using Application.Commands;
 using FootballManagerAPI;
 using Infrastructure;
 using Infrastructure.Repository;
@@ -26,7 +26,7 @@ builder.Services.AddScoped<IFixtureRepository, FixtureRepository>();
 
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
-builder.Services.AddMediatR(typeof(CreateUser));
+builder.Services.AddMediatR(typeof(ApplicationAssemblyMaker));
 builder.Services.AddAutoMapper(typeof(AssemblyMaker));
 
 

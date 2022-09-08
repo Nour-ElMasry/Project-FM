@@ -41,5 +41,16 @@ namespace FootballManagerAPI.Controllers
             var mappedResult = _mapper.Map<ManagerGetDto>(result);
             return Ok(mappedResult);
         }
+
+        [Route("{id}")]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteManager(int id)
+        {
+            var command = new DeleteManager { ManagerId = id };
+
+            await _mediator.Send(command);
+
+            return NoContent();
+        }
     }
 }

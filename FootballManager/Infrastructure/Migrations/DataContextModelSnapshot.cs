@@ -59,7 +59,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("HomeTeamID");
 
-                    b.ToTable("Fixtures");
+                    b.ToTable("Fixtures", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.League", b =>
@@ -80,7 +80,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("CurrentSeasonId");
 
-                    b.ToTable("Leagues");
+                    b.ToTable("Leagues", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Manager", b =>
@@ -109,7 +109,7 @@ namespace Infrastructure.Migrations
                         .IsUnique()
                         .HasFilter("[TeamId] IS NOT NULL");
 
-                    b.ToTable("Managers");
+                    b.ToTable("Managers", (string)null);
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Manager");
                 });
@@ -133,7 +133,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("PersonId");
 
-                    b.ToTable("Person");
+                    b.ToTable("Person", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Player", b =>
@@ -173,7 +173,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("PlayerStatsId");
 
-                    b.ToTable("Players");
+                    b.ToTable("Players", (string)null);
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Player");
                 });
@@ -204,7 +204,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("PlayerStatsId");
 
-                    b.ToTable("PlayerStats");
+                    b.ToTable("PlayerStats", (string)null);
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("PlayerStats");
                 });
@@ -231,7 +231,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("RecordId");
 
-                    b.ToTable("Record");
+                    b.ToTable("Record", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Season", b =>
@@ -247,7 +247,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("SeasonId");
 
-                    b.ToTable("Season");
+                    b.ToTable("Season", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.SeasonStats", b =>
@@ -287,7 +287,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("SeasonStatsId");
 
-                    b.ToTable("SeasonStats");
+                    b.ToTable("SeasonStats", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Tactic", b =>
@@ -310,7 +310,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("TacticId");
 
-                    b.ToTable("Tactic");
+                    b.ToTable("Tactic", (string)null);
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Tactic");
                 });
@@ -356,7 +356,7 @@ namespace Infrastructure.Migrations
                         .IsUnique()
                         .HasFilter("[ManagerId] IS NOT NULL");
 
-                    b.ToTable("Teams");
+                    b.ToTable("Teams", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.TeamSheet", b =>
@@ -380,7 +380,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("TeamTacticId");
 
-                    b.ToTable("TeamSheet");
+                    b.ToTable("TeamSheet", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
@@ -404,7 +404,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("UserPersonId");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.Attacker", b =>

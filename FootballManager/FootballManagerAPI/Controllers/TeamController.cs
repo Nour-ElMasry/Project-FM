@@ -106,7 +106,7 @@ namespace FootballManagerAPI.Controllers
 
         [Route("{teamId}/Players/AddPlayer/{playerId}")]
         [HttpPut]
-        public async Task<IActionResult> AddPlayerFromTeam(int teamId, int playerId)
+        public async Task<IActionResult> AddPlayerToTeam(int teamId, int playerId)
         {
             var command = new AddPlayerToTeam { TeamId = teamId, PlayerId = playerId };
             var result = await _mediator.Send(command);

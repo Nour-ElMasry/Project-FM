@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConsolePresentation", "Cons
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{F9AAD06F-A84B-49E3-907D-CC27D5D69AAC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FootballManagerAPI", "FootballManagerAPI\FootballManagerAPI.csproj", "{D24E09B0-5BBA-41C6-AEE4-BD900B7A45D3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FootballManagerAPI", "FootballManagerAPI\FootballManagerAPI.csproj", "{D24E09B0-5BBA-41C6-AEE4-BD900B7A45D3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{EB5F8E68-873A-4115-949D-49CF7D1A8D95}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{D24E09B0-5BBA-41C6-AEE4-BD900B7A45D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D24E09B0-5BBA-41C6-AEE4-BD900B7A45D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D24E09B0-5BBA-41C6-AEE4-BD900B7A45D3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB5F8E68-873A-4115-949D-49CF7D1A8D95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB5F8E68-873A-4115-949D-49CF7D1A8D95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB5F8E68-873A-4115-949D-49CF7D1A8D95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB5F8E68-873A-4115-949D-49CF7D1A8D95}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

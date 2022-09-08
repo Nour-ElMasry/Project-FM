@@ -9,9 +9,10 @@ namespace FootballManagerAPI.Profiles
     {
         public UserProfile()
         {
-            CreateMap<UserAuthDto, AuthUser>()
-                .ForMember(au => au.UserName, opt => opt.MapFrom(aud => aud.Username))
-                .ForMember(au => au.Password, opt => opt.MapFrom(aud => aud.Password));
+            CreateMap<User, UserGetDto> ()
+                .ForMember(ud => ud.Id, opt => opt.MapFrom(u => u.UserId))
+                .ForMember(ud => ud.Username, opt => opt.MapFrom(u => u.Username))
+                .ForMember(ud => ud.UserPerson, opt => opt.MapFrom(u => u.UserPerson));
         }
     }
 }

@@ -8,11 +8,10 @@ public class League
     public long LeagueId { get; set; }
     public string Name { get; set; }
 
-    public List<Team> Teams { get; set; } = new ();
-
     [ForeignKey("CurrentSeasonId")]
     public Season CurrentSeason { get; set; }
-         
+
+    public List<Team> Teams { get; set; } = new();
     public List<Fixture> Fixtures { get; set; } = new ();
 
     public League() { }

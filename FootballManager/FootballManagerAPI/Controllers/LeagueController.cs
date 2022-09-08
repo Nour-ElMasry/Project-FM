@@ -24,6 +24,10 @@ namespace FootballManagerAPI.Controllers
         public async Task<IActionResult> GetAllLeagues()
         {
             var result = await _mediator.Send(new GetAllLeagues());
+
+            if (result == null)
+                return NotFound();
+
             var mappedResult = _mapper.Map<List<LeagueGetDto>>(result);
             return Ok(mappedResult);
         }
@@ -42,6 +46,16 @@ namespace FootballManagerAPI.Controllers
             return Ok(mappedResult);
         }
 
+        [Route("{id}")]
+        [HttpDelete]
+        public async Task<IActionResult> DeleteLeague(int id)
+        {
+            var command = new DeleteLeague { LeagueId = id };
+            
+            await _mediator.Send(command);
+
+            return NoContent();
+        }
 
         [HttpGet]
         [Route("{id}/Teams")]
@@ -55,6 +69,17 @@ namespace FootballManagerAPI.Controllers
 
             var mappedResult = _mapper.Map<List<TeamGetDto>>(result);
             return Ok(mappedResult);
+        }
+
+        [Route("{id}/Teams/{teamId}")]
+        [HttpDelete]
+        public async Task<IActionResult> RemoveTeamFromLeague(int id, int teamId)
+        {
+            var command = new RemoveTeamFromLeague { LeagueId = id, TeamId = teamId };
+
+            await _mediator.Send(command);
+
+            return NoContent();
         }
 
         [HttpGet]
