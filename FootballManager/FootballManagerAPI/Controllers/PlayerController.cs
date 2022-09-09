@@ -56,8 +56,8 @@ namespace FootballManagerAPI.Controllers
             return Ok(mappedResult);
         }
 
-        [Route("{id}")]
         [HttpDelete]
+        [Route("{id}")]
         public async Task<IActionResult> DeletePlayer(int id)
         {
             var command = new DeletePlayer { PlayerId = id };

@@ -46,8 +46,9 @@ namespace FootballManagerAPI.Controllers
             return Ok(mappedResult);
         }
 
-        [Route("{id}")]
+        
         [HttpDelete]
+        [Route("{id}")]
         public async Task<IActionResult> DeleteLeague(int id)
         {
             var command = new DeleteLeague { LeagueId = id };
@@ -71,8 +72,9 @@ namespace FootballManagerAPI.Controllers
             return Ok(mappedResult);
         }
 
-        [Route("{id}/Teams/{teamId}")]
+       
         [HttpDelete]
+        [Route("{id}/Teams/{teamId}")]
         public async Task<IActionResult> RemoveTeamFromLeague(int id, int teamId)
         {
             var command = new RemoveTeamFromLeague { LeagueId = id, TeamId = teamId };
@@ -122,7 +124,7 @@ namespace FootballManagerAPI.Controllers
         }
 
 
-        [HttpPut]
+        [HttpGet]
         [Route("{id}/GenerateFixtures")]
         public async Task<IActionResult>  GenerateLeagueFixture(int id)
         {
@@ -133,12 +135,12 @@ namespace FootballManagerAPI.Controllers
             if (result == null)
                 return NotFound();
 
-            var mappedResult = _mapper.Map<LeagueGetDto>(result);
+            var mappedResult = _mapper.Map<List<FixtureGetDto>>(result);
 
             return Ok(mappedResult);
         }
 
-        [HttpPut]
+        [HttpGet]
         [Route("{id}/Fixtures/{fixtureId}/SimulateFixture")]
         public async Task<IActionResult> SimulateALeagueFixture(int id, int fixtureId)
         {
@@ -155,7 +157,7 @@ namespace FootballManagerAPI.Controllers
         }
 
 
-        [HttpPut]
+        [HttpGet]
         [Route("{id}/NextSeason")]
         public async Task<IActionResult> NextLeagueSeason(int id)
         {

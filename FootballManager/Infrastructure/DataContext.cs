@@ -22,7 +22,10 @@ namespace Infrastructure
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=TOPSKI\SQLEXPRESS;Database=FootballManager;Trusted_Connection=True");
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlServer(@"Server=TOPSKI\SQLEXPRESS;Database=FootballManager;Trusted_Connection=True");
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

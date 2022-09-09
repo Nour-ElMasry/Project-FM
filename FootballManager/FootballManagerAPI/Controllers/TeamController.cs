@@ -91,8 +91,9 @@ namespace FootballManagerAPI.Controllers
             return NoContent();
         }
 
-        [Route("{teamId}")]
+        
         [HttpDelete]
+        [Route("{teamId}")]
         public async Task<IActionResult> DeleteTeam(int teamId)
         {
             var command = new DeleteTeam { TeamId = teamId };
@@ -104,8 +105,9 @@ namespace FootballManagerAPI.Controllers
             return NoContent();
         }
 
+        
+        [HttpGet]
         [Route("{teamId}/Players/AddPlayer/{playerId}")]
-        [HttpPut]
         public async Task<IActionResult> AddPlayerToTeam(int teamId, int playerId)
         {
             var command = new AddPlayerToTeam { TeamId = teamId, PlayerId = playerId };
@@ -116,8 +118,9 @@ namespace FootballManagerAPI.Controllers
            return NoContent();
         }
 
-        [Route("{teamId}/Players/{playerId}")]
+        
         [HttpDelete]
+        [Route("{teamId}/Players/{playerId}")]
         public async Task<IActionResult> RemovePlayerFromTeam(int teamId, int playerId)
         {
             var command = new RemovePlayerFromTeam { TeamId = teamId, PlayerId = playerId };

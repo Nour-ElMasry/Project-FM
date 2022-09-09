@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Application.CommandHandlers
 {
-    public class GenerateLeagueFixturesHandler : IRequestHandler<GenerateLeagueFixtures, League>
+    public class GenerateLeagueFixturesHandler : IRequestHandler<GenerateLeagueFixtures, List<Fixture>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -14,7 +14,7 @@ namespace Application.CommandHandlers
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<League> Handle(GenerateLeagueFixtures request, CancellationToken cancellationToken)
+        public async Task<List<Fixture>> Handle(GenerateLeagueFixtures request, CancellationToken cancellationToken)
         {
             var league = await _unitOfWork.LeagueRepository.GetLeagueById(request.LeagueId);
 
@@ -29,7 +29,7 @@ namespace Application.CommandHandlers
 
             await _unitOfWork.Save();
 
-            return league;
+            return league.Fixtures;
         }
     }
 }
