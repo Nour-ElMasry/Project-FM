@@ -13,6 +13,13 @@ namespace FootballManagerAPI.Profiles
                 .ForMember(ud => ud.Id, opt => opt.MapFrom(u => u.UserId))
                 .ForMember(ud => ud.Username, opt => opt.MapFrom(u => u.Username))
                 .ForMember(ud => ud.UserPerson, opt => opt.MapFrom(u => u.UserPerson));
+
+            CreateMap<UserPostDto, CreateUser>()
+                .ForMember(cu => cu.Name, opt => opt.MapFrom(ud => ud.Name))
+                .ForMember(cu => cu.DateOfBirth, opt => opt.MapFrom(ud => ud.DateOfBirth))
+                .ForMember(cu => cu.Country, opt => opt.MapFrom(ud => ud.Country))
+                .ForMember(cu => cu.Username, opt => opt.MapFrom(ud => ud.Username))
+                .ForMember(cu => cu.Password, opt => opt.MapFrom(ud => ud.Password));
         }
     }
 }

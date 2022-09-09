@@ -9,8 +9,6 @@ public abstract class Manager
 
     [ForeignKey("ManagerPersonId")]
     public Person ManagerPerson { get; set; }
-
-    [ForeignKey("TeamId")]
     public Team CurrentTeam { get; set; }
 }
 

@@ -6,24 +6,26 @@ namespace IntegrationTests.Helpers
     public static class Utilities
     {
         public static async Task InitializeDbForTests(DataContext db) {
-            var player1 = new Attacker(new Person("RightWinger Player", "2001-02-16", "Country1"), "RW") { PlayerId = 1 };
-            var player2 = new Midfielder(new Person("CenterMid Player", "2001-02-16", "Country2"), "CM") { PlayerId = 2 };
-            var player3 = new Defender(new Person("RightBack Player", "2001-02-16", "Country3"), "RB") { PlayerId = 3 };
-            var player4 = new Goalkeeper(new Person("Goalkeeper Player", "2001-02-16", "Country4"), "GK") { PlayerId = 4 };
+            var league = new League("Fake League") { LeagueId = 1 };
 
-            var player5 = new Attacker(new Person("RightWinger Player", "2001-02-16", "Country5"), "RW") { PlayerId = 5 };
-            var player6 = new Midfielder(new Person("CenterMid Player", "2001-02-16", "Country6"), "CM") { PlayerId = 6 };
-            var player7 = new Defender(new Person("RightBack Player", "2001-02-16", "Country7"), "RB") { PlayerId = 7 };
-            var player8 = new Goalkeeper(new Person("Goalkeeper Player", "2001-02-16", "Country8"), "GK") { PlayerId = 8 };
+            var team = new Team("Fake Team1", "Country9", "Fake Stadium") { TeamId = 1, CurrentLeague = league };
 
-            var team = new Team("Fake Team1", "Country9", "Fake Stadium") { TeamId = 1 };
+            var player1 = new Attacker(new Person("RightWinger Player", "2001-02-16", "Country1"), "RW") { PlayerId = 1, CurrentTeam = team };
+            var player2 = new Midfielder(new Person("CenterMid Player", "2001-02-16", "Country2"), "CM") { PlayerId = 2, CurrentTeam = team };
+            var player3 = new Defender(new Person("RightBack Player", "2001-02-16", "Country3"), "RB") { PlayerId = 3, CurrentTeam = team };
+            var player4 = new Goalkeeper(new Person("Goalkeeper Player", "2001-02-16", "Country4"), "GK") { PlayerId = 4, CurrentTeam = team };
 
             team.Players.Add(player1);
             team.Players.Add(player2);
             team.Players.Add(player3);
             team.Players.Add(player4);
 
-            var team1 = new Team("Fake Team2", "Country10", "Fake Stadium") { TeamId = 2 };
+            var team1 = new Team("Fake Team2", "Country10", "Fake Stadium") { TeamId = 2, CurrentLeague = league };
+
+            var player5 = new Attacker(new Person("RightWinger Player", "2001-02-16", "Country5"), "RW") { PlayerId = 5, CurrentTeam = team1 };
+            var player6 = new Midfielder(new Person("CenterMid Player", "2001-02-16", "Country6"), "CM") { PlayerId = 6, CurrentTeam = team1 };
+            var player7 = new Defender(new Person("RightBack Player", "2001-02-16", "Country7"), "RB") { PlayerId = 7, CurrentTeam = team1 };
+            var player8 = new Goalkeeper(new Person("Goalkeeper Player", "2001-02-16", "Country8"), "GK") { PlayerId = 8, CurrentTeam = team1 };
 
             team1.Players.Add(player5);
             team1.Players.Add(player6);
@@ -39,15 +41,14 @@ namespace IntegrationTests.Helpers
             team.TeamManager = teamManager;
             team1.TeamManager = team1Manager;
 
-            var league = new League("Fake League") { LeagueId = 1 };
-
             league.Teams.Add(team);
             league.Teams.Add(team1);
 
             league.CreateFixtures();
 
-            await db.Leagues.AddAsync(league);
+            league.Fixtures.ForEach(f => f.FixtureLeague = league);
 
+            await db.Leagues.AddAsync(league);
             await db.SaveChangesAsync();
         }
     }

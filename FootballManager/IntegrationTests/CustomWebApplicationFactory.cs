@@ -21,7 +21,7 @@ namespace IntegrationTests
 
         protected override void ConfigureWebHost(IWebHostBuilder builder)
         {
-            builder.ConfigureServices(services =>
+            builder.ConfigureServices(async services =>
             {
                 var serviceDescriptor = services.SingleOrDefault(d => d.ServiceType == typeof(DbContextOptions<DataContext>));
 
@@ -50,7 +50,7 @@ namespace IntegrationTests
 
                     db.Database.EnsureCreated();
 
-                    Utilities.InitializeDbForTests(db);
+                    await Utilities.InitializeDbForTests(db);
                 }
             });
         }

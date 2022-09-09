@@ -21,8 +21,31 @@ namespace IntegrationTests
         }
 
         [TestMethod]
+        public async Task Create_Player_ShouldReturnCreatedRespons()
+        {
+            _factory = new CustomWebApplicationFactory<Program>();
+
+            var user = new UserPostDto
+            {
+                Name = "New User",
+                Country = "New Country",
+                DateOfBirth = "2009-05-17",
+                Username = "User132123",
+                Password = "User3141923@"
+            };
+
+            var client = _factory.CreateClient();
+            var response = await client.PostAsync("api/v1/Users",
+                new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json"));
+
+
+            Assert.AreEqual(HttpStatusCode.Created, response.StatusCode);
+        }
+
+        [TestMethod]
         public async Task Get_All_Users_ShouldReturnOkResponse()
         {
+            _factory = new CustomWebApplicationFactory<Program>();
             var client = _factory.CreateClient();
             var response = await client.GetAsync("api/v1/Users");
 
@@ -32,6 +55,7 @@ namespace IntegrationTests
         [TestMethod]
         public async Task Get_All_Users_ShouldReturnExistingUsers()
         {
+            _factory = new CustomWebApplicationFactory<Program>();
             var client = _factory.CreateClient();
             var response = await client.GetAsync("api/v1/Users");
 
@@ -44,6 +68,7 @@ namespace IntegrationTests
         [TestMethod]
         public async Task Get_User_By_Id_ShouldReturnOkResponse()
         {
+            _factory = new CustomWebApplicationFactory<Program>();
             var client = _factory.CreateClient();
             var response = await client.GetAsync("api/v1/Users/1");
 
@@ -53,6 +78,7 @@ namespace IntegrationTests
         [TestMethod]
         public async Task Get_User_By_Id_ShouldReturnExistingUser()
         {
+            _factory = new CustomWebApplicationFactory<Program>();
             var client = _factory.CreateClient();
             var response = await client.GetAsync("api/v1/Users/1");
 
@@ -65,6 +91,7 @@ namespace IntegrationTests
         [TestMethod]
         public async Task Delete_User_ShouldReturnNoContentResponse()
         {
+            _factory = new CustomWebApplicationFactory<Program>();
             var client = _factory.CreateClient();
             var response = await client.DeleteAsync("api/v1/Users/1");
 
@@ -74,6 +101,7 @@ namespace IntegrationTests
         [TestMethod]
         public async Task Delete_User_DeletedManagerShouldNotExist()
         {
+            _factory = new CustomWebApplicationFactory<Program>();
             var client = _factory.CreateClient();
             var response = await client.DeleteAsync("api/v1/Users/1");
 
@@ -85,6 +113,7 @@ namespace IntegrationTests
         [TestMethod]
         public async Task Auth_User_ShouldReturnNoContentResponse()
         {
+            _factory = new CustomWebApplicationFactory<Program>();
             var user = new UserAuthDto 
             {
                 Username = "username",

@@ -128,5 +128,19 @@ namespace FootballManagerAPI.Controllers
 
             return NoContent();
         }
+
+        [HttpGet]
+        [Route("{id}/AddManager/{managerId}")]
+        public async Task<IActionResult> AddManagerToTeam(int id, int managerId)
+        {
+            var query = new AddManagerToTeam { TeamId = id, ManagerId= managerId };
+            var result = await _mediator.Send(query);
+
+            if (result == null)
+                return NotFound();
+
+            var mappedResult = _mapper.Map<ManagerGetDto>(result);
+            return Ok(mappedResult);
+        }
     }
 }

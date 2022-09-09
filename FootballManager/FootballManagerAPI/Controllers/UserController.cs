@@ -32,6 +32,20 @@ namespace FootballManagerAPI.Controllers
             return Ok(mappedResult);
         }
 
+        [HttpPost]
+        public async Task<IActionResult> CreateUser([FromBody] UserPostDto user)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var command = _mapper.Map<CreateUser>(user);
+
+            var created = await _mediator.Send(command);
+            var dto = _mapper.Map<UserGetDto>(created);
+
+            return CreatedAtAction(nameof(GetUserById), new { id = created.UserId }, dto);
+        }
+
         [HttpGet]
         [Route("{id}")]
         public async Task<IActionResult> GetUserById(int id)

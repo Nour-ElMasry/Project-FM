@@ -1,10 +1,11 @@
 ﻿using Application.Abstract;
 using Application.Commands;
+using Domain.Entities;
 using MediatR;
 
 namespace Application.CommandHandlers
 {
-    public class AddManagerToTeamHandler : IRequestHandler<AddManagerToTeam>
+    public class AddManagerToTeamHandler : IRequestHandler<AddManagerToTeam, Manager>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -13,20 +14,22 @@ namespace Application.CommandHandlers
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Unit> Handle(AddManagerToTeam request, CancellationToken cancellationToken)
+        public async Task<Manager> Handle(AddManagerToTeam request, CancellationToken cancellationToken)
         {
             var manager = await _unitOfWork.ManagerRepository.GetManagerById(request.ManagerId);
             var team = await _unitOfWork.TeamRepository.GetTeamById(request.TeamId);
 
-            if (manager != null && team != null)
-            {
-                team.TeamManager = manager;
-                manager.CurrentTeam = team;
+            if (manager == null || team == null)
+                return null;
+   
+            team.TeamManager = manager;
 
-                await _unitOfWork.Save();
-            }
+            await _unitOfWork.Save();
 
-            return new Unit();
+            manager.CurrentTeam = team;
+
+            await _unitOfWork.Save();
+            return manager;
         }
     }
 }

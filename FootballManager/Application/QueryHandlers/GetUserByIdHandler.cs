@@ -16,7 +16,12 @@ namespace Application.QueryHandlers
 
         public async Task<User> Handle(GetUserById request, CancellationToken cancellationToken)
         {
-            return await _unitOfWork.UserRepository.GetUserById(request.UserId);
+            var user = await _unitOfWork.UserRepository.GetUserById(request.UserId);
+
+            if(user == null)
+                return null;
+
+            return user;
         }
     }
 }

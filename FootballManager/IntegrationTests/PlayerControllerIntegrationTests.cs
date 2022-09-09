@@ -23,6 +23,8 @@ namespace IntegrationTests
         [TestMethod]
         public async Task Create_Player_ShouldReturnCreatedRespons()
         {
+            _factory = new CustomWebApplicationFactory<Program>();
+
             var player = new PlayerPutPostDto { 
                 Name = "New Player",
                 Country = "New Country",
@@ -42,6 +44,7 @@ namespace IntegrationTests
         [TestMethod]
         public async Task Get_All_Players_ShouldReturnOkResponse()
         {
+            _factory = new CustomWebApplicationFactory<Program>();
             var client = _factory.CreateClient();
             var response = await client.GetAsync("api/v1/Players");
 
@@ -51,6 +54,7 @@ namespace IntegrationTests
         [TestMethod]
         public async Task Get_All_Players_ShouldReturnExistingPlayers()
         {
+            _factory = new CustomWebApplicationFactory<Program>();
             var client = _factory.CreateClient();
             var response = await client.GetAsync("api/v1/Players");
 
@@ -62,6 +66,7 @@ namespace IntegrationTests
         [TestMethod]
         public async Task Get_Player_By_Id_ShouldReturnOkResponse()
         {
+            _factory = new CustomWebApplicationFactory<Program>();
             var client = _factory.CreateClient();
             var response = await client.GetAsync("api/v1/Players/1");
 
@@ -71,6 +76,7 @@ namespace IntegrationTests
         [TestMethod]
         public async Task Get_Player_By_Id_ShouldReturnExistingPlayer()
         {
+            _factory = new CustomWebApplicationFactory<Program>();
             var client = _factory.CreateClient();
             var response = await client.GetAsync("api/v1/Players/1");
 
@@ -82,6 +88,7 @@ namespace IntegrationTests
         [TestMethod]
         public async Task Delete_Player_ShouldReturnNoContentResponse()
         {
+            _factory = new CustomWebApplicationFactory<Program>();
             var client = _factory.CreateClient();
             var response = await client.DeleteAsync("api/v1/Players/1");
 
@@ -91,6 +98,7 @@ namespace IntegrationTests
         [TestMethod]
         public async Task Delete_Player_DeletedPlayerShouldNotExist()
         {
+            _factory = new CustomWebApplicationFactory<Program>();
             var client = _factory.CreateClient();
             var response = await client.DeleteAsync("api/v1/Players/1");
 
@@ -102,6 +110,8 @@ namespace IntegrationTests
         [TestMethod]
         public async Task Update_Player_ShouldReturnNoContentResponse()
         {
+            _factory = new CustomWebApplicationFactory<Program>();
+
             var updatePlayer = new PlayerPutPostDto
             { 
                 Name = "New Name",

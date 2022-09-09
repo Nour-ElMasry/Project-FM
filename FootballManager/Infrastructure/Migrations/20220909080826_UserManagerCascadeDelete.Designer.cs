@@ -4,6 +4,7 @@ using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220909080826_UserManagerCascadeDelete")]
+    partial class UserManagerCascadeDelete
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -104,6 +106,10 @@ namespace Infrastructure.Migrations
                     b.HasKey("ManagerId");
 
                     b.HasIndex("ManagerPersonId");
+
+                    b.HasIndex("TeamId")
+                        .IsUnique()
+                        .HasFilter("[TeamId] IS NOT NULL");
 
                     b.ToTable("Managers");
 
@@ -538,6 +544,10 @@ namespace Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("ManagerPersonId");
 
+                    b.HasOne("Domain.Entities.Team", null)
+                        .WithOne("TeamManager")
+                        .HasForeignKey("Domain.Entities.Manager", "TeamId");
+
                     b.Navigation("ManagerPerson");
                 });
 
@@ -584,18 +594,15 @@ namespace Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("CurrentTeamSheetId");
 
-                    b.HasOne("Domain.Entities.Manager", "TeamManager")
+                    b.HasOne("Domain.Entities.Manager", null)
                         .WithOne("CurrentTeam")
-                        .HasForeignKey("Domain.Entities.Team", "ManagerId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .HasForeignKey("Domain.Entities.Team", "ManagerId");
 
                     b.Navigation("CurrentLeague");
 
                     b.Navigation("CurrentSeasonStats");
 
                     b.Navigation("CurrentTeamSheet");
-
-                    b.Navigation("TeamManager");
                 });
 
             modelBuilder.Entity("Domain.Entities.TeamSheet", b =>
@@ -645,6 +652,8 @@ namespace Infrastructure.Migrations
                     b.Navigation("HomeFixtures");
 
                     b.Navigation("Players");
+
+                    b.Navigation("TeamManager");
                 });
 #pragma warning restore 612, 618
         }

@@ -23,6 +23,7 @@ namespace IntegrationTests
         [TestMethod]
         public async Task Get_All_Managers_ShouldReturnOkResponse()
         {
+            _factory = new CustomWebApplicationFactory<Program>();
             var client = _factory.CreateClient();
             var response = await client.GetAsync("api/v1/Managers");
 
@@ -32,6 +33,7 @@ namespace IntegrationTests
         [TestMethod]
         public async Task Get_All_Managers_ShouldReturnExistingManagers()
         {
+            _factory = new CustomWebApplicationFactory<Program>();
             var client = _factory.CreateClient();
             var response = await client.GetAsync("api/v1/Managers");
 
@@ -44,6 +46,7 @@ namespace IntegrationTests
         [TestMethod]
         public async Task Get_Manager_By_Id_ShouldReturnOkResponse()
         {
+            _factory = new CustomWebApplicationFactory<Program>();
             var client = _factory.CreateClient();
             var response = await client.GetAsync("api/v1/Managers/1");
 
@@ -53,6 +56,7 @@ namespace IntegrationTests
         [TestMethod]
         public async Task Get_Manager_By_Id_ShouldReturnExistingManager()
         {
+            _factory = new CustomWebApplicationFactory<Program>();
             var client = _factory.CreateClient();
             var response = await client.GetAsync("api/v1/Managers/1");
 
@@ -65,6 +69,7 @@ namespace IntegrationTests
         [TestMethod]
         public async Task Delete_Manager_ShouldReturnNoContentResponse()
         {
+            _factory = new CustomWebApplicationFactory<Program>();
             var client = _factory.CreateClient();
             var response = await client.DeleteAsync("api/v1/Managers/1");
 
@@ -74,6 +79,7 @@ namespace IntegrationTests
         [TestMethod]
         public async Task Delete_Manager_DeletedManagerShouldNotExist()
         {
+            _factory = new CustomWebApplicationFactory<Program>();
             var client = _factory.CreateClient();
             var response = await client.DeleteAsync("api/v1/Managers/1");
 

@@ -22,6 +22,7 @@ namespace IntegrationTests
         [TestMethod]
         public async Task Get_All_Leagues_ShouldReturnOkResponse()
         {
+            _factory = new CustomWebApplicationFactory<Program>();
             var client = _factory.CreateClient();
             var response = await client.GetAsync("api/v1/Leagues");
 
@@ -31,6 +32,7 @@ namespace IntegrationTests
         [TestMethod]
         public async Task Get_All_Leagues_ShouldReturnExistingLeagues()
         {
+            _factory = new CustomWebApplicationFactory<Program>();
             var client = _factory.CreateClient();
             var response = await client.GetAsync("api/v1/Leagues");
 
@@ -43,6 +45,7 @@ namespace IntegrationTests
         [TestMethod]
         public async Task Get_League_By_Id_ShouldReturnOkResponse()
         {
+            _factory = new CustomWebApplicationFactory<Program>();
             var client = _factory.CreateClient();
             var response = await client.GetAsync("api/v1/Leagues/1");
 
@@ -52,6 +55,7 @@ namespace IntegrationTests
         [TestMethod]
         public async Task Get_League_By_Id_ShouldReturnExistingLeague()
         {
+            _factory = new CustomWebApplicationFactory<Program>();
             var client = _factory.CreateClient();
             var response = await client.GetAsync("api/v1/Leagues/1");
 
@@ -64,6 +68,7 @@ namespace IntegrationTests
         [TestMethod]
         public async Task Delete_League_ShouldReturnNoContentResponse()
         {
+            _factory = new CustomWebApplicationFactory<Program>();
             var client = _factory.CreateClient();
             var response = await client.DeleteAsync("api/v1/Leagues/1");
 
@@ -73,6 +78,7 @@ namespace IntegrationTests
         [TestMethod]
         public async Task Delete_League_DeletedLeagueShouldNotExist()
         {
+            _factory = new CustomWebApplicationFactory<Program>();
             var client = _factory.CreateClient();
             var response = await client.DeleteAsync("api/v1/Leagues/1");
 
@@ -84,6 +90,7 @@ namespace IntegrationTests
         [TestMethod]
         public async Task Get_League_Teams_By_Id_ShouldReturnOkResponse()
         {
+            _factory = new CustomWebApplicationFactory<Program>();
             var client = _factory.CreateClient();
             var response = await client.GetAsync("api/v1/Leagues/1/Teams");
 
@@ -93,6 +100,7 @@ namespace IntegrationTests
         [TestMethod]
         public async Task Get_League_Teams_By_Id_ShouldReturnExistingLeagueTeams()
         {
+            _factory = new CustomWebApplicationFactory<Program>();
             var client = _factory.CreateClient();
             var response = await client.GetAsync("api/v1/Leagues/1/Teams");
 
@@ -105,6 +113,7 @@ namespace IntegrationTests
         [TestMethod]
         public async Task Remove_Team_From_League_By_Id_ShouldReturnNoContentResponse()
         {
+            _factory = new CustomWebApplicationFactory<Program>();
             var client = _factory.CreateClient();
             var response = await client.DeleteAsync("api/v1/Leagues/1/Teams/1");
 
@@ -114,6 +123,7 @@ namespace IntegrationTests
         [TestMethod]
         public async Task Get_League_Players_By_Id_ShouldReturnOkResponse()
         {
+            _factory = new CustomWebApplicationFactory<Program>();
             var client = _factory.CreateClient();
             var response = await client.GetAsync("api/v1/Leagues/1/Players");
 
@@ -123,6 +133,7 @@ namespace IntegrationTests
         [TestMethod]
         public async Task Get_League_Players_By_Id_ShouldReturnExistingLeaguePlayers()
         {
+            _factory = new CustomWebApplicationFactory<Program>();
             var client = _factory.CreateClient();
             var response = await client.GetAsync("api/v1/Leagues/1/Players");
 
@@ -134,6 +145,7 @@ namespace IntegrationTests
         [TestMethod]
         public async Task Get_League_Fixtures_By_Id_ShouldReturnOkResponse()
         {
+            _factory = new CustomWebApplicationFactory<Program>();
             var client = _factory.CreateClient();
             var response = await client.GetAsync("api/v1/Leagues/1/Fixtures");
 
@@ -143,6 +155,7 @@ namespace IntegrationTests
         [TestMethod]
         public async Task Get_League_Fixtures_By_Id_ShouldReturnExistingLeagueFixtures()
         {
+            _factory = new CustomWebApplicationFactory<Program>();
             var client = _factory.CreateClient();
             var response = await client.GetAsync("api/v1/Leagues/1/Fixtures");
 
@@ -155,6 +168,7 @@ namespace IntegrationTests
         [TestMethod]
         public async Task Generate_League_Fixture_ShouldReturnOkResponse()
         {
+            _factory = new CustomWebApplicationFactory<Program>();
             var client = _factory.CreateClient();
             var response = await client.GetAsync("api/v1/Leagues/1/GenerateFixtures");
 
@@ -164,6 +178,7 @@ namespace IntegrationTests
         [TestMethod]
         public async Task Generate_League_Fixture_ShouldReturnGeneratedFixtures()
         {
+            _factory = new CustomWebApplicationFactory<Program>();
             var client = _factory.CreateClient();
             var response = await client.GetAsync("api/v1/Leagues/1/GenerateFixtures");
 
@@ -176,6 +191,7 @@ namespace IntegrationTests
         [TestMethod]
         public async Task Simulate_A_League_Fixture_ShouldReturnOkResponse()
         {
+            _factory = new CustomWebApplicationFactory<Program>();
             var client = _factory.CreateClient();
             var response = await client.GetAsync("api/v1/Leagues/1/Fixtures/1/SimulateFixture");
 
@@ -185,6 +201,7 @@ namespace IntegrationTests
         [TestMethod]
         public async Task Simulate_A_League_Fixture_ShouldReturnSimulatedFixture()
         {
+            _factory = new CustomWebApplicationFactory<Program>();
             var client = _factory.CreateClient();
             var response = await client.GetAsync("api/v1/Leagues/1/Fixtures/1/SimulateFixture");
 
@@ -197,6 +214,7 @@ namespace IntegrationTests
         [TestMethod]
         public async Task Next_League_Season_ShouldReturnNoContentResponse()
         {
+            _factory = new CustomWebApplicationFactory<Program>();
             var client = _factory.CreateClient();
             var response = await client.GetAsync("api/v1/Leagues/1/NextSeason");
 

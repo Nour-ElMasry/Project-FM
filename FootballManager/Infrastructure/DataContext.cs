@@ -46,13 +46,20 @@ namespace Infrastructure
 
             modelBuilder.Entity<Team>()
                .HasOne(t => t.TeamManager)
-               .WithOne()
-               .HasForeignKey<Manager>("TeamId");
+               .WithOne(m => m.CurrentTeam)
+               .HasForeignKey<Manager>("TeamId")
+               .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.Entity<Manager>()
-               .HasOne(t => t.CurrentTeam)
-               .WithOne()
-               .HasForeignKey<Team>("ManagerId");
+               .HasOne(m => m.CurrentTeam)
+               .WithOne(t => t.TeamManager)
+               .HasForeignKey<Team>("ManagerId")
+               .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<RealManager>()
+                .HasOne(rm => rm.UserManager)
+                .WithOne()
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<League>()
                 .HasMany(l => l.Teams)

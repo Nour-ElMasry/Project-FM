@@ -23,6 +23,7 @@ namespace IntegrationTests
         [TestMethod]
         public  async Task Get_All_Fixtures_ShouldReturnOkResponse()
         {
+            _factory = new CustomWebApplicationFactory<Program>();
             var client = _factory.CreateClient();
             var response = await client.GetAsync("api/v1/Fixtures");
 
@@ -32,6 +33,7 @@ namespace IntegrationTests
         [TestMethod]
         public async Task Get_All_Fixtures_ShouldReturnExistingFixtures()
         {
+            _factory = new CustomWebApplicationFactory<Program>();
             var client = _factory.CreateClient();
             var response = await client.GetAsync("api/v1/Fixtures");
 
@@ -44,6 +46,7 @@ namespace IntegrationTests
         [TestMethod]
         public async Task Get_Fixture_By_Id_ShouldReturnOkResponse()
         {
+            _factory = new CustomWebApplicationFactory<Program>();
             var client = _factory.CreateClient();
             var response = await client.GetAsync("api/v1/Fixtures/1");
 
@@ -53,6 +56,7 @@ namespace IntegrationTests
         [TestMethod]
         public async Task Get_Fixture_By_Id_ShouldReturnExistingFixture()
         {
+            _factory = new CustomWebApplicationFactory<Program>();
             var client = _factory.CreateClient();
             var response = await client.GetAsync("api/v1/Fixtures/1");
 
@@ -65,6 +69,8 @@ namespace IntegrationTests
         [TestMethod]
         public async Task Update_Fixture_ShouldReturnNoContentResponse()
         {
+            _factory = new CustomWebApplicationFactory<Program>();
+
             var updateFixture = new FixturePutDto
             {
                 Date = "2024-03-17"
@@ -80,6 +86,8 @@ namespace IntegrationTests
         [TestMethod]
         public async Task Update_Fixture_ShouldReturnUpdatedFixture()
         {
+            _factory = new CustomWebApplicationFactory<Program>();
+
             var updateFixture = new FixturePutDto
             {
                 Date = "2027-03-17"

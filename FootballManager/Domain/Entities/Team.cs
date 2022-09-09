@@ -21,7 +21,6 @@ public class Team
         CurrentSeasonStats = new SeasonStats();
     }
     
-    [ForeignKey("ManagerId")]
     public Manager TeamManager { get; set; }
 
     [ForeignKey("CurrentSeasonStatsId")]

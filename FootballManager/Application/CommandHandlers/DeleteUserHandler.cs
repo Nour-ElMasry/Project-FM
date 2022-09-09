@@ -17,7 +17,9 @@ namespace Application.CommandHandlers
         public async Task<User> Handle(DeleteUser request, CancellationToken cancellationToken)
         {
             var user = await _unitOfWork.UserRepository.GetUserById(request.UserId);
-            if (user == null) return null;
+
+            if (user == null) 
+                return null;
 
             await _unitOfWork.UserRepository.DeleteUser(user);
             await _unitOfWork.Save();
