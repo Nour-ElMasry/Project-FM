@@ -21,10 +21,6 @@ namespace FootballManagerAPI.Dto
         [Required]
         [MaxLength(30)]
         [MinLength(4)]
-        public string PlayerRole { get; set; }
-        
-        [Required]
-        [StringLength(10)]
         public string Position { get; set; }
     }
 }

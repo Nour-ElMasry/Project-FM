@@ -6,6 +6,7 @@ using FootballManagerAPI.Controllers;
 using FootballManagerAPI.Dto;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Moq;
 using System.Net;
 
@@ -16,6 +17,7 @@ namespace UnitTests
     {
         private readonly Mock<IMediator> _mockMediator = new();
         private readonly Mock<IMapper> _mockMapper = new();
+        private readonly Mock<ILogger<object>> _mockLogger = new();
 
         [TestMethod]
         public async Task Get_All_Managers_GetAllManagersQueryIsCalled()
@@ -24,7 +26,7 @@ namespace UnitTests
                 .Setup(m => m.Send(It.IsAny<GetAllManagers>(), It.IsAny<CancellationToken>()))
                 .Verifiable();
 
-            var controller = new ManagerController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new ManagerController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
             await controller.GetAllManagers();
 
             _mockMediator.Verify(x => x.Send(It.IsAny<GetAllManagers>(), It.IsAny<CancellationToken>()), Times.Once());
@@ -36,7 +38,7 @@ namespace UnitTests
                 .Setup(m => m.Send(It.IsAny<GetManagerById>(), It.IsAny<CancellationToken>()))
                 .Verifiable();
 
-            var controller = new ManagerController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new ManagerController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
             await controller.GetManagerById(1);
 
             _mockMediator.Verify(x => x.Send(It.IsAny<GetManagerById>(), It.IsAny<CancellationToken>()), Times.Once());
@@ -56,7 +58,7 @@ namespace UnitTests
                         new FakeManager());
                 });
 
-            var controller = new ManagerController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new ManagerController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
             await controller.GetManagerById(1);
 
             Assert.AreEqual(managerId, 1);
@@ -70,7 +72,7 @@ namespace UnitTests
                 .ReturnsAsync(
                        new FakeManager());
 
-            var controller = new ManagerController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new ManagerController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
 
             var result = await controller.GetManagerById(1);
             var okResult = result as OkObjectResult;
@@ -104,7 +106,7 @@ namespace UnitTests
                 };
             });
 
-            var controller = new ManagerController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new ManagerController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
 
             var result = await controller.GetManagerById(1);
             var okResult = result as OkObjectResult;
@@ -120,7 +122,7 @@ namespace UnitTests
                 .Setup(m => m.Send(It.IsAny<DeleteManager>(), It.IsAny<CancellationToken>()))
                 .Verifiable();
 
-            var controller = new ManagerController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new ManagerController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
 
             await controller.DeleteManager(1);
 

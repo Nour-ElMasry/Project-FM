@@ -20,7 +20,8 @@ public class Team
         CurrentTeamSheet = new TeamSheet();
         CurrentSeasonStats = new SeasonStats();
     }
-    
+
+    [ForeignKey("TeamManagerId")]
     public Manager TeamManager { get; set; }
 
     [ForeignKey("CurrentSeasonStatsId")]

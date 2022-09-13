@@ -17,7 +17,9 @@ namespace Application.CommandHandlers
         public async Task<League> Handle(DeleteLeague request, CancellationToken cancellationToken)
         {
             var league = await _unitOfWork.LeagueRepository.GetLeagueById(request.LeagueId);
-            if (league == null) return null;
+
+            if (league == null) 
+                return null;
 
             await _unitOfWork.LeagueRepository.DeleteLeague(league);
             await _unitOfWork.Save();

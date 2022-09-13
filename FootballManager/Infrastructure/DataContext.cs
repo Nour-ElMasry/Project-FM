@@ -24,7 +24,7 @@ namespace Infrastructure
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(@"Server=TOPSKI\SQLEXPRESS;Database=FootballManager;Trusted_Connection=True");
+                optionsBuilder.UseSqlServer(@"Server=TOPSKI\SQLEXPRESS;Database=FM_Database;Trusted_Connection=True");
             }
         }
 
@@ -45,19 +45,24 @@ namespace Infrastructure
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<Team>()
-               .HasOne(t => t.TeamManager)
-               .WithOne(m => m.CurrentTeam)
-               .HasForeignKey<Manager>("TeamId")
-               .OnDelete(DeleteBehavior.SetNull);
+                .HasOne(t => t.TeamManager)
+                .WithOne()
+                .HasForeignKey<Manager>("CurrentTeamId")
+                .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.Entity<Manager>()
-               .HasOne(m => m.CurrentTeam)
-               .WithOne(t => t.TeamManager)
-               .HasForeignKey<Team>("ManagerId")
-               .OnDelete(DeleteBehavior.SetNull);
+                .HasOne(m => m.CurrentTeam)
+                .WithOne()
+                .HasForeignKey<Team>("TeamManagerId")
+                .OnDelete(DeleteBehavior.SetNull);
 
             modelBuilder.Entity<RealManager>()
                 .HasOne(rm => rm.UserManager)
+                .WithOne()
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<User>()
+                .HasOne(u => u.UserPerson)
                 .WithOne()
                 .OnDelete(DeleteBehavior.Cascade);
 

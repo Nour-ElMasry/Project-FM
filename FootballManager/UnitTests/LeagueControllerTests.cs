@@ -6,6 +6,7 @@ using FootballManagerAPI.Controllers;
 using FootballManagerAPI.Dto;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Moq;
 
 namespace UnitTests
@@ -15,7 +16,7 @@ namespace UnitTests
     {
         private readonly Mock<IMediator> _mockMediator = new();
         private readonly Mock<IMapper> _mockMapper = new();
-
+        private readonly Mock<ILogger<object>> _mockLogger = new();
 
         [TestMethod]
         public async Task Get_All_Leagues_GetAllLeaguesQueryIsCalled()
@@ -24,7 +25,7 @@ namespace UnitTests
                 .Setup(m => m.Send(It.IsAny<GetAllLeagues>(), It.IsAny<CancellationToken>()))
                 .Verifiable();
 
-            var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
             await controller.GetAllLeagues();
 
             _mockMediator.Verify(x => x.Send(It.IsAny<GetAllLeagues>(), It.IsAny<CancellationToken>()), Times.Once());
@@ -37,7 +38,7 @@ namespace UnitTests
                 .Setup(m => m.Send(It.IsAny<GetLeagueById>(), It.IsAny<CancellationToken>()))
                 .Verifiable();
 
-            var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
             await controller.GetLeagueById(1);
 
             _mockMediator.Verify(x => x.Send(It.IsAny<GetLeagueById>(), It.IsAny<CancellationToken>()), Times.Once());
@@ -57,7 +58,7 @@ namespace UnitTests
                         new League());
                 });
 
-            var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
             await controller.GetLeagueById(1);
 
             Assert.AreEqual(leagueId, 1);
@@ -71,7 +72,7 @@ namespace UnitTests
                 .ReturnsAsync(
                         new League());
 
-            var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
 
             var result = await controller.GetLeagueById(1);
             var okResult = result as OkObjectResult;
@@ -105,7 +106,7 @@ namespace UnitTests
                 };
             });
 
-            var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
 
             var result = await controller.GetLeagueById(1);
             var okResult = result as OkObjectResult;
@@ -122,7 +123,7 @@ namespace UnitTests
                 .Setup(m => m.Send(It.IsAny<GetTeamsByLeague>(), It.IsAny<CancellationToken>()))
                 .Verifiable();
 
-            var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
             await controller.GetLeagueTeamsById(1);
 
             _mockMediator.Verify(x => x.Send(It.IsAny<GetTeamsByLeague>(), It.IsAny<CancellationToken>()), Times.Once());
@@ -142,7 +143,7 @@ namespace UnitTests
                        new List<Team> ());
                 });
 
-            var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
             await controller.GetLeagueTeamsById(1);
 
             Assert.AreEqual(leagueId, 1);
@@ -156,7 +157,7 @@ namespace UnitTests
                 .ReturnsAsync(
                        new List<Team> ());
 
-            var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
             var result = await controller.GetLeagueTeamsById(1);
 
             var okResult = result as OkObjectResult;
@@ -203,7 +204,7 @@ namespace UnitTests
                 return result;
             });
 
-            var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
 
             var result = await controller.GetLeagueTeamsById(1);
             var okResult = result as OkObjectResult;
@@ -218,7 +219,7 @@ namespace UnitTests
                 .Setup(m => m.Send(It.IsAny<GetPlayersByLeague>(), It.IsAny<CancellationToken>()))
                 .Verifiable();
 
-            var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
             await controller.GetLeaguePlayersById(1);
 
             _mockMediator.Verify(x => x.Send(It.IsAny<GetPlayersByLeague>(), It.IsAny<CancellationToken>()), Times.Once());
@@ -238,7 +239,7 @@ namespace UnitTests
                        new List<Player> ());
                 });
 
-            var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
             await controller.GetLeaguePlayersById(1);
 
             Assert.AreEqual(leagueId, 1);
@@ -252,7 +253,7 @@ namespace UnitTests
                 .ReturnsAsync(
                        new List<Player> ());
 
-            var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
             var result = await controller.GetLeaguePlayersById(1);
 
             var okResult = result as OkObjectResult;
@@ -273,15 +274,15 @@ namespace UnitTests
                             new Team("Team1", "Country1", "Team1 Stadium")
                             {
                                 Players = new List<Player> {
-                                        new Attacker(new Person("Person1", "2001-02-16", "Somewhere1"), "ST"),
-                                        new Midfielder(new Person("Person2", "2001-02-16", "Somewhere2"), "CAM")
+                                        new Attacker(new Person("Person1", "2001-02-16", "Somewhere1")),
+                                        new Midfielder(new Person("Person2", "2001-02-16", "Somewhere2"))
                                     }
                             },
                             new Team("Team2", "Country2", "Team2 Stadium")
                             {
                                 Players = new List<Player> {
-                                        new Attacker(new Person("Person3", "2001-02-16", "Somewhere3"), "ST"),
-                                        new Midfielder(new Person("Person4", "2001-02-16", "Somewhere4"), "CAM")
+                                        new Attacker(new Person("Person3", "2001-02-16", "Somewhere3")),
+                                        new Midfielder(new Person("Person4", "2001-02-16", "Somewhere4"))
                                     }
                             }
                 }
@@ -314,7 +315,7 @@ namespace UnitTests
                 return result;
             });
 
-            var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
 
             var result = await controller.GetLeaguePlayersById(1);
             var okResult = result as OkObjectResult;
@@ -332,7 +333,7 @@ namespace UnitTests
                 .Setup(m => m.Send(It.IsAny<GetFixturesByLeague>(), It.IsAny<CancellationToken>()))
                 .Verifiable();
 
-            var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
             await controller.GetLeagueFixturesById(1);
 
             _mockMediator.Verify(x => x.Send(It.IsAny<GetFixturesByLeague>(), It.IsAny<CancellationToken>()), Times.Once());
@@ -352,7 +353,7 @@ namespace UnitTests
                        new List<Fixture> ());
                 });
 
-            var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
             await controller.GetLeagueFixturesById(1);
 
             Assert.AreEqual(leagueId, 1);
@@ -366,7 +367,7 @@ namespace UnitTests
                 .ReturnsAsync(
                        new List<Fixture> ());
 
-            var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
             var result = await controller.GetLeagueFixturesById(1);
 
             var okResult = result as OkObjectResult;
@@ -410,7 +411,7 @@ namespace UnitTests
                 return result;
             });
 
-            var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
 
             var result = await controller.GetLeagueFixturesById(1);
             var okResult = result as OkObjectResult;
@@ -424,7 +425,7 @@ namespace UnitTests
                 .Setup(m => m.Send(It.IsAny<DeleteLeague>(), It.IsAny<CancellationToken>()))
                 .Verifiable();
 
-            var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
             await controller.DeleteLeague(1);
 
             _mockMediator.Verify(x => x.Send(It.IsAny<DeleteLeague>(), It.IsAny<CancellationToken>()), Times.Once());
@@ -437,7 +438,7 @@ namespace UnitTests
                 .Setup(m => m.Send(It.IsAny<RemoveTeamFromLeague>(), It.IsAny<CancellationToken>()))
                 .Verifiable();
 
-            var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
             await controller.RemoveTeamFromLeague(1, 1);
 
             _mockMediator.Verify(x => x.Send(It.IsAny<RemoveTeamFromLeague>(), It.IsAny<CancellationToken>()), Times.Once());
@@ -450,7 +451,7 @@ namespace UnitTests
                 .Setup(m => m.Send(It.IsAny<SimulateAllFixtures>(), It.IsAny<CancellationToken>()))
                 .Verifiable();
 
-            var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
             await controller.SimulateAllLeagueFixture(1);
 
             _mockMediator.Verify(x => x.Send(It.IsAny<SimulateAllFixtures>(), It.IsAny<CancellationToken>()), Times.Once());
@@ -463,7 +464,7 @@ namespace UnitTests
                 .Setup(m => m.Send(It.IsAny<SimulateAFixture>(), It.IsAny<CancellationToken>()))
                 .Verifiable();
 
-            var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
             await controller.SimulateALeagueFixture(1, 1);
 
             _mockMediator.Verify(x => x.Send(It.IsAny<SimulateAFixture>(), It.IsAny<CancellationToken>()), Times.Once());
@@ -476,7 +477,7 @@ namespace UnitTests
                 .Setup(m => m.Send(It.IsAny<GenerateLeagueFixtures>(), It.IsAny<CancellationToken>()))
                 .Verifiable();
 
-            var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
             await controller.GenerateLeagueFixture(1);
 
             _mockMediator.Verify(x => x.Send(It.IsAny<GenerateLeagueFixtures>(), It.IsAny<CancellationToken>()), Times.Once());
@@ -489,7 +490,7 @@ namespace UnitTests
                 .Setup(m => m.Send(It.IsAny<NextSeason>(), It.IsAny<CancellationToken>()))
                 .Verifiable();
 
-            var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
             await controller.NextLeagueSeason(1);
 
             _mockMediator.Verify(x => x.Send(It.IsAny<NextSeason>(), It.IsAny<CancellationToken>()), Times.Once());

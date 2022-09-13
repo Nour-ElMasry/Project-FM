@@ -54,9 +54,9 @@ namespace Infrastructure.Repository
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateTeam(Team u)
+        public Task UpdateTeam(Team u)
         {
-            _context.Teams.Attach(u);
+            return Task.Run(() => _context.Teams.Attach(u));
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -9,18 +10,18 @@ namespace Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "People",
+                name: "Person",
                 columns: table => new
                 {
                     PersonId = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    BirthDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     Country = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_People", x => x.PersonId);
+                    table.PrimaryKey("PK_Person", x => x.PersonId);
                 });
 
             migrationBuilder.CreateTable(
@@ -119,10 +120,11 @@ namespace Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Users", x => x.UserId);
                     table.ForeignKey(
-                        name: "FK_Users_People_UserPersonId",
+                        name: "FK_Users_Person_UserPersonId",
                         column: x => x.UserPersonId,
-                        principalTable: "People",
-                        principalColumn: "PersonId");
+                        principalTable: "Person",
+                        principalColumn: "PersonId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -171,6 +173,8 @@ namespace Infrastructure.Migrations
                     FixtureId = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     FixtureLeagueID = table.Column<long>(type: "bigint", nullable: true),
+                    HomeTeamID = table.Column<long>(type: "bigint", nullable: true),
+                    AwayTeamID = table.Column<long>(type: "bigint", nullable: true),
                     Venue = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: true),
                     HomeTeamScore = table.Column<int>(type: "int", nullable: false),
@@ -184,24 +188,6 @@ namespace Infrastructure.Migrations
                         column: x => x.FixtureLeagueID,
                         principalTable: "Leagues",
                         principalColumn: "LeagueId");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "FixtureTeam",
-                columns: table => new
-                {
-                    FixturesFixtureId = table.Column<long>(type: "bigint", nullable: false),
-                    TeamsTeamId = table.Column<long>(type: "bigint", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FixtureTeam", x => new { x.FixturesFixtureId, x.TeamsTeamId });
-                    table.ForeignKey(
-                        name: "FK_FixtureTeam_Fixtures_FixturesFixtureId",
-                        column: x => x.FixturesFixtureId,
-                        principalTable: "Fixtures",
-                        principalColumn: "FixtureId",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -219,15 +205,16 @@ namespace Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_Managers", x => x.ManagerId);
                     table.ForeignKey(
-                        name: "FK_Managers_People_ManagerPersonId",
+                        name: "FK_Managers_Person_ManagerPersonId",
                         column: x => x.ManagerPersonId,
-                        principalTable: "People",
+                        principalTable: "Person",
                         principalColumn: "PersonId");
                     table.ForeignKey(
                         name: "FK_Managers_Users_UserManagerId",
                         column: x => x.UserManagerId,
                         principalTable: "Users",
-                        principalColumn: "UserId");
+                        principalColumn: "UserId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -239,10 +226,10 @@ namespace Infrastructure.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Venue = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TeamManagerId = table.Column<long>(type: "bigint", nullable: true),
                     CurrentSeasonStatsId = table.Column<long>(type: "bigint", nullable: true),
                     CurrentTeamSheetId = table.Column<long>(type: "bigint", nullable: true),
-                    CurrentLeagueId = table.Column<long>(type: "bigint", nullable: true)
+                    CurrentLeagueId = table.Column<long>(type: "bigint", nullable: true),
+                    TeamManagerId = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -251,12 +238,14 @@ namespace Infrastructure.Migrations
                         name: "FK_Teams_Leagues_CurrentLeagueId",
                         column: x => x.CurrentLeagueId,
                         principalTable: "Leagues",
-                        principalColumn: "LeagueId");
+                        principalColumn: "LeagueId",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Teams_Managers_TeamManagerId",
                         column: x => x.TeamManagerId,
                         principalTable: "Managers",
-                        principalColumn: "ManagerId");
+                        principalColumn: "ManagerId",
+                        onDelete: ReferentialAction.SetNull);
                     table.ForeignKey(
                         name: "FK_Teams_SeasonStats_CurrentSeasonStatsId",
                         column: x => x.CurrentSeasonStatsId,
@@ -279,17 +268,16 @@ namespace Infrastructure.Migrations
                     PlayerStatsId = table.Column<long>(type: "bigint", nullable: true),
                     CurrentTeamId = table.Column<long>(type: "bigint", nullable: true),
                     Position = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PlayerRecordId = table.Column<long>(type: "bigint", nullable: false),
-                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TeamSheetId = table.Column<long>(type: "bigint", nullable: true)
+                    PlayerRecordId = table.Column<long>(type: "bigint", nullable: true),
+                    Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Players", x => x.PlayerId);
                     table.ForeignKey(
-                        name: "FK_Players_People_PlayerPersonId",
+                        name: "FK_Players_Person_PlayerPersonId",
                         column: x => x.PlayerPersonId,
-                        principalTable: "People",
+                        principalTable: "Person",
                         principalColumn: "PersonId");
                     table.ForeignKey(
                         name: "FK_Players_PlayerStats_PlayerStatsId",
@@ -300,19 +288,19 @@ namespace Infrastructure.Migrations
                         name: "FK_Players_Record_PlayerRecordId",
                         column: x => x.PlayerRecordId,
                         principalTable: "Record",
-                        principalColumn: "RecordId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "RecordId");
                     table.ForeignKey(
                         name: "FK_Players_Teams_CurrentTeamId",
                         column: x => x.CurrentTeamId,
                         principalTable: "Teams",
-                        principalColumn: "TeamId");
-                    table.ForeignKey(
-                        name: "FK_Players_TeamSheet_TeamSheetId",
-                        column: x => x.TeamSheetId,
-                        principalTable: "TeamSheet",
-                        principalColumn: "TeamSheetId");
+                        principalColumn: "TeamId",
+                        onDelete: ReferentialAction.Restrict);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Fixtures_AwayTeamID",
+                table: "Fixtures",
+                column: "AwayTeamID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Fixtures_FixtureLeagueID",
@@ -320,9 +308,9 @@ namespace Infrastructure.Migrations
                 column: "FixtureLeagueID");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FixtureTeam_TeamsTeamId",
-                table: "FixtureTeam",
-                column: "TeamsTeamId");
+                name: "IX_Fixtures_HomeTeamID",
+                table: "Fixtures",
+                column: "HomeTeamID");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Leagues_CurrentSeasonId",
@@ -332,7 +320,9 @@ namespace Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Managers_CurrentTeamId",
                 table: "Managers",
-                column: "CurrentTeamId");
+                column: "CurrentTeamId",
+                unique: true,
+                filter: "[CurrentTeamId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Managers_ManagerPersonId",
@@ -342,7 +332,9 @@ namespace Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Managers_UserManagerId",
                 table: "Managers",
-                column: "UserManagerId");
+                column: "UserManagerId",
+                unique: true,
+                filter: "[UserManagerId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Players_CurrentTeamId",
@@ -365,11 +357,6 @@ namespace Infrastructure.Migrations
                 column: "PlayerStatsId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Players_TeamSheetId",
-                table: "Players",
-                column: "TeamSheetId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Teams_CurrentLeagueId",
                 table: "Teams",
                 column: "CurrentLeagueId");
@@ -387,7 +374,9 @@ namespace Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Teams_TeamManagerId",
                 table: "Teams",
-                column: "TeamManagerId");
+                column: "TeamManagerId",
+                unique: true,
+                filter: "[TeamManagerId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TeamSheet_TeamTacticId",
@@ -397,22 +386,32 @@ namespace Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Users_UserPersonId",
                 table: "Users",
-                column: "UserPersonId");
+                column: "UserPersonId",
+                unique: true,
+                filter: "[UserPersonId] IS NOT NULL");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_FixtureTeam_Teams_TeamsTeamId",
-                table: "FixtureTeam",
-                column: "TeamsTeamId",
+                name: "FK_Fixtures_Teams_AwayTeamID",
+                table: "Fixtures",
+                column: "AwayTeamID",
                 principalTable: "Teams",
                 principalColumn: "TeamId",
-                onDelete: ReferentialAction.Cascade);
+                onDelete: ReferentialAction.Restrict);
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Fixtures_Teams_HomeTeamID",
+                table: "Fixtures",
+                column: "HomeTeamID",
+                principalTable: "Teams",
+                principalColumn: "TeamId");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Managers_Teams_CurrentTeamId",
                 table: "Managers",
                 column: "CurrentTeamId",
                 principalTable: "Teams",
-                principalColumn: "TeamId");
+                principalColumn: "TeamId",
+                onDelete: ReferentialAction.SetNull);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -426,13 +425,10 @@ namespace Infrastructure.Migrations
                 table: "Managers");
 
             migrationBuilder.DropTable(
-                name: "FixtureTeam");
+                name: "Fixtures");
 
             migrationBuilder.DropTable(
                 name: "Players");
-
-            migrationBuilder.DropTable(
-                name: "Fixtures");
 
             migrationBuilder.DropTable(
                 name: "PlayerStats");
@@ -465,7 +461,7 @@ namespace Infrastructure.Migrations
                 name: "Tactic");
 
             migrationBuilder.DropTable(
-                name: "People");
+                name: "Person");
         }
     }
 }

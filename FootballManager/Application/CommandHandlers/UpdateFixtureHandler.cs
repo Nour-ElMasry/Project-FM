@@ -19,22 +19,21 @@ namespace Application.CommandHandlers
         {
             var fixture = await _unitOfWork.FixtureRepository.GetFixtureById(request.FixtureId);
 
-            if (fixture != null)
-            {
-                if (!DateTime.TryParse(request.newDate, out DateTime tempDate))
-                    throw new IncorrectDateException("Invalid date! please input a correct date!");
+            if (fixture == null)
+                return null;
 
-                if (DateTime.Now > tempDate)
-                    throw new IncorrectDateException("Invalid date! please input a correct date!");
+            if (!DateTime.TryParse(request.newDate, out DateTime tempDate))
+                throw new IncorrectDateException("Invalid date! please input a correct date!");
 
-                fixture.Date = tempDate;
+            if (DateTime.Now > tempDate)
+                throw new IncorrectDateException("Invalid date! please input a correct date!");
 
-                await _unitOfWork.FixtureRepository.UpdateFixture(fixture);
-                await _unitOfWork.Save();
+            fixture.Date = tempDate;
 
-                return fixture;
-            }
-            return null;
+            await _unitOfWork.FixtureRepository.UpdateFixture(fixture);
+            await _unitOfWork.Save();
+
+            return fixture;
         }
     }
 }

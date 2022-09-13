@@ -24,17 +24,11 @@ public abstract class Player
 
     public Player() { }
 
-    public Player(Person person, string pos)
+    public Player(Person person)
     {
-        if (pos == null)
-            throw new ArgumentNullException(nameof(pos));
-
-        if (!PlayerPositions.IsCorrectPosition(pos, GetType().Name))
-            throw new IncorrectPositionException("Incorrect position assigned to role!");
-
         PlayerPerson = person;
-        Position = pos;
-        PlayerStats = PlayerStatsFactory.GenerateStats(pos);
+        Position = GetType().Name;
+        PlayerStats = PlayerStatsFactory.GenerateStats(GetType().Name);
     }
 
     public void ResetPlayerRecord() {

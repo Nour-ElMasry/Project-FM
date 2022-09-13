@@ -13,18 +13,34 @@ namespace FootballManagerAPI.Controllers
     {
         public readonly IMapper _mapper;
         public readonly IMediator _mediator;
+        public readonly ILogger _logger;
 
-        public TeamController(IMapper mapper, IMediator mediator)
+        public TeamController(IMapper mapper, IMediator mediator, ILogger<object> logger)
         {
             _mapper = mapper;
             _mediator = mediator;
+            _logger = logger;
+
+            _logger.LogInformation("Team controller called...");
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllTeams()
         {
+            _logger.LogInformation("Preparing to get all teams...");
+
             var result = await _mediator.Send(new GetAllTeams());
+
+            if(result == null)
+            {
+                _logger.LogError("Couldn't get all teams!!");
+                return NotFound();
+            }
+
             var mappedResult = _mapper.Map<List<TeamGetDto>>(result);
+
+            _logger.LogInformation("All teams received successfully!!!");
+
             return Ok(mappedResult);
         }
 
@@ -32,13 +48,21 @@ namespace FootballManagerAPI.Controllers
         [Route("{id}")]
         public async Task<IActionResult> GetTeamById(int id)
         {
+            _logger.LogInformation($"Preparing to get team with id {id}...");
+
             var query = new GetTeamById { TeamId = id };
             var result = await _mediator.Send(query);
 
             if (result == null)
+            {
+                _logger.LogError($"Team with id {id} not found!!");
                 return NotFound();
+            }
 
             var mappedResult = _mapper.Map<TeamGetDto>(result);
+
+            _logger.LogInformation($"Team with id {id} received successfully!!!");
+
             return Ok(mappedResult);
         }
 
@@ -46,13 +70,21 @@ namespace FootballManagerAPI.Controllers
         [Route("{id}/Players")]
         public async Task<IActionResult> GetTeamPlayersById(int id)
         {
+            _logger.LogInformation($"Preparing to get players of team with id {id}...");
+
             var query = new GetPlayersByTeam { TeamId = id };
             var result = await _mediator.Send(query);
 
             if (result == null)
+            {
+                _logger.LogError($"Team with id {id} not found!!");
                 return NotFound();
+            }
 
             var mappedResult = _mapper.Map<List<PlayerGetDto>>(result);
+
+            _logger.LogInformation($"Players of team with id {id} received successfully!!!");
+
             return Ok(mappedResult);
         }
 
@@ -60,13 +92,21 @@ namespace FootballManagerAPI.Controllers
         [Route("{id}/Fixtures")]
         public async Task<IActionResult> GetTeamFixturesById(int id)
         {
+            _logger.LogInformation($"Preparing to get fixtures of team with id {id}...");
+
             var query = new GetFixturesByTeam { TeamId = id };
             var result = await _mediator.Send(query);
 
             if (result == null)
+            {
+                _logger.LogError($"Team with id {id} not found!!");
                 return NotFound();
+            }
 
             var mappedResult = _mapper.Map<List<FixtureGetDto>>(result);
+
+            _logger.LogInformation($"Fixtures of team with id {id} received successfully!!!");
+
             return Ok(mappedResult);
         }
 
@@ -75,6 +115,8 @@ namespace FootballManagerAPI.Controllers
         [Route("{teamId}")]
         public async Task<IActionResult> UpdateTeam(int teamId, [FromBody] TeamPutPostDto updated)
         {
+            _logger.LogInformation($"Preparing to update team with id {teamId}...");
+
             var command = new UpdateTeam
             {
                 TeamId = teamId,
@@ -86,7 +128,12 @@ namespace FootballManagerAPI.Controllers
             var result = await _mediator.Send(command);
 
             if (result == null)
+            {
+                _logger.LogError($"Team with id {teamId} not found!!");
                 return NotFound();
+            }
+
+            _logger.LogInformation($"Team with id {teamId} updated successfully!!!");
 
             return NoContent();
         }
@@ -96,11 +143,18 @@ namespace FootballManagerAPI.Controllers
         [Route("{teamId}")]
         public async Task<IActionResult> DeleteTeam(int teamId)
         {
+            _logger.LogInformation($"Preparing to delete team with id {teamId}...");
+
             var command = new DeleteTeam { TeamId = teamId };
             var result = await _mediator.Send(command);
 
             if (result == null)
+            {
+                _logger.LogError($"Team with id {teamId} not found!!");
                 return NotFound();
+            }
+
+            _logger.LogInformation($"Team with id {teamId} deleted successfully!!!");
 
             return NoContent();
         }
@@ -110,12 +164,20 @@ namespace FootballManagerAPI.Controllers
         [Route("{teamId}/Players/AddPlayer/{playerId}")]
         public async Task<IActionResult> AddPlayerToTeam(int teamId, int playerId)
         {
+            _logger.LogInformation($"Preparing to add player with id {playerId} to team with id {teamId}...");
+
             var command = new AddPlayerToTeam { TeamId = teamId, PlayerId = playerId };
             var result = await _mediator.Send(command);
+
             if (result == null)
+            {
+                _logger.LogError($"Team/Player not found!!");
                 return NotFound();
-            
-           return NoContent();
+            }
+
+            _logger.LogInformation($"Player with id {playerId} added to team with id {teamId} successfully!!!");
+
+            return NoContent();
         }
 
         
@@ -123,8 +185,18 @@ namespace FootballManagerAPI.Controllers
         [Route("{teamId}/Players/{playerId}")]
         public async Task<IActionResult> RemovePlayerFromTeam(int teamId, int playerId)
         {
+            _logger.LogInformation($"Preparing to remove player with id {playerId} from team with id {teamId}...");
+
             var command = new RemovePlayerFromTeam { TeamId = teamId, PlayerId = playerId };
             var result = await _mediator.Send(command);
+
+            if (result == null)
+            {
+                _logger.LogError($"Team/Player not found!!");
+                return NotFound();
+            }
+
+            _logger.LogInformation($"Player with id {playerId} removed from team with id {teamId} successfully!!!");
 
             return NoContent();
         }
@@ -133,13 +205,21 @@ namespace FootballManagerAPI.Controllers
         [Route("{id}/AddManager/{managerId}")]
         public async Task<IActionResult> AddManagerToTeam(int id, int managerId)
         {
+            _logger.LogInformation($"Preparing to add manager with id {managerId} to team with id {id}...");
+
             var query = new AddManagerToTeam { TeamId = id, ManagerId= managerId };
             var result = await _mediator.Send(query);
 
             if (result == null)
+            {
+                _logger.LogError($"Team/Manager not found!!");
                 return NotFound();
+            }
 
             var mappedResult = _mapper.Map<ManagerGetDto>(result);
+
+            _logger.LogInformation($"Manager with id {managerId} added to team with id {id} successfully!!!");
+
             return Ok(mappedResult);
         }
     }

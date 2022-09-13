@@ -16,12 +16,12 @@ namespace Application.CommandHandlers
 
         public async Task<Player> Handle(CreatePlayer request, CancellationToken cancellationToken)
         {
-            var role = request.PlayerRole.ToLower();
+            var role = request.Position.ToLower();
             var playerPerson = new Person(request.Name, request.DateOfBirth, request.Country);
 
             switch (role) {
                 case "attacker":
-                    var attacker = new Attacker(playerPerson, request.Position);
+                    var attacker = new Attacker(playerPerson);
 
                     await _unitOfWork.PlayerRepository.AddPlayer(attacker);
                     await _unitOfWork.Save();
@@ -29,21 +29,21 @@ namespace Application.CommandHandlers
                     return attacker;
 
                 case "midfielder":
-                    var midfielder = new Midfielder(playerPerson, request.Position);
+                    var midfielder = new Midfielder(playerPerson);
 
                     await _unitOfWork.PlayerRepository.AddPlayer(midfielder);
                     await _unitOfWork.Save();
 
                     return midfielder;
                 case "defender":
-                    var defender = new Defender(playerPerson, request.Position);
+                    var defender = new Defender(playerPerson);
 
                     await _unitOfWork.PlayerRepository.AddPlayer(defender);
                     await _unitOfWork.Save();
 
                     return defender;
                 case "goalkeeper":
-                    var goalkeeper = new Goalkeeper(playerPerson, request.Position);
+                    var goalkeeper = new Goalkeeper(playerPerson);
 
                     await _unitOfWork.PlayerRepository.AddPlayer(goalkeeper);
                     await _unitOfWork.Save();

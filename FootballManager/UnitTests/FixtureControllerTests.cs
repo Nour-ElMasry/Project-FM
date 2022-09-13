@@ -6,6 +6,7 @@ using FootballManagerAPI.Controllers;
 using FootballManagerAPI.Dto;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Moq;
 using System.Net;
 
@@ -16,6 +17,7 @@ namespace UnitTests
     {
         private readonly Mock<IMediator> _mockMediator = new();
         private readonly Mock<IMapper> _mockMapper = new();
+        private readonly Mock<ILogger<object>> _mockLogger = new();
 
         [TestMethod]
         public async Task Get_All_Fixtures_GetAllFixturesQueryIsCalled()
@@ -24,7 +26,7 @@ namespace UnitTests
                 .Setup(m => m.Send(It.IsAny<GetAllFixtures>(), It.IsAny<CancellationToken>()))
                 .Verifiable();
 
-            var controller = new FixtureController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new FixtureController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
             await controller.GetAllFixtures();
 
             _mockMediator.Verify(x => x.Send(It.IsAny<GetAllFixtures>(), It.IsAny<CancellationToken>()), Times.Once());
@@ -36,7 +38,7 @@ namespace UnitTests
                 .Setup(m => m.Send(It.IsAny<GetFixtureById>(), It.IsAny<CancellationToken>()))
                 .Verifiable();
 
-            var controller = new FixtureController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new FixtureController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
             await controller.GetFixtureById(1);
 
             _mockMediator.Verify(x => x.Send(It.IsAny<GetFixtureById>(), It.IsAny<CancellationToken>()), Times.Once());
@@ -74,7 +76,7 @@ namespace UnitTests
                         });
                 });
 
-            var controller = new FixtureController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new FixtureController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
             await controller.GetFixtureById(1);
 
             Assert.AreEqual(fixtureId, 1);
@@ -106,7 +108,7 @@ namespace UnitTests
                             Venue = "HomeTeam1 Stadium"
                         });
 
-            var controller = new FixtureController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new FixtureController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
 
             var result = await controller.GetFixtureById(1);
             var okResult = result as OkObjectResult;
@@ -157,7 +159,7 @@ namespace UnitTests
                     };
                 });
 
-            var controller = new FixtureController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new FixtureController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
 
             var result = await controller.GetFixtureById(1);
             var okResult = result as OkObjectResult;
@@ -179,7 +181,7 @@ namespace UnitTests
                 .Setup(m => m.Send(It.IsAny<UpdateFixture>(), It.IsAny<CancellationToken>()))
                 .Verifiable();
 
-            var controller = new FixtureController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new FixtureController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
 
             await controller.UpdateFixture(1, fixture);
 

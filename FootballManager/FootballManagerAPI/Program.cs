@@ -1,13 +1,17 @@
 using Application;
 using Application.Abstract;
 using FootballManagerAPI;
+using FootballManagerAPI.Middleware;
 using Infrastructure;
 using Infrastructure.Repository;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
-
+builder.Logging.ClearProviders()
+    .AddFilter("Microsoft", LogLevel.Error)
+    .AddFilter("System", LogLevel.Warning)
+    .AddConsole(); 
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -29,7 +33,6 @@ builder.Services.AddDbContext<DataContext>(options =>
 builder.Services.AddMediatR(typeof(ApplicationAssemblyMaker));
 builder.Services.AddAutoMapper(typeof(AssemblyMaker));
 
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -40,6 +43,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCustomMiddleware();
 
 app.UseAuthorization();
 

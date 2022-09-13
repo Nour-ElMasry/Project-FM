@@ -47,9 +47,9 @@ namespace Infrastructure.Repository
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateLeague(League u)
+        public Task UpdateLeague(League u)
         {
-            _context.Leagues.Attach(u);
+            return Task.Run(() => _context.Leagues.Attach(u));
         }
     }
 }

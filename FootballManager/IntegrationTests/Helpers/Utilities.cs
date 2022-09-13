@@ -10,10 +10,10 @@ namespace IntegrationTests.Helpers
 
             var team = new Team("Fake Team1", "Country9", "Fake Stadium") { TeamId = 1, CurrentLeague = league };
 
-            var player1 = new Attacker(new Person("RightWinger Player", "2001-02-16", "Country1"), "RW") { PlayerId = 1, CurrentTeam = team };
-            var player2 = new Midfielder(new Person("CenterMid Player", "2001-02-16", "Country2"), "CM") { PlayerId = 2, CurrentTeam = team };
-            var player3 = new Defender(new Person("RightBack Player", "2001-02-16", "Country3"), "RB") { PlayerId = 3, CurrentTeam = team };
-            var player4 = new Goalkeeper(new Person("Goalkeeper Player", "2001-02-16", "Country4"), "GK") { PlayerId = 4, CurrentTeam = team };
+            var player1 = new Attacker(new Person("RightWinger Player", "2001-02-16", "Country1")) { PlayerId = 1, CurrentTeam = team };
+            var player2 = new Midfielder(new Person("CenterMid Player", "2001-02-16", "Country2")) { PlayerId = 2, CurrentTeam = team };
+            var player3 = new Defender(new Person("RightBack Player", "2001-02-16", "Country3")) { PlayerId = 3, CurrentTeam = team };
+            var player4 = new Goalkeeper(new Person("Goalkeeper Player", "2001-02-16", "Country4")) { PlayerId = 4, CurrentTeam = team };
 
             team.Players.Add(player1);
             team.Players.Add(player2);
@@ -22,10 +22,10 @@ namespace IntegrationTests.Helpers
 
             var team1 = new Team("Fake Team2", "Country10", "Fake Stadium") { TeamId = 2, CurrentLeague = league };
 
-            var player5 = new Attacker(new Person("RightWinger Player", "2001-02-16", "Country5"), "RW") { PlayerId = 5, CurrentTeam = team1 };
-            var player6 = new Midfielder(new Person("CenterMid Player", "2001-02-16", "Country6"), "CM") { PlayerId = 6, CurrentTeam = team1 };
-            var player7 = new Defender(new Person("RightBack Player", "2001-02-16", "Country7"), "RB") { PlayerId = 7, CurrentTeam = team1 };
-            var player8 = new Goalkeeper(new Person("Goalkeeper Player", "2001-02-16", "Country8"), "GK") { PlayerId = 8, CurrentTeam = team1 };
+            var player5 = new Attacker(new Person("RightWinger Player", "2001-02-16", "Country5")) { PlayerId = 5, CurrentTeam = team1 };
+            var player6 = new Midfielder(new Person("CenterMid Player", "2001-02-16", "Country6")) { PlayerId = 6, CurrentTeam = team1 };
+            var player7 = new Defender(new Person("RightBack Player", "2001-02-16", "Country7")) { PlayerId = 7, CurrentTeam = team1 };
+            var player8 = new Goalkeeper(new Person("Goalkeeper Player", "2001-02-16", "Country8")) { PlayerId = 8, CurrentTeam = team1 };
 
             team1.Players.Add(player5);
             team1.Players.Add(player6);

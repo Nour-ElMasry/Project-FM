@@ -6,6 +6,7 @@ using FootballManagerAPI.Controllers;
 using FootballManagerAPI.Dto;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Moq;
 using System.Net;
 
@@ -16,6 +17,7 @@ namespace UnitTests
     {
         private readonly Mock<IMediator> _mockMediator = new();
         private readonly Mock<IMapper> _mockMapper = new();
+        private readonly Mock<ILogger<object>> _mockLogger = new();
 
         [TestMethod]
         public async Task Get_All_Users_GetAllUsersQueryIsCalled()
@@ -24,7 +26,7 @@ namespace UnitTests
                 .Setup(m => m.Send(It.IsAny<GetAllUsers>(), It.IsAny<CancellationToken>()))
                 .Verifiable();
 
-            var controller = new UserController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new UserController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
             await controller.GetAllUsers();
 
             _mockMediator.Verify(x => x.Send(It.IsAny<GetAllUsers>(), It.IsAny<CancellationToken>()), Times.Once());
@@ -36,7 +38,7 @@ namespace UnitTests
                 .Setup(m => m.Send(It.IsAny<GetUserById>(), It.IsAny<CancellationToken>()))
                 .Verifiable();
 
-            var controller = new UserController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new UserController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
             await controller.GetUserById(1);
 
             _mockMediator.Verify(x => x.Send(It.IsAny<GetUserById>(), It.IsAny<CancellationToken>()), Times.Once());
@@ -56,7 +58,7 @@ namespace UnitTests
                         new User());
                 });
 
-            var controller = new UserController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new UserController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
             await controller.GetUserById(1);
 
             Assert.AreEqual(userId, 1);
@@ -70,7 +72,7 @@ namespace UnitTests
                 .ReturnsAsync(
                        new User());
 
-            var controller = new UserController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new UserController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
 
             var result = await controller.GetUserById(1);
             var okResult = result as OkObjectResult;
@@ -103,7 +105,7 @@ namespace UnitTests
                 };
             });
 
-            var controller = new UserController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new UserController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
 
             var result = await controller.GetUserById(1);
             var okResult = result as OkObjectResult;
@@ -118,7 +120,7 @@ namespace UnitTests
                 .Setup(m => m.Send(It.IsAny<GetTeamByUserId>(), It.IsAny<CancellationToken>()))
                 .Verifiable();
 
-            var controller = new UserController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new UserController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
             await controller.GetUserTeam(1);
 
             _mockMediator.Verify(x => x.Send(It.IsAny<GetTeamByUserId>(), It.IsAny<CancellationToken>()), Times.Once());
@@ -138,7 +140,7 @@ namespace UnitTests
                         new Team());
                 });
 
-            var controller = new UserController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new UserController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
             await controller.GetUserTeam(1);
 
             Assert.AreEqual(userId, 1);
@@ -152,7 +154,7 @@ namespace UnitTests
                 .ReturnsAsync(
                        new Team());
 
-            var controller = new UserController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new UserController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
 
             var result = await controller.GetUserTeam(1);
             var okResult = result as OkObjectResult;
@@ -185,7 +187,7 @@ namespace UnitTests
                 };
             });
 
-            var controller = new UserController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new UserController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
 
             var result = await controller.GetUserTeam(1);
             var okResult = result as OkObjectResult;
@@ -203,7 +205,7 @@ namespace UnitTests
                 .Setup(m => m.Send(It.IsAny<AuthUser>(), It.IsAny<CancellationToken>()))
                 .Verifiable();
 
-            var controller = new UserController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new UserController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
 
             await controller.AuthUser(user);
 
@@ -217,7 +219,7 @@ namespace UnitTests
                 .Setup(m => m.Send(It.IsAny<DeleteUser>(), It.IsAny<CancellationToken>()))
                 .Verifiable();
 
-            var controller = new UserController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new UserController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
 
             await controller.DeleteUser(1);
 

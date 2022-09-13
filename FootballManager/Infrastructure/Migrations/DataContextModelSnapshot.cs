@@ -91,6 +91,9 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("ManagerId"), 1L, 1);
 
+                    b.Property<long?>("CurrentTeamId")
+                        .HasColumnType("bigint");
+
                     b.Property<string>("Discriminator")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -98,10 +101,11 @@ namespace Infrastructure.Migrations
                     b.Property<long?>("ManagerPersonId")
                         .HasColumnType("bigint");
 
-                    b.Property<long?>("TeamId")
-                        .HasColumnType("bigint");
-
                     b.HasKey("ManagerId");
+
+                    b.HasIndex("CurrentTeamId")
+                        .IsUnique()
+                        .HasFilter("[CurrentTeamId] IS NOT NULL");
 
                     b.HasIndex("ManagerPersonId");
 
@@ -118,7 +122,7 @@ namespace Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("PersonId"), 1L, 1);
 
-                    b.Property<DateTime>("BirthDate")
+                    b.Property<DateTime?>("BirthDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Country")
@@ -331,11 +335,11 @@ namespace Infrastructure.Migrations
                     b.Property<long?>("CurrentTeamSheetId")
                         .HasColumnType("bigint");
 
-                    b.Property<long?>("ManagerId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<long?>("TeamManagerId")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Venue")
                         .HasColumnType("nvarchar(max)");
@@ -348,9 +352,9 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("CurrentTeamSheetId");
 
-                    b.HasIndex("ManagerId")
+                    b.HasIndex("TeamManagerId")
                         .IsUnique()
-                        .HasFilter("[ManagerId] IS NOT NULL");
+                        .HasFilter("[TeamManagerId] IS NOT NULL");
 
                     b.ToTable("Teams");
                 });
@@ -398,7 +402,9 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("UserId");
 
-                    b.HasIndex("UserPersonId");
+                    b.HasIndex("UserPersonId")
+                        .IsUnique()
+                        .HasFilter("[UserPersonId] IS NOT NULL");
 
                     b.ToTable("Users");
                 });
@@ -534,6 +540,11 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Manager", b =>
                 {
+                    b.HasOne("Domain.Entities.Team", null)
+                        .WithOne("TeamManager")
+                        .HasForeignKey("Domain.Entities.Manager", "CurrentTeamId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.HasOne("Domain.Entities.Person", "ManagerPerson")
                         .WithMany()
                         .HasForeignKey("ManagerPersonId");
@@ -584,9 +595,9 @@ namespace Infrastructure.Migrations
                         .WithMany()
                         .HasForeignKey("CurrentTeamSheetId");
 
-                    b.HasOne("Domain.Entities.Manager", "TeamManager")
+                    b.HasOne("Domain.Entities.Manager", null)
                         .WithOne("CurrentTeam")
-                        .HasForeignKey("Domain.Entities.Team", "ManagerId")
+                        .HasForeignKey("Domain.Entities.Team", "TeamManagerId")
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("CurrentLeague");
@@ -594,8 +605,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("CurrentSeasonStats");
 
                     b.Navigation("CurrentTeamSheet");
-
-                    b.Navigation("TeamManager");
                 });
 
             modelBuilder.Entity("Domain.Entities.TeamSheet", b =>
@@ -610,8 +619,9 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.User", b =>
                 {
                     b.HasOne("Domain.Entities.Person", "UserPerson")
-                        .WithMany()
-                        .HasForeignKey("UserPersonId");
+                        .WithOne()
+                        .HasForeignKey("Domain.Entities.User", "UserPersonId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("UserPerson");
                 });
@@ -645,6 +655,8 @@ namespace Infrastructure.Migrations
                     b.Navigation("HomeFixtures");
 
                     b.Navigation("Players");
+
+                    b.Navigation("TeamManager");
                 });
 #pragma warning restore 612, 618
         }

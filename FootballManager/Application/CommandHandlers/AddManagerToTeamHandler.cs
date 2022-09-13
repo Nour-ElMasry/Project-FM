@@ -23,9 +23,6 @@ namespace Application.CommandHandlers
                 return null;
    
             team.TeamManager = manager;
-
-            await _unitOfWork.Save();
-
             manager.CurrentTeam = team;
 
             await _unitOfWork.Save();

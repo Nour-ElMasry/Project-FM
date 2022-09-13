@@ -3,7 +3,7 @@ public class Midfielder : Player
 {
     public Midfielder() { }
 
-    public Midfielder(Person p, string position) : base(p, position)
+    public Midfielder(Person p) : base(p)
     {
     }
 }

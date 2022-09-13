@@ -48,9 +48,9 @@ namespace Infrastructure.Repository
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdatePlayer(Player u)
+        public Task UpdatePlayer(Player u)
         {
-            _context.Players.Attach(u);
+            return Task.Run(() => _context.Players.Attach(u));
         }
     }
 }

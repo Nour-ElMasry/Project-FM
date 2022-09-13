@@ -6,6 +6,7 @@ using FootballManagerAPI.Controllers;
 using FootballManagerAPI.Dto;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Moq;
 using System.Net;
 
@@ -16,7 +17,7 @@ namespace UnitTests
     {
         private readonly Mock<IMediator> _mockMediator = new();
         private readonly Mock<IMapper> _mockMapper = new();
-
+        private readonly Mock<ILogger<object>> _mockLogger = new();
         [TestMethod]
         public async Task Get_All_Players_GetAllPlayersQueryIsCalled()
         {
@@ -24,7 +25,7 @@ namespace UnitTests
                 .Setup(m => m.Send(It.IsAny<GetAllPlayers>(), It.IsAny<CancellationToken>()))
                 .Verifiable();
 
-            var controller = new PlayerController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new PlayerController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
             await controller.GetAllPlayers();
 
             _mockMediator.Verify(x => x.Send(It.IsAny<GetAllPlayers>(), It.IsAny<CancellationToken>()), Times.Once());
@@ -36,7 +37,7 @@ namespace UnitTests
                 .Setup(m => m.Send(It.IsAny<GetPlayerById>(), It.IsAny<CancellationToken>()))
                 .Verifiable();
 
-            var controller = new PlayerController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new PlayerController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
             await controller.GetPlayerById(1);
 
             _mockMediator.Verify(x => x.Send(It.IsAny<GetPlayerById>(), It.IsAny<CancellationToken>()), Times.Once());
@@ -56,7 +57,7 @@ namespace UnitTests
                         new Attacker());
                 });
 
-            var controller = new PlayerController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new PlayerController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
             await controller.GetPlayerById(1);
 
             Assert.AreEqual(playerId, 1);
@@ -70,7 +71,7 @@ namespace UnitTests
                 .ReturnsAsync(
                         new Attacker());
 
-            var controller = new PlayerController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new PlayerController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
 
             var result = await controller.GetPlayerById(1);
             var okResult = result as OkObjectResult;
@@ -102,7 +103,7 @@ namespace UnitTests
                 };
             });
 
-            var controller = new PlayerController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new PlayerController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
 
             var result = await controller.GetPlayerById(1);
             var okResult = result as OkObjectResult;
@@ -117,7 +118,7 @@ namespace UnitTests
                 .Setup(m => m.Send(It.IsAny<DeletePlayer>(), It.IsAny<CancellationToken>()))
                 .Verifiable();
 
-            var controller = new PlayerController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new PlayerController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
 
             await controller.DeletePlayer(1);
 
@@ -133,7 +134,7 @@ namespace UnitTests
                 .Setup(m => m.Send(It.IsAny<UpdatePlayer>(), It.IsAny<CancellationToken>()))
                 .Verifiable();
 
-            var controller = new PlayerController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new PlayerController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
 
             await controller.UpdatePlayer(1, player);
 
@@ -161,7 +162,7 @@ namespace UnitTests
                 return new PlayerGetDto();
             });
 
-            var controller = new PlayerController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new PlayerController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
 
             await controller.CreatePlayer(player);
 
@@ -176,13 +177,12 @@ namespace UnitTests
                 Name = "Someone",
                 Country = "Country",
                 DateOfBirth = "2001-02-15",
-                PlayerRole = "Attacker",
-                Position = "ST"
+                Position = "Attacker"
             };
 
             _mockMediator
                 .Setup(m => m.Send(It.IsAny<CreatePlayer>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new Attacker(new Person(player.Name, player.DateOfBirth, player.Country), player.Position));
+                .ReturnsAsync(new Attacker(new Person(player.Name, player.DateOfBirth, player.Country)));
 
             _mockMapper.Setup(x => x.Map<CreatePlayer>(It.IsAny<PlayerPutPostDto>()))
             .Returns((PlayerPutPostDto p) =>
@@ -192,8 +192,7 @@ namespace UnitTests
                     Name = "Someone",
                     Country = "Country",
                     DateOfBirth = "2001-02-15",
-                    PlayerRole = "Attacker",
-                    Position = "ST"
+                    Position = "Attacker"
                 };
             });
 
@@ -208,7 +207,7 @@ namespace UnitTests
                 };
             });
 
-            var controller = new PlayerController(_mockMapper.Object, _mockMediator.Object);
+            var controller = new PlayerController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
 
             var result = await controller.CreatePlayer(player);
 

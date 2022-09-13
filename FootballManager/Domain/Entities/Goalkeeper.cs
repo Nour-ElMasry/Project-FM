@@ -2,7 +2,7 @@
 public class Goalkeeper : Player
 {
     public Goalkeeper() { }
-    public Goalkeeper(Person p, string position) : base(p, position)
+    public Goalkeeper(Person p) : base(p)
     {
     }
 }

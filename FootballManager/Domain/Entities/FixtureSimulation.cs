@@ -121,9 +121,9 @@ public static class FixtureSimulation
     {
         var randomNum = rnd.Next(0, 1000);
 
-        if (randomNum < 650)
+        if (randomNum < 550)
             ScoreGoal(RandomAttacker());
-        else if (randomNum < 900)
+        else if (randomNum < 850)
             ScoreGoal(RandomMidfielder());
         else
             ScoreGoal(RandomDefender());

@@ -13,43 +13,70 @@ namespace FootballManagerAPI.Controllers
     {
         public readonly IMapper _mapper;
         public readonly IMediator _mediator;
+        public readonly ILogger _logger;
 
-        public UserController(IMapper mapper, IMediator mediator)
+        public UserController(IMapper mapper, IMediator mediator, ILogger<object> logger)
         {
             _mapper = mapper;
             _mediator = mediator;
+            _logger = logger;
+            _logger.LogInformation("User Controller called...");
         }
 
         [HttpGet]
         public async Task<IActionResult> GetAllUsers()
         {
+            _logger.LogInformation("Preparing to get all users...");
+
             var result = await _mediator.Send(new GetAllUsers());
 
             if (result == null)
+            {
+                _logger.LogError("Couldn't get all users!!!");
                 return NotFound();
+            }
 
             var mappedResult = _mapper.Map<List<UserGetDto>>(result);
+
+            _logger.LogInformation("All users received successfully!!!");
+
             return Ok(mappedResult);
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateUser([FromBody] UserPostDto user)
         {
+            _logger.LogInformation("Preparing to create a user...");
+
             if (!ModelState.IsValid)
+            {
+                _logger.LogError("Information received was invalid!!");
                 return BadRequest(ModelState);
+            }
 
             var command = _mapper.Map<CreateUser>(user);
 
-            var created = await _mediator.Send(command);
-            var dto = _mapper.Map<UserGetDto>(created);
+            var result = await _mediator.Send(command);
 
-            return CreatedAtAction(nameof(GetUserById), new { id = created.UserId }, dto);
+            if (result == null)
+            {
+                _logger.LogError($"Failed to create user!!!");
+                return NotFound();
+            }
+
+            var dto = _mapper.Map<UserGetDto>(result);
+
+            _logger.LogInformation("User created successfully!!!");
+
+            return CreatedAtAction(nameof(GetUserById), new { id = result.UserId }, dto);
         }
 
         [HttpGet]
         [Route("{id}")]
         public async Task<IActionResult> GetUserById(int id)
         {
+            _logger.LogInformation($"Preparing to get user with id {id}...");
+
             var command = new GetUserById
             {
                 UserId = id
@@ -58,9 +85,16 @@ namespace FootballManagerAPI.Controllers
             var result = await _mediator.Send(command);
 
             if (result == null)
+            {
+                _logger.LogError($"User with id {id} not found!!!");
                 return NotFound();
+            }
 
             var mappedResult = _mapper.Map<UserGetDto>(result);
+
+
+            _logger.LogInformation($"User with id {id} received successfully!!!");
+
             return Ok(mappedResult);
         }
 
@@ -68,6 +102,8 @@ namespace FootballManagerAPI.Controllers
         [Route("{id}/Team")]
         public async Task<IActionResult> GetUserTeam(int id)
         {
+            _logger.LogInformation($"Preparing to get team of user with id {id}...");
+
             var command = new GetTeamByUserId
             {
                 UserId = id
@@ -76,9 +112,15 @@ namespace FootballManagerAPI.Controllers
             var result = await _mediator.Send(command);
 
             if (result == null)
+            {
+                _logger.LogError($"User with id {id} not found or is not a manager of a team!!!");
                 return NotFound();
+            }
 
             var mappedResult = _mapper.Map<TeamGetDto>(result);
+
+            _logger.LogInformation($"Team of user with id {id} received successfully!!!");
+
             return Ok(mappedResult);
         }
 
@@ -86,6 +128,14 @@ namespace FootballManagerAPI.Controllers
         [Route("Auth")]
         public async Task<IActionResult> AuthUser(UserAuthDto user)
         {
+            _logger.LogInformation($"Preparing to authenticate user...");
+
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError("Information received was invalid!!");
+                return BadRequest(ModelState);
+            }
+
             var command = new AuthUser
             {
                 UserName = user.Username,
@@ -95,21 +145,33 @@ namespace FootballManagerAPI.Controllers
             var result = await _mediator.Send(command);
 
             if (result == null)
+            {
+                _logger.LogError("Failed to authenticate user!!!");
                 return NotFound();
+            }
+
+            _logger.LogInformation("User authenticated successfully!!!");
 
             return NoContent();
         }
 
-        
+
         [HttpDelete]
         [Route("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
+            _logger.LogInformation($"Preparing to delete user with id {id}...");
+
             var command = new DeleteUser { UserId = id };
             var result = await _mediator.Send(command);
 
             if (result == null)
+            {
+                _logger.LogError($"User with id {id} not found!!!");
                 return NotFound();
+            }
+
+            _logger.LogInformation($"User with id {id} deleted successfully!!!");
 
             return NoContent();
         }

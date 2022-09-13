@@ -24,6 +24,9 @@ namespace Application.QueryHandlers
 
             var userManager = managers.SingleOrDefault(m => m.ManagerPerson == user.UserPerson);
 
+            if (userManager == null)
+                return null;
+
             return await _unitOfWork.TeamRepository.GetTeamById(userManager.CurrentTeam.TeamId);
         }
     }

@@ -29,8 +29,7 @@ namespace IntegrationTests
                 Name = "New Player",
                 Country = "New Country",
                 DateOfBirth = "2009-05-17",
-                PlayerRole = "Midfielder",
-                Position = "CDM"
+                Position = "Midfielder",
             };
 
             var client = _factory.CreateClient();
@@ -117,8 +116,7 @@ namespace IntegrationTests
                 Name = "New Name",
                 Country = "New Country",
                 DateOfBirth = "2000-02-15",
-                PlayerRole = "Attacker",
-                Position = "LW"
+                Position = "Attacker",
             };
 
             var client = _factory.CreateClient();

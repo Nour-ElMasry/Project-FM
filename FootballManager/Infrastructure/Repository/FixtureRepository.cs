@@ -17,9 +17,9 @@ namespace Infrastructure.Repository
             await _context.Fixtures.AddAsync(u);
         }
 
-        public async Task DeleteFixture(Fixture u)
+        public Task DeleteFixture(Fixture u)
         {
-            _context.Fixtures.Remove(u);
+            return Task.Run(() => _context.Fixtures.Remove(u));
         }
 
         public async Task<List<Fixture>> GetAllFixtures()
@@ -32,7 +32,7 @@ namespace Infrastructure.Repository
                 .Include(l => l.HomeTeam).ThenInclude(t => t.Players).ThenInclude(p => p.PlayerRecord)
                 .Include(l => l.AwayTeam).ThenInclude(t => t.Players).ThenInclude(p => p.PlayerRecord)
                 .Include(f => f.FixtureLeague)
-                .Take(100).ToListAsync();
+                .ToListAsync();
         }
 
         public async Task<Fixture> GetFixtureById(long id)
@@ -53,9 +53,9 @@ namespace Infrastructure.Repository
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateFixture(Fixture u)
+        public Task UpdateFixture(Fixture u)
         {
-            _context.Fixtures.Attach(u);
+            return Task.Run(() => _context.Fixtures.Attach(u));
         }
     }
 }
