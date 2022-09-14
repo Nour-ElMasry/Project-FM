@@ -21,7 +21,7 @@ namespace Application.CommandHandlers
 
             if (manager == null || team == null)
                 return null;
-   
+
             team.TeamManager = manager;
             manager.CurrentTeam = team;
 

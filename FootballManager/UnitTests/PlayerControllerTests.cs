@@ -8,7 +8,6 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
-using System.Net;
 
 namespace UnitTests
 {
@@ -185,16 +184,16 @@ namespace UnitTests
                 .ReturnsAsync(new Attacker(new Person(player.Name, player.DateOfBirth, player.Country)));
 
             _mockMapper.Setup(x => x.Map<CreatePlayer>(It.IsAny<PlayerPutPostDto>()))
-            .Returns((PlayerPutPostDto p) =>
+            .Returns((Func<PlayerPutPostDto, CreatePlayer>)((PlayerPutPostDto p) =>
             {
                 return new CreatePlayer
                 {
                     Name = "Someone",
-                    Country = "Country",
+                    Image = "Country",
                     DateOfBirth = "2001-02-15",
                     Position = "Attacker"
                 };
-            });
+            }));
 
             _mockMapper.Setup(x => x.Map<PlayerGetDto>(It.IsAny<Player>()))
             .Returns((Player p) =>

@@ -8,5 +8,6 @@ namespace Application.Commands
         public string Name { get; set; }
         public string Country { get; set; }
         public string Venue { get; set; }
+        public string Logo { get; set; }
     }
 }

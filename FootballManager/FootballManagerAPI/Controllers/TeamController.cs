@@ -2,6 +2,7 @@
 using Application.Queries;
 using AutoMapper;
 using FootballManagerAPI.Dto;
+using FootballManagerAPI.Pagination;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,13 +26,14 @@ namespace FootballManagerAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllTeams()
+        [Route("All/{pg?}")]
+        public async Task<IActionResult> GetAllTeams(int pg = 1)
         {
             _logger.LogInformation("Preparing to get all teams...");
 
             var result = await _mediator.Send(new GetAllTeams());
 
-            if(result == null)
+            if (result == null)
             {
                 _logger.LogError("Couldn't get all teams!!");
                 return NotFound();
@@ -39,9 +41,18 @@ namespace FootballManagerAPI.Controllers
 
             var mappedResult = _mapper.Map<List<TeamGetDto>>(result);
 
+            var page = new Pager<TeamGetDto>(mappedResult.Count, pg);
+
+            var pageResults = mappedResult
+                .Skip((page.CurrentPage - 1) * page.PageNumOfResults)
+                .Take(page.PageNumOfResults)
+                .ToList();
+
+            page.PageResults = pageResults;
+
             _logger.LogInformation("All teams received successfully!!!");
 
-            return Ok(mappedResult);
+            return Ok(page);
         }
 
         [HttpGet]
@@ -67,8 +78,8 @@ namespace FootballManagerAPI.Controllers
         }
 
         [HttpGet]
-        [Route("{id}/Players")]
-        public async Task<IActionResult> GetTeamPlayersById(int id)
+        [Route("{id}/Players/{pg?}")]
+        public async Task<IActionResult> GetTeamPlayersById(int id, int pg = 1)
         {
             _logger.LogInformation($"Preparing to get players of team with id {id}...");
 
@@ -83,14 +94,23 @@ namespace FootballManagerAPI.Controllers
 
             var mappedResult = _mapper.Map<List<PlayerGetDto>>(result);
 
+            var page = new Pager<PlayerGetDto>(mappedResult.Count, pg);
+
+            var pageResults = mappedResult
+                .Skip((page.CurrentPage - 1) * page.PageNumOfResults)
+                .Take(page.PageNumOfResults)
+                .ToList();
+
+            page.PageResults = pageResults;
+
             _logger.LogInformation($"Players of team with id {id} received successfully!!!");
 
-            return Ok(mappedResult);
+            return Ok(page);
         }
 
         [HttpGet]
-        [Route("{id}/Fixtures")]
-        public async Task<IActionResult> GetTeamFixturesById(int id)
+        [Route("{id}/Fixtures/{pg?}")]
+        public async Task<IActionResult> GetTeamFixturesById(int id, int pg = 1)
         {
             _logger.LogInformation($"Preparing to get fixtures of team with id {id}...");
 
@@ -105,9 +125,19 @@ namespace FootballManagerAPI.Controllers
 
             var mappedResult = _mapper.Map<List<FixtureGetDto>>(result);
 
+            var page = new Pager<FixtureGetDto>(mappedResult.Count, pg);
+
+            var pageResults = mappedResult
+                .Skip((page.CurrentPage - 1) * page.PageNumOfResults)
+                .Take(page.PageNumOfResults)
+                .ToList();
+
+            page.PageResults = pageResults;
+
+
             _logger.LogInformation($"Fixtures of team with id {id} received successfully!!!");
 
-            return Ok(mappedResult);
+            return Ok(page);
         }
 
 
@@ -138,7 +168,7 @@ namespace FootballManagerAPI.Controllers
             return NoContent();
         }
 
-        
+
         [HttpDelete]
         [Route("{teamId}")]
         public async Task<IActionResult> DeleteTeam(int teamId)
@@ -159,7 +189,7 @@ namespace FootballManagerAPI.Controllers
             return NoContent();
         }
 
-        
+
         [HttpGet]
         [Route("{teamId}/Players/AddPlayer/{playerId}")]
         public async Task<IActionResult> AddPlayerToTeam(int teamId, int playerId)
@@ -180,7 +210,7 @@ namespace FootballManagerAPI.Controllers
             return NoContent();
         }
 
-        
+
         [HttpDelete]
         [Route("{teamId}/Players/{playerId}")]
         public async Task<IActionResult> RemovePlayerFromTeam(int teamId, int playerId)
@@ -207,7 +237,7 @@ namespace FootballManagerAPI.Controllers
         {
             _logger.LogInformation($"Preparing to add manager with id {managerId} to team with id {id}...");
 
-            var query = new AddManagerToTeam { TeamId = id, ManagerId= managerId };
+            var query = new AddManagerToTeam { TeamId = id, ManagerId = managerId };
             var result = await _mediator.Send(query);
 
             if (result == null)

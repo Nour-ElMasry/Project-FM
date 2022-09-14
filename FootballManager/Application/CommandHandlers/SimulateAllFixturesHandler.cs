@@ -18,7 +18,7 @@ namespace Application.CommandHandlers
         {
             var league = await _unitOfWork.LeagueRepository.GetLeagueById(request.LeagueId);
 
-            if(league == null)
+            if (league == null)
                 return null;
 
             var fixtures = await _unitOfWork.FixtureRepository.GetAllFixtures();

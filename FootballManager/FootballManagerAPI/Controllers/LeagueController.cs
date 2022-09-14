@@ -2,6 +2,7 @@
 using Application.Queries;
 using AutoMapper;
 using FootballManagerAPI.Dto;
+using FootballManagerAPI.Pagination;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,7 +25,8 @@ namespace FootballManagerAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllLeagues()
+        [Route("All/{pg?}")]
+        public async Task<IActionResult> GetAllLeagues(int pg = 1)
         {
             _logger.LogInformation("Preparing to get all leagues...");
 
@@ -38,9 +40,18 @@ namespace FootballManagerAPI.Controllers
 
             var mappedResult = _mapper.Map<List<LeagueGetDto>>(result);
 
+            var page = new Pager<LeagueGetDto>(mappedResult.Count, pg);
+
+            var pageResults = mappedResult
+                .Skip((page.CurrentPage - 1) * page.PageNumOfResults)
+                .Take(page.PageNumOfResults)
+                .ToList();
+
+            page.PageResults = pageResults;
+
             _logger.LogInformation("All leagues have been received successfully!!!");
 
-            return Ok(mappedResult);
+            return Ok(page);
         }
 
         [HttpGet]
@@ -65,7 +76,7 @@ namespace FootballManagerAPI.Controllers
             return Ok(mappedResult);
         }
 
-        
+
         [HttpDelete]
         [Route("{id}")]
         public async Task<IActionResult> DeleteLeague(int id)
@@ -73,7 +84,7 @@ namespace FootballManagerAPI.Controllers
             _logger.LogInformation($"Preparing to delete league with id {id}...");
 
             var command = new DeleteLeague { LeagueId = id };
-            
+
             var result = await _mediator.Send(command);
 
             if (result == null)
@@ -88,8 +99,8 @@ namespace FootballManagerAPI.Controllers
         }
 
         [HttpGet]
-        [Route("{id}/Teams")]
-        public async Task<IActionResult> GetLeagueTeamsById(int id)
+        [Route("{id}/Teams/{pg?}")]
+        public async Task<IActionResult> GetLeagueTeamsById(int id, int pg = 1)
         {
             _logger.LogInformation($"Preparing to get teams of league with id {id}...");
 
@@ -104,12 +115,21 @@ namespace FootballManagerAPI.Controllers
 
             var mappedResult = _mapper.Map<List<TeamGetDto>>(result);
 
+            var page = new Pager<TeamGetDto>(mappedResult.Count, pg);
+
+            var pageResults = mappedResult
+                .Skip((page.CurrentPage - 1) * page.PageNumOfResults)
+                .Take(page.PageNumOfResults)
+                .ToList();
+
+            page.PageResults = pageResults;
+
             _logger.LogInformation($"Teams of league with id {id} have been received successfully!!!");
 
-            return Ok(mappedResult);
+            return Ok(page);
         }
 
-       
+
         [HttpDelete]
         [Route("{id}/Teams/{teamId}")]
         public async Task<IActionResult> RemoveTeamFromLeague(int id, int teamId)
@@ -132,8 +152,8 @@ namespace FootballManagerAPI.Controllers
         }
 
         [HttpGet]
-        [Route("{id}/Players")]
-        public async Task<IActionResult> GetLeaguePlayersById(int id)
+        [Route("{id}/Players/{pg?}")]
+        public async Task<IActionResult> GetLeaguePlayersById(int id, int pg = 1)
         {
             _logger.LogInformation($"Preparing to get players from league with id {id}...");
 
@@ -148,14 +168,23 @@ namespace FootballManagerAPI.Controllers
 
             var mappedResult = _mapper.Map<List<PlayerGetDto>>(result);
 
+            var page = new Pager<PlayerGetDto>(mappedResult.Count, pg);
+
+            var pageResults = mappedResult
+                .Skip((page.CurrentPage - 1) * page.PageNumOfResults)
+                .Take(page.PageNumOfResults)
+                .ToList();
+
+            page.PageResults = pageResults;
+
             _logger.LogInformation($"Players from league with id {id} have been received successfully!!!");
 
-            return Ok(mappedResult);
+            return Ok(page);
         }
 
         [HttpGet]
-        [Route("{id}/Fixtures")]
-        public async Task<IActionResult> GetLeagueFixturesById(int id)
+        [Route("{id}/Fixtures/{pg?}")]
+        public async Task<IActionResult> GetLeagueFixturesById(int id, int pg = 1)
         {
             _logger.LogInformation($"Preparing to get fixtures from league with id {id}...");
 
@@ -170,9 +199,18 @@ namespace FootballManagerAPI.Controllers
 
             var mappedResult = _mapper.Map<List<FixtureGetDto>>(result);
 
+            var page = new Pager<FixtureGetDto>(mappedResult.Count, pg);
+
+            var pageResults = mappedResult
+                .Skip((page.CurrentPage - 1) * page.PageNumOfResults)
+                .Take(page.PageNumOfResults)
+                .ToList();
+
+            page.PageResults = pageResults;
+
             _logger.LogInformation($"Fixtures from league with id {id} have been received successfully!!!");
 
-            return Ok(mappedResult);
+            return Ok(page);
         }
 
         [HttpPut]
@@ -182,7 +220,7 @@ namespace FootballManagerAPI.Controllers
             _logger.LogInformation($"Preparing to simulate fixtures from league with id {id}...");
 
             var query = new SimulateAllFixtures { LeagueId = id };
-            
+
             var result = await _mediator.Send(query);
 
             if (result == null)
@@ -198,8 +236,8 @@ namespace FootballManagerAPI.Controllers
 
 
         [HttpGet]
-        [Route("{id}/GenerateFixtures")]
-        public async Task<IActionResult>  GenerateLeagueFixture(int id)
+        [Route("{id}/GenerateFixtures/{pg?}")]
+        public async Task<IActionResult> GenerateLeagueFixture(int id, int pg)
         {
             _logger.LogInformation($"Preparing to generate fixtures for league with id {id}...");
 
@@ -215,9 +253,18 @@ namespace FootballManagerAPI.Controllers
 
             var mappedResult = _mapper.Map<List<FixtureGetDto>>(result);
 
+            var page = new Pager<FixtureGetDto>(mappedResult.Count, pg);
+
+            var pageResults = mappedResult
+                .Skip((page.CurrentPage - 1) * page.PageNumOfResults)
+                .Take(page.PageNumOfResults)
+                .ToList();
+
+            page.PageResults = pageResults;
+
             _logger.LogInformation($"Fixtures for league with id {id} generated successfully!!!");
 
-            return Ok(mappedResult);
+            return Ok(page);
         }
 
         [HttpGet]
@@ -226,7 +273,7 @@ namespace FootballManagerAPI.Controllers
         {
             _logger.LogInformation($"Preparing to simulate a fixture with id {fixtureId} from league with id {id}...");
 
-            var query = new SimulateAFixture { LeagueId = id , FixtureID = fixtureId };
+            var query = new SimulateAFixture { LeagueId = id, FixtureID = fixtureId };
 
             var result = await _mediator.Send(query);
 

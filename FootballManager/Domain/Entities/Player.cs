@@ -1,8 +1,7 @@
-﻿using Domain.Exceptions;
+﻿namespace Domain.Entities;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace Domain.Entities;
 public abstract class Player
 {
     [Key]
@@ -31,7 +30,8 @@ public abstract class Player
         PlayerStats = PlayerStatsFactory.GenerateStats(GetType().Name);
     }
 
-    public void ResetPlayerRecord() {
+    public void ResetPlayerRecord()
+    {
         PlayerRecord = new Record();
     }
 }

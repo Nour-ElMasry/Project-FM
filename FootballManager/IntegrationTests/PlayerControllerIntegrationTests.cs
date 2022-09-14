@@ -25,7 +25,8 @@ namespace IntegrationTests
         {
             _factory = new CustomWebApplicationFactory<Program>();
 
-            var player = new PlayerPutPostDto { 
+            var player = new PlayerPutPostDto
+            {
                 Name = "New Player",
                 Country = "New Country",
                 DateOfBirth = "2009-05-17",
@@ -112,7 +113,7 @@ namespace IntegrationTests
             _factory = new CustomWebApplicationFactory<Program>();
 
             var updatePlayer = new PlayerPutPostDto
-            { 
+            {
                 Name = "New Name",
                 Country = "New Country",
                 DateOfBirth = "2000-02-15",
@@ -124,6 +125,6 @@ namespace IntegrationTests
                 new StringContent(JsonConvert.SerializeObject(updatePlayer), Encoding.UTF8, "application/json"));
 
             Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode);
-        }     
+        }
     }
 }

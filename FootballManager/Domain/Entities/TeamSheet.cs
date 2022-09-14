@@ -1,7 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿namespace Domain.Entities;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Domain.Entities;
 public class TeamSheet
 {
     [Key]
@@ -13,7 +12,8 @@ public class TeamSheet
     [ForeignKey("TeamTacticId")]
     public Tactic TeamTactic { get; set; }
 
-    public TeamSheet() {
+    public TeamSheet()
+    {
         TeamTactic = new BalancedTactic();
     }
 
@@ -43,13 +43,13 @@ public class TeamSheet
     {
         var calculation = 0;
         var playersList = p.Where(p => p.GetType().Name != "Attacker").ToList();
-        if(playersList.Count > 0)
+        if (playersList.Count > 0)
         {
             playersList.ForEach(pl => calculation += (pl.GetType().Name == "Goalkeeper") ? pl.PlayerStats.Goalkeeping / 5 : pl.PlayerStats.Defending);
             var rating = (calculation / playersList.Count) + TeamTactic.DefendingWeight;
             return (rating > 100) ? 100 : rating;
         }
-       return DefendingRating;
+        return DefendingRating;
     }
 }
 

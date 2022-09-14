@@ -1,6 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-
-namespace Domain.Entities;
+﻿namespace Domain.Entities;
+using System.ComponentModel.DataAnnotations;
 public class Season
 {
     [Key]

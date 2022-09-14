@@ -6,14 +6,14 @@ namespace Infrastructure
     {
         private readonly DataContext _dataContext;
 
-        public UnitOfWork(DataContext dataContext, IFixtureRepository fixtureRepository, 
-            ILeagueRepository leagueRepository, IManagerRepository managerRepository, 
-            IPlayerRepository playerRepository, ITeamRepository teamRepository, 
+        public UnitOfWork(DataContext dataContext, IFixtureRepository fixtureRepository,
+            ILeagueRepository leagueRepository, IManagerRepository managerRepository,
+            IPlayerRepository playerRepository, ITeamRepository teamRepository,
             IUserRepository userRepository)
         {
             _dataContext = dataContext;
 
-            FixtureRepository = fixtureRepository; 
+            FixtureRepository = fixtureRepository;
             LeagueRepository = leagueRepository;
             ManagerRepository = managerRepository;
             PlayerRepository = playerRepository;
@@ -21,12 +21,12 @@ namespace Infrastructure
             UserRepository = userRepository;
         }
 
-        public IFixtureRepository FixtureRepository {  get; private set; }
+        public IFixtureRepository FixtureRepository { get; private set; }
         public ILeagueRepository LeagueRepository { get; private set; }
-        public IManagerRepository ManagerRepository {  get; private set; }
-        public IPlayerRepository PlayerRepository {  get; private set; }
-        public ITeamRepository TeamRepository {  get; private set; }
-        public IUserRepository UserRepository {  get; private set; }
+        public IManagerRepository ManagerRepository { get; private set; }
+        public IPlayerRepository PlayerRepository { get; private set; }
+        public ITeamRepository TeamRepository { get; private set; }
+        public IUserRepository UserRepository { get; private set; }
 
         public async Task Save()
         {

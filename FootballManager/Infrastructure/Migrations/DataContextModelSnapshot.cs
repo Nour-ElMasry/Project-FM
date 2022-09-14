@@ -128,6 +128,9 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Country")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -169,9 +172,13 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("PlayerPersonId");
 
-                    b.HasIndex("PlayerRecordId");
+                    b.HasIndex("PlayerRecordId")
+                        .IsUnique()
+                        .HasFilter("[PlayerRecordId] IS NOT NULL");
 
-                    b.HasIndex("PlayerStatsId");
+                    b.HasIndex("PlayerStatsId")
+                        .IsUnique()
+                        .HasFilter("[PlayerStatsId] IS NOT NULL");
 
                     b.ToTable("Players");
 
@@ -335,6 +342,9 @@ namespace Infrastructure.Migrations
                     b.Property<long?>("CurrentTeamSheetId")
                         .HasColumnType("bigint");
 
+                    b.Property<string>("Logo")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -348,9 +358,13 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("CurrentLeagueId");
 
-                    b.HasIndex("CurrentSeasonStatsId");
+                    b.HasIndex("CurrentSeasonStatsId")
+                        .IsUnique()
+                        .HasFilter("[CurrentSeasonStatsId] IS NOT NULL");
 
-                    b.HasIndex("CurrentTeamSheetId");
+                    b.HasIndex("CurrentTeamSheetId")
+                        .IsUnique()
+                        .HasFilter("[CurrentTeamSheetId] IS NOT NULL");
 
                     b.HasIndex("TeamManagerId")
                         .IsUnique()
@@ -564,12 +578,14 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("PlayerPersonId");
 
                     b.HasOne("Domain.Entities.Record", "PlayerRecord")
-                        .WithMany()
-                        .HasForeignKey("PlayerRecordId");
+                        .WithOne()
+                        .HasForeignKey("Domain.Entities.Player", "PlayerRecordId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Domain.Entities.PlayerStats", "PlayerStats")
-                        .WithMany()
-                        .HasForeignKey("PlayerStatsId");
+                        .WithOne()
+                        .HasForeignKey("Domain.Entities.Player", "PlayerStatsId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.Navigation("CurrentTeam");
 
@@ -588,12 +604,14 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("Domain.Entities.SeasonStats", "CurrentSeasonStats")
-                        .WithMany()
-                        .HasForeignKey("CurrentSeasonStatsId");
+                        .WithOne()
+                        .HasForeignKey("Domain.Entities.Team", "CurrentSeasonStatsId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Domain.Entities.TeamSheet", "CurrentTeamSheet")
-                        .WithMany()
-                        .HasForeignKey("CurrentTeamSheetId");
+                        .WithOne()
+                        .HasForeignKey("Domain.Entities.Team", "CurrentTeamSheetId")
+                        .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("Domain.Entities.Manager", null)
                         .WithOne("CurrentTeam")

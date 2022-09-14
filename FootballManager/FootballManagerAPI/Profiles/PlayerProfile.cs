@@ -21,6 +21,7 @@ namespace FootballManagerAPI.Profiles
                 .ForMember(pl => pl.Name, opt => opt.MapFrom(pd => pd.Name))
                 .ForMember(pl => pl.DateOfBirth, opt => opt.MapFrom(pd => pd.DateOfBirth))
                 .ForMember(pl => pl.Country, opt => opt.MapFrom(pd => pd.Country))
+                .ForMember(pl => pl.Image, opt => opt.MapFrom(pd => pd.Image))
                 .ForMember(pl => pl.Position, opt => opt.MapFrom(pd => pd.Position));
         }
     }

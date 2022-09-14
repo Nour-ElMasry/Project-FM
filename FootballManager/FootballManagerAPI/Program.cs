@@ -11,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders()
     .AddFilter("Microsoft", LogLevel.Error)
     .AddFilter("System", LogLevel.Warning)
-    .AddConsole(); 
+    .AddConsole();
 // Add services to the container.
 
 builder.Services.AddControllers();

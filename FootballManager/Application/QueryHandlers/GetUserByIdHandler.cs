@@ -18,7 +18,7 @@ namespace Application.QueryHandlers
         {
             var user = await _unitOfWork.UserRepository.GetUserById(request.UserId);
 
-            if(user == null)
+            if (user == null)
                 return null;
 
             return user;

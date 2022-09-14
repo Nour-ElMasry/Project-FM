@@ -18,7 +18,7 @@ namespace Application.CommandHandlers
         {
             var manager = await _unitOfWork.ManagerRepository.GetManagerById(request.ManagerId);
 
-            if (manager == null) 
+            if (manager == null)
                 return null;
 
             await _unitOfWork.ManagerRepository.DeleteManager(manager);

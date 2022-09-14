@@ -17,7 +17,8 @@ namespace Infrastructure.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     BirthDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    Country = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -226,6 +227,7 @@ namespace Infrastructure.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Country = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Venue = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Logo = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CurrentSeasonStatsId = table.Column<long>(type: "bigint", nullable: true),
                     CurrentTeamSheetId = table.Column<long>(type: "bigint", nullable: true),
                     CurrentLeagueId = table.Column<long>(type: "bigint", nullable: true),
@@ -250,12 +252,14 @@ namespace Infrastructure.Migrations
                         name: "FK_Teams_SeasonStats_CurrentSeasonStatsId",
                         column: x => x.CurrentSeasonStatsId,
                         principalTable: "SeasonStats",
-                        principalColumn: "SeasonStatsId");
+                        principalColumn: "SeasonStatsId",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Teams_TeamSheet_CurrentTeamSheetId",
                         column: x => x.CurrentTeamSheetId,
                         principalTable: "TeamSheet",
-                        principalColumn: "TeamSheetId");
+                        principalColumn: "TeamSheetId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -283,12 +287,14 @@ namespace Infrastructure.Migrations
                         name: "FK_Players_PlayerStats_PlayerStatsId",
                         column: x => x.PlayerStatsId,
                         principalTable: "PlayerStats",
-                        principalColumn: "PlayerStatsId");
+                        principalColumn: "PlayerStatsId",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Players_Record_PlayerRecordId",
                         column: x => x.PlayerRecordId,
                         principalTable: "Record",
-                        principalColumn: "RecordId");
+                        principalColumn: "RecordId",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Players_Teams_CurrentTeamId",
                         column: x => x.CurrentTeamId,
@@ -349,12 +355,16 @@ namespace Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Players_PlayerRecordId",
                 table: "Players",
-                column: "PlayerRecordId");
+                column: "PlayerRecordId",
+                unique: true,
+                filter: "[PlayerRecordId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Players_PlayerStatsId",
                 table: "Players",
-                column: "PlayerStatsId");
+                column: "PlayerStatsId",
+                unique: true,
+                filter: "[PlayerStatsId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Teams_CurrentLeagueId",
@@ -364,12 +374,16 @@ namespace Infrastructure.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Teams_CurrentSeasonStatsId",
                 table: "Teams",
-                column: "CurrentSeasonStatsId");
+                column: "CurrentSeasonStatsId",
+                unique: true,
+                filter: "[CurrentSeasonStatsId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Teams_CurrentTeamSheetId",
                 table: "Teams",
-                column: "CurrentTeamSheetId");
+                column: "CurrentTeamSheetId",
+                unique: true,
+                filter: "[CurrentTeamSheetId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Teams_TeamManagerId",

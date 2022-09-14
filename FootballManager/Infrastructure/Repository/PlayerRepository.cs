@@ -30,7 +30,7 @@ namespace Infrastructure.Repository
                 .Include(p => p.PlayerRecord)
                 .Include(p => p.CurrentTeam)
                 .Include(p => p.PlayerStats)
-                .Take(100).ToListAsync();
+                .ToListAsync();
         }
 
         public async Task<Player> GetPlayerById(long id)

@@ -1,7 +1,6 @@
 ﻿using Application.Abstract;
 using Application.Commands;
 using Domain.Entities;
-using Domain.Exceptions;
 using MediatR;
 
 namespace Application.CommandHandlers
@@ -22,6 +21,9 @@ namespace Application.CommandHandlers
             if (uniqueCheck)
             {
                 var person = new Person(request.Name, request.DateOfBirth, request.Country);
+
+                if (request.Image != null)
+                    person.Image = request.Image;
 
                 var user = new User(request.Username, request.Password, person);
 

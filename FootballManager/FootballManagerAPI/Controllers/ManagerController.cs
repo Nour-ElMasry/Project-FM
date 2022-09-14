@@ -2,6 +2,7 @@
 using Application.Queries;
 using AutoMapper;
 using FootballManagerAPI.Dto;
+using FootballManagerAPI.Pagination;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,7 +24,8 @@ namespace FootballManagerAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllManagers()
+        [Route("All/{pg?}")]
+        public async Task<IActionResult> GetAllManagers(int pg = 1)
         {
             _logger.LogInformation("Preparing to get all managers...");
 
@@ -37,9 +39,18 @@ namespace FootballManagerAPI.Controllers
 
             var mappedResult = _mapper.Map<List<ManagerGetDto>>(result);
 
+            var page = new Pager<ManagerGetDto>(mappedResult.Count, pg);
+
+            var pageResults = mappedResult
+                .Skip((page.CurrentPage - 1) * page.PageNumOfResults)
+                .Take(page.PageNumOfResults)
+                .ToList();
+
+            page.PageResults = pageResults;
+
             _logger.LogInformation("All managers received successfully!!!");
 
-            return Ok(mappedResult);
+            return Ok(page);
         }
 
         [HttpGet]

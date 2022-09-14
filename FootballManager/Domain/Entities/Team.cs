@@ -1,7 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿namespace Domain.Entities;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Domain.Entities;
 public class Team
 {
     [Key]
@@ -9,6 +8,7 @@ public class Team
     public string Name { get; set; }
     public string Country { get; set; }
     public string Venue { get; set; }
+    public string Logo { get; set; } = "https://www.pngitem.com/pimgs/m/499-4991608_generic-football-club-logo-png-download-soccer-club.png";
 
     public Team() { }
     public Team(string name, string country, string venue)
@@ -37,7 +37,8 @@ public class Team
     public List<Fixture> HomeFixtures { get; set; } = new();
     public List<Fixture> AwayFixtures { get; set; } = new();
 
-    public void ResetSeason() {
+    public void ResetSeason()
+    {
         CurrentSeasonStats = new SeasonStats();
         Players.ForEach(p => p.ResetPlayerRecord());
     }

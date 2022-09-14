@@ -5,7 +5,8 @@ namespace IntegrationTests.Helpers
 {
     public static class Utilities
     {
-        public static async Task InitializeDbForTests(DataContext db) {
+        public static async Task InitializeDbForTests(DataContext db)
+        {
             var league = new League("Fake League") { LeagueId = 1 };
 
             var team = new Team("Fake Team1", "Country9", "Fake Stadium") { TeamId = 1, CurrentLeague = league };

@@ -13,15 +13,15 @@ namespace IntegrationTests
         private static WebApplicationFactory<Program> _factory;
 
         [ClassInitialize]
-        public static void ClassInit(TestContext testContext) 
+        public static void ClassInit(TestContext testContext)
         {
             _context = testContext;
             _factory = new CustomWebApplicationFactory<Program>();
-            
+
         }
 
         [TestMethod]
-        public  async Task Get_All_Fixtures_ShouldReturnOkResponse()
+        public async Task Get_All_Fixtures_ShouldReturnOkResponse()
         {
             _factory = new CustomWebApplicationFactory<Program>();
             var client = _factory.CreateClient();
@@ -102,7 +102,7 @@ namespace IntegrationTests
             var result = await response2.Content.ReadAsStringAsync();
             var fixture = JsonConvert.DeserializeObject<FixtureGetDto>(result);
 
-            Assert.AreEqual(fixture.Date, new DateTime(2027,03,17));
+            Assert.AreEqual(fixture.Date, new DateTime(2027, 03, 17));
         }
     }
 }

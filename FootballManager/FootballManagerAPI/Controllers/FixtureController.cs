@@ -2,6 +2,7 @@
 using Application.Queries;
 using AutoMapper;
 using FootballManagerAPI.Dto;
+using FootballManagerAPI.Pagination;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -24,7 +25,8 @@ namespace FootballManagerAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllFixtures()
+        [Route("All/{pg?}")]
+        public async Task<IActionResult> GetAllFixtures(int pg = 1)
         {
             _logger.LogInformation("Preparing to get all Fixtures...");
 
@@ -35,12 +37,20 @@ namespace FootballManagerAPI.Controllers
                 _logger.LogError($"Couldn't get all fixtures!!!");
                 return NotFound();
             }
-
             var mappedResult = _mapper.Map<List<FixtureGetDto>>(result);
+
+            var page = new Pager<FixtureGetDto>(mappedResult.Count, pg);
+
+            var pageResults = mappedResult
+                .Skip((page.CurrentPage - 1) * page.PageNumOfResults)
+                .Take(page.PageNumOfResults)
+                .ToList();
+
+            page.PageResults = pageResults;
 
             _logger.LogInformation("All Fixtures have been recieved successfully!!");
 
-            return Ok(mappedResult);
+            return Ok(page);
         }
 
         [HttpGet]

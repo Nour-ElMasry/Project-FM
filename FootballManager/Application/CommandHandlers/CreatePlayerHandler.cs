@@ -2,6 +2,7 @@
 using Application.Commands;
 using Domain.Entities;
 using MediatR;
+using System;
 
 namespace Application.CommandHandlers
 {
@@ -19,7 +20,11 @@ namespace Application.CommandHandlers
             var role = request.Position.ToLower();
             var playerPerson = new Person(request.Name, request.DateOfBirth, request.Country);
 
-            switch (role) {
+            if (request.Image != null)
+                playerPerson.Image = request.Image;
+
+            switch (role)
+            {
                 case "attacker":
                     var attacker = new Attacker(playerPerson);
 
@@ -52,7 +57,7 @@ namespace Application.CommandHandlers
 
                 default:
                     throw new ArgumentException("Player role is incorrect!");
-            } 
+            }
         }
     }
 }

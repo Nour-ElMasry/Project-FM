@@ -17,15 +17,15 @@ namespace Application.CommandHandlers
         public async Task<Fixture> Handle(SimulateAFixture request, CancellationToken cancellationToken)
         {
             var fixture = await _unitOfWork.FixtureRepository.GetFixtureById(request.FixtureID);
-            
-            if(fixture != null)
+
+            if (fixture != null)
             {
                 if (fixture.FixtureLeague.LeagueId != request.LeagueId)
                     throw new ArgumentException("Fixture doesn't belong to current league!");
 
                 fixture.SimulateFixture();
                 await _unitOfWork.Save();
-                
+
                 return fixture;
             }
 

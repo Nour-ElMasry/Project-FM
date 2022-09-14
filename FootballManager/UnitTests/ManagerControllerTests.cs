@@ -5,10 +5,9 @@ using Domain.Entities;
 using FootballManagerAPI.Controllers;
 using FootballManagerAPI.Dto;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System.Net;
 
 namespace UnitTests
 {
@@ -100,9 +99,9 @@ namespace UnitTests
             {
                 return new ManagerGetDto
                 {
-                   ManagerId = f.ManagerId,
-                   ManagerPerson = f.ManagerPerson,
-                   CurrentTeamName = f.CurrentTeam.Name
+                    ManagerId = f.ManagerId,
+                    ManagerPerson = f.ManagerPerson,
+                    CurrentTeamName = f.CurrentTeam.Name
                 };
             });
 

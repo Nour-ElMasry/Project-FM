@@ -1,7 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿namespace Domain.Entities;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Domain.Entities;
 public class League
 {
     [Key]
@@ -12,7 +11,7 @@ public class League
     public Season CurrentSeason { get; set; }
 
     public List<Team> Teams { get; set; } = new();
-    public List<Fixture> Fixtures { get; set; } = new ();
+    public List<Fixture> Fixtures { get; set; } = new();
 
     public League() { }
     public League(string name)
@@ -33,7 +32,8 @@ public class League
         Teams.Remove(teamToRemove);
     }
 
-    public void CreateFixtures() {
+    public void CreateFixtures()
+    {
         Fixtures = FixtureGenerator.Generate(this);
     }
 }

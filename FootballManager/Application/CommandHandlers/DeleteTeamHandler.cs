@@ -18,7 +18,7 @@ namespace Application.CommandHandlers
         {
             var league = await _unitOfWork.TeamRepository.GetTeamById(request.TeamId);
 
-            if (league == null) 
+            if (league == null)
                 return null;
 
             await _unitOfWork.TeamRepository.DeleteTeam(league);

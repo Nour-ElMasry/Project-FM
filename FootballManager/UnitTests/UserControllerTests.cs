@@ -5,10 +5,9 @@ using Domain.Entities;
 using FootballManagerAPI.Controllers;
 using FootballManagerAPI.Dto;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
-using System.Net;
 
 namespace UnitTests
 {
@@ -86,9 +85,9 @@ namespace UnitTests
         {
             var user = new User
             {
-               UserId = 1,
-               Username = "FakeUser",
-               Password = "1234"
+                UserId = 1,
+                Username = "FakeUser",
+                Password = "1234"
             };
 
             _mockMediator
@@ -100,8 +99,8 @@ namespace UnitTests
             {
                 return new UserGetDto
                 {
-                   Id = u.UserId,
-                   Username = u.Username,
+                    Id = u.UserId,
+                    Username = u.Username,
                 };
             });
 
@@ -170,7 +169,7 @@ namespace UnitTests
             {
                 TeamId = 1,
                 Name = "Fake Team",
-                TeamManager = new RealManager(new User() { UserPerson = new Person("Fake User", "2001-02-16", "Country")})
+                TeamManager = new RealManager(new User() { UserPerson = new Person("Fake User", "2001-02-16", "Country") })
             };
 
             _mockMediator

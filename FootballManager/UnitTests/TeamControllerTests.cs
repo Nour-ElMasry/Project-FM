@@ -5,8 +5,8 @@ using Domain.Entities;
 using FootballManagerAPI.Controllers;
 using FootballManagerAPI.Dto;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
 
 namespace UnitTests
@@ -273,7 +273,8 @@ namespace UnitTests
 
             _mockMediator
                 .Setup(m => m.Send(It.IsAny<GetFixturesByTeam>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(() => {
+                .ReturnsAsync(() =>
+                {
                     var ret = new List<Fixture>();
                     team.HomeFixtures.ForEach(f => ret.Add(f));
                     team.AwayFixtures.ForEach(f => ret.Add(f));
@@ -301,7 +302,7 @@ namespace UnitTests
 
             Assert.AreEqual((team.HomeFixtures.Count + team.AwayFixtures.Count), ((List<FixtureGetDto>)okResult.Value).Count);
         }
- 
+
         [TestMethod]
         public async Task Delete_Team_DeleteTeamIsCalled()
         {

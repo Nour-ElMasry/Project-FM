@@ -1,7 +1,6 @@
 ﻿using Application.Abstract;
 using Application.Commands;
 using Domain.Entities;
-using Domain.Exceptions;
 using MediatR;
 
 namespace Application.CommandHandlers
@@ -24,7 +23,7 @@ namespace Application.CommandHandlers
 
             league.NextSeason();
             await _unitOfWork.Save();
-            
+
             return league;
         }
     }

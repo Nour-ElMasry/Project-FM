@@ -6,14 +6,14 @@ public static class FixtureGenerator
     public static List<Fixture> Generate(League league)
     {
         fixtures = new List<Fixture>();
-        
+
         foreach (var t1 in league.Teams)
         {
             var team1 = t1;
             foreach (var t2 in league.Teams)
             {
                 var team2 = t2;
-                if(team1 == team2)
+                if (team1 == team2)
                     continue;
                 fixtures.Add(new Fixture(league, team1, team2));
             }

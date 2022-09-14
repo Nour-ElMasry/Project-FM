@@ -24,6 +24,7 @@ namespace Application.CommandHandlers
                 throw new IncorrectDateException("Invalid date! Manager can't be under 18!");
 
             var person = new Person(request.Name, request.DateOfBirth, request.Country);
+
             var manager = new FakeManager(person);
 
             await _unitOfWork.ManagerRepository.AddManager(manager);

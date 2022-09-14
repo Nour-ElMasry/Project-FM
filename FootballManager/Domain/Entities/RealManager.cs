@@ -1,6 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace Domain.Entities;
+﻿namespace Domain.Entities;
+using System.ComponentModel.DataAnnotations.Schema;
 public class RealManager : Manager
 {
     [ForeignKey("UserManagerId")]

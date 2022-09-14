@@ -114,7 +114,7 @@ namespace IntegrationTests
         public async Task Auth_User_ShouldReturnNoContentResponse()
         {
             _factory = new CustomWebApplicationFactory<Program>();
-            var user = new UserAuthDto 
+            var user = new UserAuthDto
             {
                 Username = "username",
                 Password = "password"

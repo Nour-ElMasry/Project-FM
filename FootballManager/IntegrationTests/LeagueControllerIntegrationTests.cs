@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;
 using System.Net;
-using System.Text;
 
 namespace IntegrationTests
 {
@@ -138,7 +137,7 @@ namespace IntegrationTests
             var response = await client.GetAsync("api/v1/Leagues/1/Players");
 
             var result = await response.Content.ReadAsStringAsync();
-        
+
             Assert.IsNotNull(result);
         }
 

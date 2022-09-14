@@ -22,5 +22,8 @@ namespace FootballManagerAPI.Dto
         [MaxLength(30)]
         [MinLength(4)]
         public string Position { get; set; }
+
+        [MaxLength(100)]
+        public string Image { get; set; }
     }
 }

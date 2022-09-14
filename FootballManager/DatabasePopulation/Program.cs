@@ -7,7 +7,6 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 namespace ConsolePresentation
 {
@@ -18,7 +17,7 @@ namespace ConsolePresentation
             var diContainer = new ServiceCollection()
                 .AddDbContext<DataContext>(options =>
                 {
-                    options.UseSqlServer(@"Data Source=TOPSKI\SQLEXPRESS;Initial Catalog=FootballManager;Integrated Security=True");
+                    options.UseSqlServer(@"Data Source=TOPSKI\SQLEXPRESS;Initial Catalog=FootballManagerDB;Integrated Security=True");
                 })
                 .AddMediatR(typeof(IUnitOfWork))
                 .AddScoped<IPlayerRepository, PlayerRepository>()
@@ -56,7 +55,8 @@ namespace ConsolePresentation
             //    {
             //        Name = leagueTeams.response[i].team.name,
             //        Country = leagueTeams.response[i].team.country,
-            //        Venue = leagueTeams.response[i].venue.name
+            //        Venue = leagueTeams.response[i].venue.name,
+            //        Logo = leagueTeams.response[i].team.logo,
             //    });
 
             //    var teamId = (int)leagueTeams.response[i].team.id;
@@ -71,6 +71,7 @@ namespace ConsolePresentation
             //            Country = teamPlayers.response[j].player.birth.country,
             //            DateOfBirth = teamPlayers.response[j].player.birth.date,
             //            Position = teamPlayers.response[j].statistics[0].games.position,
+            //            Image = teamPlayers.response[j].player.photo,
             //        });
 
             //        await mediator.Send(new AddPlayerToTeam
@@ -104,52 +105,51 @@ namespace ConsolePresentation
             //    Thread.Sleep(5000);
             //}
 
-            await mediator.Send(new GenerateLeagueFixtures 
-            {
-                LeagueId = 1
-            });
+            //await mediator.Send(new GenerateLeagueFixtures
+            //{
+            //    LeagueId = 1
+            //});
+         
+            //await mediator.Send(new SimulateAllFixtures
+            //{
+            //    LeagueId = 1
+            //});
 
-            await mediator.Send(new SimulateAllFixtures
-            {
-                LeagueId = 1
-            });
+            //var fixtures = await mediator.Send(new GetFixturesByLeague
+            //{
+            //    LeagueId = 1
+            //});
 
+            //fixtures.ForEach(f => Console.WriteLine($"{f.HomeTeam.Name} {f.HomeTeamScore} - {f.AwayTeamScore} {f.AwayTeam.Name}"));
 
-            var fixtures = await mediator.Send(new GetFixturesByLeague
-            {
-                LeagueId = 1
-            });
+            //var teams = await mediator.Send(new GetTeamsByLeague
+            //{
+            //    LeagueId = 1
+            //});
 
-            fixtures.ForEach(f => Console.WriteLine($"{f.HomeTeam.Name} {f.HomeTeamScore} - {f.AwayTeamScore} {f.AwayTeam.Name}"));
+            //Console.WriteLine("\n\n");
 
-            var teams = await mediator.Send(new GetTeamsByLeague
-            {
-                LeagueId = 1
-            });
+            //var leagueStanding = teams.OrderByDescending(t => t.CurrentSeasonStats.Points).ThenByDescending(t => t.CurrentSeasonStats.GoalsFor - t.CurrentSeasonStats.GoalsAgainst).ToList();
 
-            Console.WriteLine("\n\n");
+            //leagueStanding.ForEach(ls => Console.WriteLine($"{ls.Name} -> {ls.CurrentSeasonStats}"));
 
-            var leagueStanding = teams.OrderByDescending(t => t.CurrentSeasonStats.Points).ThenByDescending(t => t.CurrentSeasonStats.GoalsFor - t.CurrentSeasonStats.GoalsAgainst).ToList();
+            //Console.WriteLine("\n\n");
 
-            leagueStanding.ForEach(ls => Console.WriteLine($"{ls.Name} -> {ls.CurrentSeasonStats}"));
+            //var players = await mediator.Send(new GetPlayersByLeague
+            //{
+            //    LeagueId = 1
+            //});
 
-            Console.WriteLine("\n\n");
+            //var TopGoalScorers = players.Where(p => p.PlayerRecord.Goals > 0).OrderByDescending(p => p.PlayerRecord.Goals).ToList();
+            //var TopAssisters = players.Where(p => p.PlayerRecord.Assists > 0).OrderByDescending(p => p.PlayerRecord.Assists).ToList();
 
-            var players = await mediator.Send(new GetPlayersByLeague
-            { 
-                LeagueId = 1
-            });
+            //Console.WriteLine("Top Goal Scorers: \n");
+            //TopGoalScorers.ForEach(p => Console.WriteLine($"{p.PlayerPerson.Name} => {p.PlayerRecord.Goals} Goals"));
 
-            var TopGoalScorers = players.Where(p => p.PlayerRecord.Goals > 0).OrderByDescending(p => p.PlayerRecord.Goals).ToList();
-            var TopAssisters = players.Where(p => p.PlayerRecord.Assists > 0).OrderByDescending(p => p.PlayerRecord.Assists).ToList();
+            //Console.WriteLine("\n\n");
+            //Console.WriteLine("Top Assisters: \n");
 
-            Console.WriteLine("Top Goal Scorers: \n");
-            TopGoalScorers.ForEach(p => Console.WriteLine($"{p.PlayerPerson.Name} => {p.PlayerRecord.Goals} Goals"));
-
-            Console.WriteLine("\n\n");
-            Console.WriteLine("Top Assisters: \n");
-
-            TopAssisters.ForEach(p => Console.WriteLine($"{p.PlayerPerson.Name} => {p.PlayerRecord.Assists} Assists"));
+            //TopAssisters.ForEach(p => Console.WriteLine($"{p.PlayerPerson.Name} => {p.PlayerRecord.Assists} Assists"));
         }
 
 

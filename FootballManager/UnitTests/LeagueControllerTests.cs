@@ -5,8 +5,8 @@ using Domain.Entities;
 using FootballManagerAPI.Controllers;
 using FootballManagerAPI.Dto;
 using MediatR;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Mvc;
 using Moq;
 
 namespace UnitTests
@@ -140,7 +140,7 @@ namespace UnitTests
                 {
                     leagueId = q.LeagueId;
                     return await Task.FromResult(
-                       new List<Team> ());
+                       new List<Team>());
                 });
 
             var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
@@ -155,7 +155,7 @@ namespace UnitTests
             _mockMediator
                 .Setup(m => m.Send(It.IsAny<GetTeamsByLeague>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(
-                       new List<Team> ());
+                       new List<Team>());
 
             var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
             var result = await controller.GetLeagueTeamsById(1);
@@ -236,7 +236,7 @@ namespace UnitTests
                 {
                     leagueId = q.LeagueId;
                     return await Task.FromResult(
-                       new List<Player> ());
+                       new List<Player>());
                 });
 
             var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
@@ -251,7 +251,7 @@ namespace UnitTests
             _mockMediator
                 .Setup(m => m.Send(It.IsAny<GetPlayersByLeague>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(
-                       new List<Player> ());
+                       new List<Player>());
 
             var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
             var result = await controller.GetLeaguePlayersById(1);
@@ -350,7 +350,7 @@ namespace UnitTests
                 {
                     leagueId = q.LeagueId;
                     return await Task.FromResult(
-                       new List<Fixture> ());
+                       new List<Fixture>());
                 });
 
             var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
@@ -365,7 +365,7 @@ namespace UnitTests
             _mockMediator
                 .Setup(m => m.Send(It.IsAny<GetFixturesByLeague>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(
-                       new List<Fixture> ());
+                       new List<Fixture>());
 
             var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
             var result = await controller.GetLeagueFixturesById(1);
@@ -469,7 +469,7 @@ namespace UnitTests
 
             _mockMediator.Verify(x => x.Send(It.IsAny<SimulateAFixture>(), It.IsAny<CancellationToken>()), Times.Once());
         }
-        
+
         [TestMethod]
         public async Task Generate_League_Fixture_GenerateLeagueFixtureIsCalled()
         {

@@ -17,7 +17,7 @@ namespace Application.QueryHandlers
         public async Task<List<Fixture>> Handle(GetFixturesByTeam request, CancellationToken cancellationToken)
         {
             var fixtures = await _unitOfWork.FixtureRepository.GetAllFixtures();
-            
+
             if (fixtures == null)
                 return null;
 

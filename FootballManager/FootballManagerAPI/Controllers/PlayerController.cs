@@ -2,6 +2,7 @@
 using Application.Queries;
 using AutoMapper;
 using FootballManagerAPI.Dto;
+using FootballManagerAPI.Pagination;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,10 +29,11 @@ namespace FootballManagerAPI.Controllers
         {
             _logger.LogInformation("Preparing to create a player...");
 
-            if (!ModelState.IsValid) {
+            if (!ModelState.IsValid)
+            {
                 _logger.LogError("Information received was invalid!!");
                 return BadRequest(ModelState);
-            } 
+            }
 
             var command = _mapper.Map<CreatePlayer>(player);
 
@@ -44,22 +46,33 @@ namespace FootballManagerAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllPlayers()
+        [Route("All/{pg?}")]
+        public async Task<IActionResult> GetAllPlayers(int pg = 1)
         {
             _logger.LogInformation("Preparing to get all players...");
 
             var result = await _mediator.Send(new GetAllPlayers());
 
-            if (result == null) {
+            if (result == null)
+            {
                 _logger.LogError("Couldn't get all players!!!");
                 return NotFound();
             }
 
             var mappedResult = _mapper.Map<List<PlayerGetDto>>(result);
 
+            var page = new Pager<PlayerGetDto>(mappedResult.Count, pg);
+
+            var pageResults = mappedResult
+                .Skip((page.CurrentPage - 1) * page.PageNumOfResults)
+                .Take(page.PageNumOfResults)
+                .ToList();
+
+            page.PageResults = pageResults;
+
             _logger.LogInformation("All players received successfully!!!");
 
-            return Ok(mappedResult);
+            return Ok(page);
         }
 
         [HttpGet]

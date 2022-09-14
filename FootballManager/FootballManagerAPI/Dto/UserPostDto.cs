@@ -18,6 +18,9 @@ namespace FootballManagerAPI.Dto
         [StringLength(10)]
         public string DateOfBirth { get; set; }
 
+        [MaxLength(100)]
+        public string Image { get; set; }
+
         [Required]
         [MaxLength(20)]
         [MinLength(4)]

@@ -18,11 +18,11 @@ namespace Application.QueryHandlers
         {
             var league = await _unitOfWork.LeagueRepository.GetLeagueById(request.LeagueId);
 
-            if(league != null)
+            if (league != null)
             {
                 var teams = await _unitOfWork.TeamRepository.GetAllTeams();
                 var leagueTeams = teams.Where(t => t.CurrentLeague == league).ToList();
-                
+
                 return leagueTeams;
             }
             return null;
