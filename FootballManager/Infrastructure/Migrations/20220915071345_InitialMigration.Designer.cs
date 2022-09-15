@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220914095746_InitialMigration")]
+    [Migration("20220915071345_InitialMigration")]
     partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -136,7 +136,21 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<long?>("PlayerPersonId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("UserPersonId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("PersonId");
+
+                    b.HasIndex("PlayerPersonId")
+                        .IsUnique()
+                        .HasFilter("[PlayerPersonId] IS NOT NULL");
+
+                    b.HasIndex("UserPersonId")
+                        .IsUnique()
+                        .HasFilter("[UserPersonId] IS NOT NULL");
 
                     b.ToTable("Person");
                 });
@@ -148,6 +162,9 @@ namespace Infrastructure.Migrations
                         .HasColumnType("bigint");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("PlayerId"), 1L, 1);
+
+                    b.Property<long?>("CurrentPlayerStatsId")
+                        .HasColumnType("bigint");
 
                     b.Property<long?>("CurrentTeamId")
                         .HasColumnType("bigint");
@@ -162,25 +179,12 @@ namespace Infrastructure.Migrations
                     b.Property<long?>("PlayerRecordId")
                         .HasColumnType("bigint");
 
-                    b.Property<long?>("PlayerStatsId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("Position")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("PlayerId");
 
                     b.HasIndex("CurrentTeamId");
-
-                    b.HasIndex("PlayerPersonId");
-
-                    b.HasIndex("PlayerRecordId")
-                        .IsUnique()
-                        .HasFilter("[PlayerRecordId] IS NOT NULL");
-
-                    b.HasIndex("PlayerStatsId")
-                        .IsUnique()
-                        .HasFilter("[PlayerStatsId] IS NOT NULL");
 
                     b.ToTable("Players");
 
@@ -198,6 +202,9 @@ namespace Infrastructure.Migrations
                     b.Property<int>("Attacking")
                         .HasColumnType("int");
 
+                    b.Property<long?>("CurrentPlayerStatsId")
+                        .HasColumnType("bigint");
+
                     b.Property<int>("Defending")
                         .HasColumnType("int");
 
@@ -212,6 +219,10 @@ namespace Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("PlayerStatsId");
+
+                    b.HasIndex("CurrentPlayerStatsId")
+                        .IsUnique()
+                        .HasFilter("[CurrentPlayerStatsId] IS NOT NULL");
 
                     b.ToTable("PlayerStats");
 
@@ -238,7 +249,14 @@ namespace Infrastructure.Migrations
                     b.Property<int>("Goals")
                         .HasColumnType("int");
 
+                    b.Property<long?>("PlayerRecordId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("RecordId");
+
+                    b.HasIndex("PlayerRecordId")
+                        .IsUnique()
+                        .HasFilter("[PlayerRecordId] IS NOT NULL");
 
                     b.ToTable("Record");
                 });
@@ -270,6 +288,9 @@ namespace Infrastructure.Migrations
                     b.Property<int>("AwayGamesPlayed")
                         .HasColumnType("int");
 
+                    b.Property<long?>("CurrentSeasonStatsId")
+                        .HasColumnType("bigint");
+
                     b.Property<int>("GamesDrawn")
                         .HasColumnType("int");
 
@@ -295,6 +316,10 @@ namespace Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("SeasonStatsId");
+
+                    b.HasIndex("CurrentSeasonStatsId")
+                        .IsUnique()
+                        .HasFilter("[CurrentSeasonStatsId] IS NOT NULL");
 
                     b.ToTable("SeasonStats");
                 });
@@ -360,14 +385,6 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("CurrentLeagueId");
 
-                    b.HasIndex("CurrentSeasonStatsId")
-                        .IsUnique()
-                        .HasFilter("[CurrentSeasonStatsId] IS NOT NULL");
-
-                    b.HasIndex("CurrentTeamSheetId")
-                        .IsUnique()
-                        .HasFilter("[CurrentTeamSheetId] IS NOT NULL");
-
                     b.HasIndex("TeamManagerId")
                         .IsUnique()
                         .HasFilter("[TeamManagerId] IS NOT NULL");
@@ -386,6 +403,9 @@ namespace Infrastructure.Migrations
                     b.Property<int>("AttackingRating")
                         .HasColumnType("int");
 
+                    b.Property<long?>("CurrentTeamSheetId")
+                        .HasColumnType("bigint");
+
                     b.Property<int>("DefendingRating")
                         .HasColumnType("int");
 
@@ -393,6 +413,10 @@ namespace Infrastructure.Migrations
                         .HasColumnType("bigint");
 
                     b.HasKey("TeamSheetId");
+
+                    b.HasIndex("CurrentTeamSheetId")
+                        .IsUnique()
+                        .HasFilter("[CurrentTeamSheetId] IS NOT NULL");
 
                     b.HasIndex("TeamTacticId");
 
@@ -417,10 +441,6 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserId");
-
-                    b.HasIndex("UserPersonId")
-                        .IsUnique()
-                        .HasFilter("[UserPersonId] IS NOT NULL");
 
                     b.ToTable("Users");
                 });
@@ -516,9 +536,7 @@ namespace Infrastructure.Migrations
                     b.Property<long?>("UserManagerId")
                         .HasColumnType("bigint");
 
-                    b.HasIndex("UserManagerId")
-                        .IsUnique()
-                        .HasFilter("[UserManagerId] IS NOT NULL");
+                    b.HasIndex("UserManagerId");
 
                     b.HasDiscriminator().HasValue("RealManager");
                 });
@@ -536,7 +554,8 @@ namespace Infrastructure.Migrations
 
                     b.HasOne("Domain.Entities.Team", "HomeTeam")
                         .WithMany("HomeFixtures")
-                        .HasForeignKey("HomeTeamID");
+                        .HasForeignKey("HomeTeamID")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.Navigation("AwayTeam");
 
@@ -568,6 +587,19 @@ namespace Infrastructure.Migrations
                     b.Navigation("ManagerPerson");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Person", b =>
+                {
+                    b.HasOne("Domain.Entities.Player", null)
+                        .WithOne("PlayerPerson")
+                        .HasForeignKey("Domain.Entities.Person", "PlayerPersonId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Domain.Entities.User", null)
+                        .WithOne("UserPerson")
+                        .HasForeignKey("Domain.Entities.Person", "UserPersonId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("Domain.Entities.Player", b =>
                 {
                     b.HasOne("Domain.Entities.Team", "CurrentTeam")
@@ -575,27 +607,31 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("CurrentTeamId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("Domain.Entities.Person", "PlayerPerson")
-                        .WithMany()
-                        .HasForeignKey("PlayerPersonId");
-
-                    b.HasOne("Domain.Entities.Record", "PlayerRecord")
-                        .WithOne()
-                        .HasForeignKey("Domain.Entities.Player", "PlayerRecordId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Domain.Entities.PlayerStats", "PlayerStats")
-                        .WithOne()
-                        .HasForeignKey("Domain.Entities.Player", "PlayerStatsId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.Navigation("CurrentTeam");
+                });
 
-                    b.Navigation("PlayerPerson");
+            modelBuilder.Entity("Domain.Entities.PlayerStats", b =>
+                {
+                    b.HasOne("Domain.Entities.Player", null)
+                        .WithOne("CurrentPlayerStats")
+                        .HasForeignKey("Domain.Entities.PlayerStats", "CurrentPlayerStatsId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
 
-                    b.Navigation("PlayerRecord");
+            modelBuilder.Entity("Domain.Entities.Record", b =>
+                {
+                    b.HasOne("Domain.Entities.Player", null)
+                        .WithOne("PlayerRecord")
+                        .HasForeignKey("Domain.Entities.Record", "PlayerRecordId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
 
-                    b.Navigation("PlayerStats");
+            modelBuilder.Entity("Domain.Entities.SeasonStats", b =>
+                {
+                    b.HasOne("Domain.Entities.Team", null)
+                        .WithOne("CurrentSeasonStats")
+                        .HasForeignKey("Domain.Entities.SeasonStats", "CurrentSeasonStatsId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Domain.Entities.Team", b =>
@@ -605,30 +641,21 @@ namespace Infrastructure.Migrations
                         .HasForeignKey("CurrentLeagueId")
                         .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("Domain.Entities.SeasonStats", "CurrentSeasonStats")
-                        .WithOne()
-                        .HasForeignKey("Domain.Entities.Team", "CurrentSeasonStatsId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Domain.Entities.TeamSheet", "CurrentTeamSheet")
-                        .WithOne()
-                        .HasForeignKey("Domain.Entities.Team", "CurrentTeamSheetId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("Domain.Entities.Manager", null)
                         .WithOne("CurrentTeam")
                         .HasForeignKey("Domain.Entities.Team", "TeamManagerId")
                         .OnDelete(DeleteBehavior.SetNull);
 
                     b.Navigation("CurrentLeague");
-
-                    b.Navigation("CurrentSeasonStats");
-
-                    b.Navigation("CurrentTeamSheet");
                 });
 
             modelBuilder.Entity("Domain.Entities.TeamSheet", b =>
                 {
+                    b.HasOne("Domain.Entities.Team", null)
+                        .WithOne("CurrentTeamSheet")
+                        .HasForeignKey("Domain.Entities.TeamSheet", "CurrentTeamSheetId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("Domain.Entities.Tactic", "TeamTactic")
                         .WithMany()
                         .HasForeignKey("TeamTacticId");
@@ -636,22 +663,11 @@ namespace Infrastructure.Migrations
                     b.Navigation("TeamTactic");
                 });
 
-            modelBuilder.Entity("Domain.Entities.User", b =>
-                {
-                    b.HasOne("Domain.Entities.Person", "UserPerson")
-                        .WithOne()
-                        .HasForeignKey("Domain.Entities.User", "UserPersonId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.Navigation("UserPerson");
-                });
-
             modelBuilder.Entity("Domain.Entities.RealManager", b =>
                 {
                     b.HasOne("Domain.Entities.User", "UserManager")
-                        .WithOne()
-                        .HasForeignKey("Domain.Entities.RealManager", "UserManagerId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .WithMany()
+                        .HasForeignKey("UserManagerId");
 
                     b.Navigation("UserManager");
                 });
@@ -668,15 +684,33 @@ namespace Infrastructure.Migrations
                     b.Navigation("CurrentTeam");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Player", b =>
+                {
+                    b.Navigation("CurrentPlayerStats");
+
+                    b.Navigation("PlayerPerson");
+
+                    b.Navigation("PlayerRecord");
+                });
+
             modelBuilder.Entity("Domain.Entities.Team", b =>
                 {
                     b.Navigation("AwayFixtures");
+
+                    b.Navigation("CurrentSeasonStats");
+
+                    b.Navigation("CurrentTeamSheet");
 
                     b.Navigation("HomeFixtures");
 
                     b.Navigation("Players");
 
                     b.Navigation("TeamManager");
+                });
+
+            modelBuilder.Entity("Domain.Entities.User", b =>
+                {
+                    b.Navigation("UserPerson");
                 });
 #pragma warning restore 612, 618
         }

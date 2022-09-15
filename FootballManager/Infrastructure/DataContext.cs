@@ -24,7 +24,7 @@ namespace Infrastructure
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(@"Server=TOPSKI\SQLEXPRESS;Database=FootballManagerDB;Trusted_Connection=True");
+                optionsBuilder.UseSqlServer(@"Data Source=TOPSKI\SQLEXPRESS;Initial Catalog=FM_DB;Integrated Security=True");
             }
         }
 
@@ -55,36 +55,6 @@ namespace Infrastructure
                 .WithOne()
                 .HasForeignKey<Team>("TeamManagerId")
                 .OnDelete(DeleteBehavior.SetNull);
-
-            modelBuilder.Entity<RealManager>()
-                .HasOne(rm => rm.UserManager)
-                .WithOne()
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<User>()
-                .HasOne(u => u.UserPerson)
-                .WithOne()
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<Team>()
-                .HasOne(t => t.CurrentSeasonStats)
-                .WithOne()
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<Team>()
-               .HasOne(t => t.CurrentTeamSheet)
-               .WithOne()
-               .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<Player>()
-                .HasOne(u => u.PlayerRecord)
-                .WithOne()
-                .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<Player>()
-                .HasOne(u => u.PlayerStats)
-                .WithOne()
-                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<League>()
                 .HasMany(l => l.Teams)

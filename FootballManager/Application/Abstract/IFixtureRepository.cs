@@ -5,6 +5,7 @@ namespace Application.Abstract
     public interface IFixtureRepository
     {
         Task Save();
+        Task Clear();
         Task AddFixture(Fixture u);
         Task UpdateFixture(Fixture u);
         Task DeleteFixture(Fixture u);

@@ -36,7 +36,7 @@ namespace Infrastructure.Repository
                 .Include(l => l.Teams).ThenInclude(t => t.CurrentSeasonStats)
                 .Include(l => l.Teams).ThenInclude(t => t.Players).ThenInclude(p => p.PlayerPerson)
                 .Include(l => l.Teams).ThenInclude(t => t.Players).ThenInclude(p => p.PlayerRecord)
-                .Include(l => l.Teams).ThenInclude(t => t.Players).ThenInclude(p => p.PlayerStats)
+                .Include(l => l.Teams).ThenInclude(t => t.Players).ThenInclude(p => p.CurrentPlayerStats)
                 .Include(l => l.Fixtures)
                 .Include(l => l.CurrentSeason)
                 .SingleOrDefaultAsync(l => l.LeagueId == id);

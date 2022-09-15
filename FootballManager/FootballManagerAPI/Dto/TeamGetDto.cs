@@ -12,7 +12,7 @@ namespace FootballManagerAPI.Dto
         public Person TeamManager { get; set; }
         public SeasonStats CurrentSeasonStats { get; set; }
         public TeamSheet CurrentTeamSheet { get; set; }
-        public string CurrentLeague { get; set; }
+        public ShortLeagueGetDto CurrentLeague { get; set; }
 
     }
 }

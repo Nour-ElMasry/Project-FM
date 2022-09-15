@@ -21,11 +21,11 @@ namespace Application.CommandHandlers
             if (league == null)
                 return null;
 
-            league.Fixtures.ForEach(async f => await _unitOfWork.FixtureRepository.DeleteFixture(f));
+            await _unitOfWork.FixtureRepository.Clear();
 
-            league.CreateFixtures();
+            league.Fixtures = null;
 
-            league.Fixtures.ForEach(async f => await _unitOfWork.FixtureRepository.AddFixture(f));
+            await Task.Run(() => league.CreateFixtures());
 
             await _unitOfWork.Save();
 

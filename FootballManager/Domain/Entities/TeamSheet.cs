@@ -32,7 +32,7 @@ public class TeamSheet
         var playersList = p.Where(p => p.GetType().Name != "Defender" && p.GetType().Name != "Goalkeeper").ToList();
         if (playersList.Count > 0)
         {
-            playersList.ForEach(pl => calculation += pl.PlayerStats.Attacking);
+            playersList.ForEach(pl => calculation += pl.CurrentPlayerStats.Attacking);
             var rating = (calculation / playersList.Count) + TeamTactic.AttackingWeight;
             return (rating > 100) ? 100 : rating;
         }
@@ -45,7 +45,7 @@ public class TeamSheet
         var playersList = p.Where(p => p.GetType().Name != "Attacker").ToList();
         if (playersList.Count > 0)
         {
-            playersList.ForEach(pl => calculation += (pl.GetType().Name == "Goalkeeper") ? pl.PlayerStats.Goalkeeping / 5 : pl.PlayerStats.Defending);
+            playersList.ForEach(pl => calculation += (pl.GetType().Name == "Goalkeeper") ? pl.CurrentPlayerStats.Goalkeeping / 5 : pl.CurrentPlayerStats.Defending);
             var rating = (calculation / playersList.Count) + TeamTactic.DefendingWeight;
             return (rating > 100) ? 100 : rating;
         }

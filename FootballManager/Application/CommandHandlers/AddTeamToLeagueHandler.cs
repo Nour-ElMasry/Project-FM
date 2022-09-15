@@ -18,12 +18,12 @@ namespace Application.CommandHandlers
             var team = await _unitOfWork.TeamRepository.GetTeamById(request.TeamId);
             var league = await _unitOfWork.LeagueRepository.GetLeagueById(request.LeagueId);
 
-            if (league != null && team != null)
-            {
-                league.Teams.Add(team);
-                team.CurrentLeague = league;
-                await _unitOfWork.Save();
-            }
+            if (league == null && team == null)
+                return new Unit();
+
+            league.Teams.Add(team);
+            team.CurrentLeague = league;
+            await _unitOfWork.Save();
 
             return new Unit();
         }

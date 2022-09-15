@@ -34,7 +34,7 @@ public class League
 
     public void CreateFixtures()
     {
-        Fixtures = FixtureGenerator.Generate(this);
+        Fixtures = FixtureGenerator.Generate(this).Result;
     }
 }
 

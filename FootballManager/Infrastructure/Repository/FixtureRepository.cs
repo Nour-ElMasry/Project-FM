@@ -17,9 +17,14 @@ namespace Infrastructure.Repository
             await _context.Fixtures.AddAsync(u);
         }
 
-        public Task DeleteFixture(Fixture u)
+        public async Task Clear()
         {
-            return Task.Run(() => _context.Fixtures.Remove(u));
+            await Task.Run(() => _context.Fixtures.RemoveRange(_context.Fixtures.ToList()));
+        }
+
+        public async Task DeleteFixture(Fixture u)
+        {
+            await Task.Run(() => _context.Fixtures.Remove(u));
         }
 
         public async Task<List<Fixture>> GetAllFixtures()

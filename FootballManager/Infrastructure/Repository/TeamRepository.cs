@@ -33,12 +33,17 @@ namespace Infrastructure.Repository
                 .ToListAsync();
         }
 
+        public async Task<int> GetNumberOfTeams()
+        {
+            return await Task.Run(() => _context.Teams.Count());
+        }
+
         public async Task<Team> GetTeamById(long id)
         {
             return await _context.Teams
                 .Include(t => t.Players).ThenInclude(p => p.PlayerPerson)
                 .Include(t => t.Players).ThenInclude(p => p.PlayerRecord)
-                .Include(t => t.Players).ThenInclude(p => p.PlayerStats)
+                .Include(t => t.Players).ThenInclude(p => p.CurrentPlayerStats)
                 .Include(t => t.Players).ThenInclude(p => p.PlayerRecord)
                 .Include(t => t.TeamManager).ThenInclude(tm => tm.ManagerPerson)
                 .Include(t => t.HomeFixtures)

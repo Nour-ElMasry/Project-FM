@@ -6,6 +6,6 @@ namespace FootballManagerAPI.Dto
     {
         public long ManagerId { get; set; }
         public Person ManagerPerson { get; set; }
-        public string CurrentTeamName { get; set; }
+        public ShortTeamGetDto CurrentTeam { get; set; }
     }
 }

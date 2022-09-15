@@ -6,6 +6,7 @@ namespace Application.Abstract
     {
         Task Save();
         Task AddTeam(Team u);
+        Task<int> GetNumberOfTeams();
         Task UpdateTeam(Team u);
         Task DeleteTeam(Team u);
         Task<Team> GetTeamById(long id);

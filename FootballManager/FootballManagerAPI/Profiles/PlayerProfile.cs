@@ -12,8 +12,13 @@ namespace FootballManagerAPI.Profiles
             CreateMap<Player, PlayerGetDto>()
                 .ForMember(pd => pd.Id, opt => opt.MapFrom(p => p.PlayerId))
                 .ForMember(pd => pd.PlayerPerson, opt => opt.MapFrom(p => p.PlayerPerson))
-                .ForMember(pd => pd.CurrentTeamName, opt => opt.MapFrom(p => p.CurrentTeam.Name))
-                .ForMember(pd => pd.PlayerStats, opt => opt.MapFrom(p => p.PlayerStats))
+                .ForMember(pd => pd.CurrentTeam, opt => opt.MapFrom(p => new ShortTeamGetDto 
+                {
+                    TeamId = p.CurrentTeam.TeamId,
+                    TeamName = p.CurrentTeam.Name,
+                    TeamLogo = p.CurrentTeam.Logo
+                }))
+                .ForMember(pd => pd.PlayerStats, opt => opt.MapFrom(p => p.CurrentPlayerStats))
                 .ForMember(pd => pd.PlayerRecord, opt => opt.MapFrom(p => p.PlayerRecord))
                 .ForMember(pd => pd.Position, opt => opt.MapFrom(p => p.Position));
 

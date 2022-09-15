@@ -10,8 +10,8 @@ public abstract class Player
     [ForeignKey("PlayerPersonId")]
     public Person PlayerPerson { get; set; }
 
-    [ForeignKey("PlayerStatsId")]
-    public PlayerStats PlayerStats { get; set; }
+    [ForeignKey("CurrentPlayerStatsId")]
+    public PlayerStats CurrentPlayerStats { get; set; }
 
     [ForeignKey("CurrentTeamId")]
     public Team CurrentTeam { get; set; }
@@ -27,7 +27,7 @@ public abstract class Player
     {
         PlayerPerson = person;
         Position = GetType().Name;
-        PlayerStats = PlayerStatsFactory.GenerateStats(GetType().Name);
+        CurrentPlayerStats = PlayerStatsFactory.GenerateStats(GetType().Name);
     }
 
     public void ResetPlayerRecord()

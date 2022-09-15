@@ -237,7 +237,7 @@ namespace FootballManagerAPI.Controllers
 
         [HttpGet]
         [Route("{id}/GenerateFixtures/{pg?}")]
-        public async Task<IActionResult> GenerateLeagueFixture(int id, int pg)
+        public async Task<IActionResult> GenerateLeagueFixture(int id, int pg = 1)
         {
             _logger.LogInformation($"Preparing to generate fixtures for league with id {id}...");
 
@@ -253,18 +253,9 @@ namespace FootballManagerAPI.Controllers
 
             var mappedResult = _mapper.Map<List<FixtureGetDto>>(result);
 
-            var page = new Pager<FixtureGetDto>(mappedResult.Count, pg);
-
-            var pageResults = mappedResult
-                .Skip((page.CurrentPage - 1) * page.PageNumOfResults)
-                .Take(page.PageNumOfResults)
-                .ToList();
-
-            page.PageResults = pageResults;
-
             _logger.LogInformation($"Fixtures for league with id {id} generated successfully!!!");
 
-            return Ok(page);
+            return Ok(mappedResult);
         }
 
         [HttpGet]

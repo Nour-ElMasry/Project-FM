@@ -29,7 +29,7 @@ namespace Infrastructure.Repository
                 .Include(p => p.PlayerPerson)
                 .Include(p => p.PlayerRecord)
                 .Include(p => p.CurrentTeam)
-                .Include(p => p.PlayerStats)
+                .Include(p => p.CurrentPlayerStats)
                 .ToListAsync();
         }
 
@@ -39,7 +39,7 @@ namespace Infrastructure.Repository
                 .Include(p => p.PlayerPerson)
                 .Include(p => p.PlayerRecord)
                 .Include(p => p.CurrentTeam)
-                .Include(p => p.PlayerStats)
+                .Include(p => p.CurrentPlayerStats)
                 .SingleOrDefaultAsync(p => p.PlayerId == id);
         }
 

@@ -1,44 +1,50 @@
-﻿namespace Domain.Entities;
+﻿using System.Text;
+
+namespace Domain.Entities;
 public static class FixtureGenerator
 {
     private static readonly Random rnd = new();
     private static List<Fixture> fixtures;
-    public static List<Fixture> Generate(League league)
+    private static DateTime currentDate = DateTime.Now;
+    public static async Task<List<Fixture>> Generate(League league)
     {
         fixtures = new List<Fixture>();
+        var teamsFirstLegs = league.Teams;
 
-        foreach (var t1 in league.Teams)
-        {
-            var team1 = t1;
-            foreach (var t2 in league.Teams)
-            {
-                var team2 = t2;
-                if (team1 == team2)
-                    continue;
-                fixtures.Add(new Fixture(league, team1, team2));
-            }
-        }
+        var teamsSecondLegs = league.Teams;
+        teamsSecondLegs.Reverse();
 
-        ShuffleFixture();
-        AssignDates();
+        await Task.Run(() => CreateLeg(league, teamsFirstLegs));
+        await Task.Run(() => CreateLeg(league, teamsSecondLegs));
 
         return fixtures;
     }
 
-    private static void ShuffleFixture()
+    private static Task CreateLeg(League league, List<Team> legTeams)
     {
-        fixtures = fixtures.OrderBy(f => rnd.Next()).ToList();
-    }
-
-    private static void AssignDates()
-    {
-        var currentDate = DateTime.Now;
-
-        foreach (var f in fixtures)
+        for (var i = 0; i < legTeams.Count - 1; i++)
         {
-            f.Date = currentDate;
+            var firstHalf = 0;
+            var secondHalf = legTeams.Count - 1;
+            var halfTeams = (legTeams.Count - 1) / 2;
+
+            while (firstHalf <= halfTeams && secondHalf > halfTeams)
+            {
+                var homeTeam = legTeams[firstHalf++];
+                var awayTeam = legTeams[secondHalf--];
+                fixtures.Add(new Fixture(league, homeTeam, awayTeam) { Date = currentDate });
+            }
+
+            var tmpTeamSwap = legTeams[legTeams.Count - 1];
+            for (var j = legTeams.Count - 1; j > 1; j--)
+            {
+                legTeams[j] = legTeams[j - 1];
+            }
+            legTeams[1] = tmpTeamSwap;
             currentDate = currentDate.AddDays(7);
         }
+
+        return Task.CompletedTask;
     }
 }
 

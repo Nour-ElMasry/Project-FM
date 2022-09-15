@@ -32,14 +32,17 @@ namespace FootballManagerAPI.Controllers
 
             var result = await _mediator.Send(new GetAllFixtures());
 
+            var numOfTeams = await _mediator.Send(new GetNumberOfTeams());
+
             if (result == null)
             {
                 _logger.LogError($"Couldn't get all fixtures!!!");
                 return NotFound();
             }
+
             var mappedResult = _mapper.Map<List<FixtureGetDto>>(result);
 
-            var page = new Pager<FixtureGetDto>(mappedResult.Count, pg);
+            var page = new Pager<FixtureGetDto>(mappedResult.Count, pg, mappedResult.Count / (numOfTeams / 2));
 
             var pageResults = mappedResult
                 .Skip((page.CurrentPage - 1) * page.PageNumOfResults)
