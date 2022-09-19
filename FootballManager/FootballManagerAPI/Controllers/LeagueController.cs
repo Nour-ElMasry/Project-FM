@@ -40,6 +40,13 @@ namespace FootballManagerAPI.Controllers
 
             var mappedResult = _mapper.Map<List<LeagueGetDto>>(result);
 
+            _logger.LogInformation("All leagues have been received successfully!!!");
+
+            if (pg == 0)
+            {
+                return Ok(mappedResult);
+            }
+
             var page = new Pager<LeagueGetDto>(mappedResult.Count, pg);
 
             var pageResults = mappedResult
@@ -48,8 +55,6 @@ namespace FootballManagerAPI.Controllers
                 .ToList();
 
             page.PageResults = pageResults;
-
-            _logger.LogInformation("All leagues have been received successfully!!!");
 
             return Ok(page);
         }
@@ -166,9 +171,9 @@ namespace FootballManagerAPI.Controllers
                 return NotFound();
             }
 
-            var mappedResult = _mapper.Map<List<PlayerGetDto>>(result);
+            var mappedResult = _mapper.Map<List<ShortPlayerGetDto>>(result);
 
-            var page = new Pager<PlayerGetDto>(mappedResult.Count, pg);
+            var page = new Pager<ShortPlayerGetDto>(mappedResult.Count, pg);
 
             var pageResults = mappedResult
                 .Skip((page.CurrentPage - 1) * page.PageNumOfResults)
@@ -191,6 +196,11 @@ namespace FootballManagerAPI.Controllers
             var query = new GetFixturesByLeague { LeagueId = id };
             var result = await _mediator.Send(query);
 
+            var numOfTeams = await _mediator.Send(new GetNumberOfTeams 
+            { 
+                LeagueId = id
+            });
+
             if (result == null)
             {
                 _logger.LogError($"League with id {id} was not found!!!");
@@ -199,7 +209,7 @@ namespace FootballManagerAPI.Controllers
 
             var mappedResult = _mapper.Map<List<FixtureGetDto>>(result);
 
-            var page = new Pager<FixtureGetDto>(mappedResult.Count, pg);
+            var page = new Pager<FixtureGetDto>(mappedResult.Count, pg, mappedResult.Count / ((numOfTeams - 1) * 2));
 
             var pageResults = mappedResult
                 .Skip((page.CurrentPage - 1) * page.PageNumOfResults)
@@ -213,7 +223,7 @@ namespace FootballManagerAPI.Controllers
             return Ok(page);
         }
 
-        [HttpPut]
+        [HttpGet]
         [Route("{id}/Fixtures/Simulate")]
         public async Task<IActionResult> SimulateAllLeagueFixture(int id)
         {

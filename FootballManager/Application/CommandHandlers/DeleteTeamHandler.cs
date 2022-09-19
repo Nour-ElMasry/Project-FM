@@ -16,15 +16,15 @@ namespace Application.CommandHandlers
 
         public async Task<Team> Handle(DeleteTeam request, CancellationToken cancellationToken)
         {
-            var league = await _unitOfWork.TeamRepository.GetTeamById(request.TeamId);
+            var team = await _unitOfWork.TeamRepository.GetTeamById(request.TeamId);
 
-            if (league == null)
+            if (team == null)
                 return null;
 
-            await _unitOfWork.TeamRepository.DeleteTeam(league);
+            await _unitOfWork.TeamRepository.DeleteTeam(team);
             await _unitOfWork.Save();
 
-            return league;
+            return team;
         }
     }
 }

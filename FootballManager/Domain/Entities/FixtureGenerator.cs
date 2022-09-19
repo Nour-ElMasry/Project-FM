@@ -11,11 +11,9 @@ public static class FixtureGenerator
         fixtures = new List<Fixture>();
         var teamsFirstLegs = league.Teams;
 
-        var teamsSecondLegs = league.Teams;
-        teamsSecondLegs.Reverse();
-
         await Task.Run(() => CreateLeg(league, teamsFirstLegs));
-        await Task.Run(() => CreateLeg(league, teamsSecondLegs));
+
+        await Task.Run(() => ReverseLegFixtures());
 
         return fixtures;
     }
@@ -43,6 +41,24 @@ public static class FixtureGenerator
             legTeams[1] = tmpTeamSwap;
             currentDate = currentDate.AddDays(7);
         }
+
+        return Task.CompletedTask;
+    }
+
+    private static Task ReverseLegFixtures()
+    {
+        var AwayFixtures = new List<Fixture>();
+
+        for(int i = 1; i < fixtures.Count + 1; i++)
+        {
+            if(i % 10 == 0)
+            {
+                currentDate = currentDate.AddDays(7);
+            }
+            AwayFixtures.Add(new Fixture(fixtures[i - 1].FixtureLeague, fixtures[i - 1].AwayTeam, fixtures[i - 1].HomeTeam) { Date = currentDate });
+        }
+
+        fixtures.AddRange(AwayFixtures);
 
         return Task.CompletedTask;
     }

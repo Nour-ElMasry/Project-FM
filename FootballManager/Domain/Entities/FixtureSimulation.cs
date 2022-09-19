@@ -24,6 +24,7 @@ public static class FixtureSimulation
         AddGoalsAndGames();
         AddPointsToTeams();
         PlayerStatsAddition();
+        fixture.isPlayed = true;
     }
 
     private static void PlayerStatsAddition()
@@ -34,13 +35,13 @@ public static class FixtureSimulation
         HomeTeamPlayers.ForEach(p => p.PlayerRecord.AddGamePlayed());
         AwayTeamPlayers.ForEach(p => p.PlayerRecord.AddGamePlayed());
 
-        if (fixture.AwayTeamScore == 0)
+        if (fixture.FixtureScore.AwayScore == 0)
         {
             var CleanSheetPlayers = HomeTeamPlayers.Where(p => p.GetType().Name != "Attacker").ToList();
             CleanSheetPlayers.ForEach(p => p.PlayerRecord.AddCleanSheet());
         }
 
-        if (fixture.HomeTeamScore == 0)
+        if (fixture.FixtureScore.HomeScore == 0)
         {
             var CleanSheetPlayers = AwayTeamPlayers.Where(p => p.GetType().Name != "Attacker").ToList();
             CleanSheetPlayers.ForEach(p => p.PlayerRecord.AddCleanSheet());
@@ -78,9 +79,9 @@ public static class FixtureSimulation
         if (chance <= AttackingSuccessPercentage * range)
         {
             if (fixture.HomeTeam == AttackingTeam)
-                fixture.HomeTeamScore += 1;
+                fixture.FixtureScore.HomeScore += 1;
             else
-                fixture.AwayTeamScore += 1;
+                fixture.FixtureScore.AwayScore += 1;
 
             PlayerContributions();
         }
@@ -88,12 +89,12 @@ public static class FixtureSimulation
 
     private static void AddPointsToTeams()
     {
-        if (fixture.HomeTeamScore > fixture.AwayTeamScore)
+        if (fixture.FixtureScore.HomeScore > fixture.FixtureScore.AwayScore)
         {
             fixture.HomeTeam.CurrentSeasonStats.AddWin();
             fixture.AwayTeam.CurrentSeasonStats.AddLose();
         }
-        else if (fixture.HomeTeamScore < fixture.AwayTeamScore)
+        else if (fixture.FixtureScore.HomeScore < fixture.FixtureScore.AwayScore)
         {
             fixture.HomeTeam.CurrentSeasonStats.AddLose();
             fixture.AwayTeam.CurrentSeasonStats.AddWin();
@@ -107,11 +108,11 @@ public static class FixtureSimulation
 
     private static void AddGoalsAndGames()
     {
-        fixture.HomeTeam.CurrentSeasonStats.AddGoalsFor(fixture.HomeTeamScore);
-        fixture.HomeTeam.CurrentSeasonStats.AddGoalsAgainst(fixture.AwayTeamScore);
+        fixture.HomeTeam.CurrentSeasonStats.AddGoalsFor(fixture.FixtureScore.HomeScore);
+        fixture.HomeTeam.CurrentSeasonStats.AddGoalsAgainst(fixture.FixtureScore.AwayScore);
 
-        fixture.AwayTeam.CurrentSeasonStats.AddGoalsFor(fixture.AwayTeamScore);
-        fixture.AwayTeam.CurrentSeasonStats.AddGoalsAgainst(fixture.HomeTeamScore);
+        fixture.AwayTeam.CurrentSeasonStats.AddGoalsFor(fixture.FixtureScore.AwayScore);
+        fixture.AwayTeam.CurrentSeasonStats.AddGoalsAgainst(fixture.FixtureScore.HomeScore);
 
         fixture.HomeTeam.CurrentSeasonStats.AddHomeGame();
         fixture.AwayTeam.CurrentSeasonStats.AddAwayGame();
@@ -121,15 +122,39 @@ public static class FixtureSimulation
     {
         var randomNum = rnd.Next(0, 1000);
 
-        if (randomNum < 550)
-            ScoreGoal(RandomAttacker());
-        else if (randomNum < 850)
-            ScoreGoal(RandomMidfielder());
-        else
-            ScoreGoal(RandomDefender());
+        var FixtureEvent = new Event() { EventFixture = fixture };
 
-        if (randomNum < 750)
-            AssistGoal(RandomPlayer());
+        if (randomNum < 550)
+        {
+            var player = RandomAttacker();
+            FixtureEvent.GoalScorer = player;
+
+            ScoreGoal(player);
+        }
+        else if (randomNum < 850)
+        {
+            var player = RandomMidfielder();
+            FixtureEvent.GoalScorer = player;
+
+            ScoreGoal(player);
+        }
+        else
+        {
+            var player = RandomDefender();
+            FixtureEvent.GoalScorer = player;
+
+            ScoreGoal(player);
+        }
+
+        if (randomNum < 850)
+        {
+            var player = RandomPlayer();
+            FixtureEvent.GoalAssister = player;
+
+            AssistGoal(player);
+        }
+
+        fixture.FixtureEvents.Add(FixtureEvent);
     }
 
     private static void ScoreGoal(Player p) => p.PlayerRecord.AddGoal();

@@ -46,12 +46,22 @@ namespace Infrastructure.Repository
                 .Include(t => t.Players).ThenInclude(p => p.CurrentPlayerStats)
                 .Include(t => t.Players).ThenInclude(p => p.PlayerRecord)
                 .Include(t => t.TeamManager).ThenInclude(tm => tm.ManagerPerson)
-                .Include(t => t.HomeFixtures)
-                .Include(t => t.AwayFixtures)
+                .Include(t => t.HomeFixtures).ThenInclude(hf => hf.AwayTeam)
+                .Include(t => t.AwayFixtures).ThenInclude(af => af.HomeTeam)
                 .Include(t => t.CurrentLeague)
                 .Include(t => t.CurrentSeasonStats)
                 .Include(t => t.CurrentTeamSheet)
                 .SingleOrDefaultAsync(t => t.TeamId == id);
+        }
+
+        public async Task<List<Team>> GetTeamsByLeagueId(long leagueId)
+        {
+            return await _context.Teams.Where(t => t.CurrentLeague.LeagueId == leagueId)
+                .Include(t => t.TeamManager).ThenInclude(tm => tm.ManagerPerson)
+                .Include(t => t.CurrentLeague)
+                .Include(t => t.CurrentSeasonStats)
+                .Include(t => t.CurrentTeamSheet)
+                .ToListAsync();
         }
 
         public async Task Save()

@@ -5,6 +5,7 @@ using FootballManagerAPI.Dto;
 using FootballManagerAPI.Pagination;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.VisualBasic;
 
 namespace FootballManagerAPI.Controllers
 {
@@ -80,6 +81,83 @@ namespace FootballManagerAPI.Controllers
             _logger.LogInformation("User created successfully!!!");
 
             return CreatedAtAction(nameof(GetUserById), new { id = result.UserId }, dto);
+        }
+
+        [HttpPost]
+        [Route("{id}/CreateTeam")]
+        public async Task<IActionResult> CreateUserTeam([FromBody] TeamPutPostDto team, int id)
+        {
+            _logger.LogInformation("Preparing to create a User Team...");
+
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError("Information received was invalid!!");
+                return BadRequest(ModelState);
+            }
+
+            var userToManagerCommand = new CreateRealManager
+            {
+                UserManagerId = id
+            };
+
+            var userToManager = await _mediator.Send(userToManagerCommand);
+
+            if (userToManager == null)
+            {
+                _logger.LogError($"User with id {id} not found!!");
+                return NotFound();
+            }
+
+            if(userToManager.CurrentTeam != null)
+            {
+                _logger.LogError($"User with id {id} already assigned to a team!!");
+                return Conflict();
+            }
+
+            var command = _mapper.Map<CreateTeam>(team);
+
+            var createdTeam = await _mediator.Send(command);
+
+            var userAssignedToTeam = await _mediator.Send(new AddManagerToTeam 
+            {
+                ManagerId = userToManager.ManagerId,
+                TeamId = createdTeam.TeamId
+            });
+
+            var dto = _mapper.Map<TeamGetDto>(userAssignedToTeam);
+
+            _logger.LogInformation("User Team created successfully!!!");
+
+            return CreatedAtAction(nameof(GetUserTeam), new { id = userAssignedToTeam.TeamId }, dto);
+        }
+
+
+        [HttpPut]
+        [Route("{id}")]
+        public async Task<IActionResult> UpdatePlayer(int id, [FromBody] UserPutDto updated)
+        {
+            _logger.LogInformation($"Preparing to update user with id {id}...");
+
+            var command = new UpdateUser
+            {
+                UserId = id,
+                Name = updated.Name,
+                Country = updated.Country,
+                DateOfBirth = updated.DateOfBirth,
+                Image = updated.Image,
+            };
+
+            var result = await _mediator.Send(command);
+
+            if (result == null)
+            {
+                _logger.LogError($"User with id {id} not found!!!");
+                return NotFound();
+            }
+
+            _logger.LogInformation($"User with id {id} updated successfully!!!");
+
+            return NoContent();
         }
 
         [HttpGet]

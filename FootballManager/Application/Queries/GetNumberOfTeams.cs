@@ -9,5 +9,6 @@ namespace Application.Queries
 {
     public class GetNumberOfTeams : IRequest<int>
     {
+        public long LeagueId { get; set; }
     }
 }

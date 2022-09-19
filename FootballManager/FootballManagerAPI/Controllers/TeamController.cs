@@ -25,6 +25,28 @@ namespace FootballManagerAPI.Controllers
             _logger.LogInformation("Team controller called...");
         }
 
+        [HttpPost]
+        public async Task<IActionResult> CreateTeam([FromBody] TeamPutPostDto team)
+        {
+            _logger.LogInformation("Preparing to create a Team...");
+
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError("Information received was invalid!!");
+                return BadRequest(ModelState);
+            }
+
+            var command = _mapper.Map<CreateTeam>(team);
+
+            var created = await _mediator.Send(command);
+            var dto = _mapper.Map<TeamGetDto>(created);
+
+            _logger.LogInformation("Team created successfully!!!");
+
+            return CreatedAtAction(nameof(GetTeamById), new { id = created.TeamId }, dto);
+        }
+
+
         [HttpGet]
         [Route("All/{pg?}")]
         public async Task<IActionResult> GetAllTeams(int pg = 1)
@@ -92,9 +114,9 @@ namespace FootballManagerAPI.Controllers
                 return NotFound();
             }
 
-            var mappedResult = _mapper.Map<List<PlayerGetDto>>(result);
+            var mappedResult = _mapper.Map<List<ShortPlayerGetDto>>(result);
 
-            var page = new Pager<PlayerGetDto>(mappedResult.Count, pg);
+            var page = new Pager<ShortPlayerGetDto>(mappedResult.Count, pg);
 
             var pageResults = mappedResult
                 .Skip((page.CurrentPage - 1) * page.PageNumOfResults)
@@ -246,7 +268,7 @@ namespace FootballManagerAPI.Controllers
                 return NotFound();
             }
 
-            var mappedResult = _mapper.Map<ManagerGetDto>(result);
+            var mappedResult = _mapper.Map<TeamGetDto>(result);
 
             _logger.LogInformation($"Manager with id {managerId} added to team with id {id} successfully!!!");
 

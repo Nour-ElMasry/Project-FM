@@ -21,9 +21,7 @@ namespace Application.CommandHandlers
             if (league == null)
                 return null;
 
-            await _unitOfWork.FixtureRepository.Clear();
-
-            league.Fixtures = null;
+            await _unitOfWork.FixtureRepository.ClearLeagueFixtures(request.LeagueId);
 
             await Task.Run(() => league.CreateFixtures());
 

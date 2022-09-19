@@ -16,9 +16,17 @@ namespace Application.QueryHandlers
 
         public async Task<int> Handle(GetNumberOfTeams request, CancellationToken cancellationToken)
         {
-            var num = await _unitOfWork.TeamRepository.GetNumberOfTeams();
-            
-            return num;
+            if (request.LeagueId == 0)
+            {
+                return await _unitOfWork.TeamRepository.GetNumberOfTeams();
+            }
+
+            var leagueTeams = await _unitOfWork.TeamRepository.GetTeamsByLeagueId(request.LeagueId);
+
+            if (leagueTeams == null)
+                return 0;
+
+            return leagueTeams.Count;
         }
     }
 }

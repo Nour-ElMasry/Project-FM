@@ -33,6 +33,24 @@ namespace Infrastructure.Repository
                 .ToListAsync();
         }
 
+        public async Task<List<Player>> GetAllPlayersByLeague(long leagueId)
+        {
+            return await _context.Players
+                .Where(p => p.CurrentTeam.CurrentLeague.LeagueId == leagueId)
+                .Include(p => p.PlayerPerson)
+                .Include(p => p.CurrentTeam)
+                .ToListAsync();
+        }
+
+        public async Task<List<Player>> GetAllPlayersByTeam(long teamId)
+        {
+            return await _context.Players
+                .Where(p => p.CurrentTeam.TeamId == teamId)
+                .Include(p => p.PlayerPerson)
+                .Include(p => p.CurrentTeam)
+                .ToListAsync();
+        }
+
         public async Task<Player> GetPlayerById(long id)
         {
             return await _context.Players

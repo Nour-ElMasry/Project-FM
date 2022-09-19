@@ -48,15 +48,9 @@ namespace Infrastructure.Repository
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdateUser(long id, User u)
+        public Task UpdateUser(User u)
         {
-            var user = await GetUserById(id);
-
-            if (user != null)
-            {
-                user.Username = u.Username;
-                user.Password = u.Password;
-            }
+            return Task.Run(() => _context.Users.Attach(u));
         }
     }
 }

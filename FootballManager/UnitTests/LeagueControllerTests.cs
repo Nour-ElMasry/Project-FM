@@ -8,6 +8,7 @@ using MediatR;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
+using FootballManagerAPI.Pagination;
 
 namespace UnitTests
 {
@@ -143,6 +144,19 @@ namespace UnitTests
                        new List<Team>());
                 });
 
+            _mockMapper.Setup(x => x.Map<List<TeamGetDto>>(It.IsAny<List<Team>>()))
+                .Returns((List<Team> ps) =>
+                {
+                    List<TeamGetDto> result = new();
+
+                    ps.ForEach(p =>
+                    {
+                        result.Add(new TeamGetDto());
+                    });
+
+                    return result;
+                });
+
             var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
             await controller.GetLeagueTeamsById(1);
 
@@ -156,6 +170,19 @@ namespace UnitTests
                 .Setup(m => m.Send(It.IsAny<GetTeamsByLeague>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(
                        new List<Team>());
+
+            _mockMapper.Setup(x => x.Map<List<TeamGetDto>>(It.IsAny<List<Team>>()))
+                .Returns((List<Team> ps) =>
+                {
+                    List<TeamGetDto> result = new();
+
+                    ps.ForEach(p =>
+                    {
+                        result.Add(new TeamGetDto());
+                    });
+
+                    return result;
+                });
 
             var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
             var result = await controller.GetLeagueTeamsById(1);
@@ -209,7 +236,7 @@ namespace UnitTests
             var result = await controller.GetLeagueTeamsById(1);
             var okResult = result as OkObjectResult;
 
-            Assert.AreEqual(league.Teams.Count, ((List<TeamGetDto>)okResult.Value).Count);
+            Assert.AreEqual(league.Teams.Count, ((Pager<TeamGetDto>)okResult.Value).TotalResults);
         }
 
         [TestMethod]
@@ -239,6 +266,19 @@ namespace UnitTests
                        new List<Player>());
                 });
 
+            _mockMapper.Setup(x => x.Map<List<ShortPlayerGetDto>>(It.IsAny<List<Player>>()))
+                .Returns((List<Player> ps) =>
+                {
+                    List<ShortPlayerGetDto> result = new();
+
+                    ps.ForEach(p =>
+                    {
+                        result.Add(new ShortPlayerGetDto());
+                    });
+
+                    return result;
+                });
+
             var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
             await controller.GetLeaguePlayersById(1);
 
@@ -252,6 +292,19 @@ namespace UnitTests
                 .Setup(m => m.Send(It.IsAny<GetPlayersByLeague>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(
                        new List<Player>());
+
+            _mockMapper.Setup(x => x.Map<List<ShortPlayerGetDto>>(It.IsAny<List<Player>>()))
+                .Returns((List<Player> ps) =>
+                {
+                    List<ShortPlayerGetDto> result = new();
+
+                    ps.ForEach(p =>
+                    {
+                        result.Add(new ShortPlayerGetDto());
+                    });
+
+                    return result;
+                });
 
             var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
             var result = await controller.GetLeaguePlayersById(1);
@@ -297,15 +350,15 @@ namespace UnitTests
                     return players;
                 });
 
-            _mockMapper.Setup(x => x.Map<List<PlayerGetDto>>(It.IsAny<List<Player>>()))
+            _mockMapper.Setup(x => x.Map<List<ShortPlayerGetDto>>(It.IsAny<List<Player>>()))
             .Returns((List<Player> ps) =>
             {
-                List<PlayerGetDto> result = new();
+                List<ShortPlayerGetDto> result = new();
 
                 ps.ForEach(p =>
                 {
                     result.Add(
-                        new PlayerGetDto
+                        new ShortPlayerGetDto
                         {
                             Id = p.PlayerId,
                             PlayerPerson = p.PlayerPerson,
@@ -324,7 +377,7 @@ namespace UnitTests
 
             league.Teams.ForEach(t => playersCount += t.Players.Count);
 
-            Assert.AreEqual(playersCount, ((List<PlayerGetDto>)okResult.Value).Count);
+            Assert.AreEqual(playersCount, ((Pager<ShortPlayerGetDto>)okResult.Value).TotalResults);
         }
         [TestMethod]
         public async Task Get_LeagueFixtures_By_Id_GetLeagueFixturesByIdIsCalled()
@@ -353,6 +406,23 @@ namespace UnitTests
                        new List<Fixture>());
                 });
 
+            _mockMapper.Setup(x => x.Map<List<FixtureGetDto>>(It.IsAny<List<Fixture>>()))
+            .Returns((List<Fixture> fs) =>
+            {
+                List<FixtureGetDto> result = new();
+
+                fs.ForEach(f =>
+                {
+                    result.Add(
+                        new FixtureGetDto
+                        {
+                            Id = f.FixtureId,
+                        });
+                });
+
+                return result;
+            });
+
             var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
             await controller.GetLeagueFixturesById(1);
 
@@ -366,6 +436,23 @@ namespace UnitTests
                 .Setup(m => m.Send(It.IsAny<GetFixturesByLeague>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(
                        new List<Fixture>());
+
+            _mockMapper.Setup(x => x.Map<List<FixtureGetDto>>(It.IsAny<List<Fixture>>()))
+            .Returns((List<Fixture> fs) =>
+            {
+                List<FixtureGetDto> result = new();
+
+                fs.ForEach(f =>
+                {
+                    result.Add(
+                        new FixtureGetDto
+                        {
+                            Id = f.FixtureId,
+                        });
+                });
+
+                return result;
+            });
 
             var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
             var result = await controller.GetLeagueFixturesById(1);
@@ -416,7 +503,7 @@ namespace UnitTests
             var result = await controller.GetLeagueFixturesById(1);
             var okResult = result as OkObjectResult;
 
-            Assert.AreEqual(league.Fixtures.Count, ((List<FixtureGetDto>)okResult.Value).Count);
+            Assert.AreEqual(league.Fixtures.Count, ((Pager<FixtureGetDto>)okResult.Value).TotalResults);
         }
         [TestMethod]
         public async Task Delete_League_DeleteLeagueIsCalled()

@@ -16,10 +16,16 @@ namespace Application.CommandHandlers
 
         public async Task<RealManager> Handle(CreateRealManager request, CancellationToken cancellationToken)
         {
+            var managers = await _unitOfWork.ManagerRepository.GetAllManagers();
             var user = await _unitOfWork.UserRepository.GetUserById(request.UserManagerId);
 
             if (user == null)
                 return null;
+
+            var check = managers.Single(m => m.ManagerPerson.PersonId == user.UserPerson.PersonId);
+
+            if (check != null)
+                return (RealManager)check;
 
             var manager = new RealManager(user);
 

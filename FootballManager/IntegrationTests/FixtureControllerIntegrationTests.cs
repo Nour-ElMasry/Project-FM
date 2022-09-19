@@ -1,4 +1,5 @@
 using FootballManagerAPI.Dto;
+using FootballManagerAPI.Pagination;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;
 using System.Net;
@@ -25,7 +26,7 @@ namespace IntegrationTests
         {
             _factory = new CustomWebApplicationFactory<Program>();
             var client = _factory.CreateClient();
-            var response = await client.GetAsync("api/v1/Fixtures");
+            var response = await client.GetAsync("api/v1/Fixtures/All");
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
@@ -35,10 +36,10 @@ namespace IntegrationTests
         {
             _factory = new CustomWebApplicationFactory<Program>();
             var client = _factory.CreateClient();
-            var response = await client.GetAsync("api/v1/Fixtures");
+            var response = await client.GetAsync("api/v1/Fixtures/All");
 
             var result = await response.Content.ReadAsStringAsync();
-            var fixtures = JsonConvert.DeserializeObject<List<FixtureGetDto>>(result);
+            var fixtures = JsonConvert.DeserializeObject<Pager<FixtureGetDto>>(result);
 
             Assert.IsNotNull(fixtures);
         }

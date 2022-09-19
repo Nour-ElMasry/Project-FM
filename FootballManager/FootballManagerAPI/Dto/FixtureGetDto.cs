@@ -1,4 +1,6 @@
-﻿namespace FootballManagerAPI.Dto
+﻿using Domain.Entities;
+
+namespace FootballManagerAPI.Dto
 {
     public class FixtureGetDto
     {
@@ -8,7 +10,8 @@
         public ShortTeamGetDto AwayTeam { get; set; }
         public string Venue { get; set; }
         public DateTime? Date { get; set; }
-        public int HomeTeamScore { get; set; }
-        public int AwayTeamScore { get; set; }
+        public Score FixtureScore{ get; set; }
+        public List<EventGetDto> FixtureEvents { get; set; }
+        public bool isPlayed { get; set; }
     }
 }

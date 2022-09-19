@@ -18,7 +18,7 @@ namespace ConsolePresentation
             var diContainer = new ServiceCollection()
                 .AddDbContext<DataContext>(options =>
                 {
-                    options.UseSqlServer(@"Data Source=TOPSKI\SQLEXPRESS;Initial Catalog=FM_DB;Integrated Security=True");
+                    options.UseSqlServer(@"Data Source=TOPSKI\SQLEXPRESS;Initial Catalog=FootballManager_Database;Integrated Security=True");
                 })
                 .AddMediatR(typeof(IUnitOfWork))
                 .AddScoped<IPlayerRepository, PlayerRepository>()
@@ -91,52 +91,6 @@ namespace ConsolePresentation
 
                 Thread.Sleep(7500);
             }
-
-            //await mediator.Send(new GenerateLeagueFixtures
-            //{
-            //    LeagueId = 1
-            //});
-
-            //await mediator.Send(new SimulateAllFixtures
-            //{
-            //    LeagueId = 1
-            //});
-
-            //var fixtures = await mediator.Send(new GetFixturesByLeague
-            //{
-            //    LeagueId = 1
-            //});
-
-            //fixtures.ForEach(f => Console.WriteLine($"{f.HomeTeam.Name} {f.HomeTeamScore} - {f.AwayTeamScore} {f.AwayTeam.Name}"));
-
-            //var teams = await mediator.Send(new GetTeamsByLeague
-            //{
-            //    LeagueId = 1
-            //});
-
-            //Console.WriteLine("\n\n");
-
-            //var leagueStanding = teams.OrderByDescending(t => t.CurrentSeasonStats.Points).ThenByDescending(t => t.CurrentSeasonStats.GoalsFor - t.CurrentSeasonStats.GoalsAgainst).ToList();
-
-            //leagueStanding.ForEach(ls => Console.WriteLine($"{ls.Name} -> {ls.CurrentSeasonStats}"));
-
-            //Console.WriteLine("\n\n");
-
-            //var players = await mediator.Send(new GetPlayersByLeague
-            //{
-            //    LeagueId = 1
-            //});
-
-            //var TopGoalScorers = players.Where(p => p.PlayerRecord.Goals > 0).OrderByDescending(p => p.PlayerRecord.Goals).ToList();
-            //var TopAssisters = players.Where(p => p.PlayerRecord.Assists > 0).OrderByDescending(p => p.PlayerRecord.Assists).ToList();
-
-            //Console.WriteLine("Top Goal Scorers: \n");
-            //TopGoalScorers.ForEach(p => Console.WriteLine($"{p.PlayerPerson.Name} => {p.PlayerRecord.Goals} Goals"));
-
-            //Console.WriteLine("\n\n");
-            //Console.WriteLine("Top Assisters: \n");
-
-            //TopAssisters.ForEach(p => Console.WriteLine($"{p.PlayerPerson.Name} => {p.PlayerRecord.Assists} Assists"));
         }
 
 
@@ -219,6 +173,6 @@ namespace ConsolePresentation
                     TeamId = team.TeamId
                 });
             }
-        } 
+        }
     }
 }

@@ -10,5 +10,7 @@ namespace Application.Abstract
         Task DeletePlayer(Player u);
         Task<Player> GetPlayerById(long id);
         Task<List<Player>> GetAllPlayers();
+        Task<List<Player>> GetAllPlayersByLeague(long leagueId);
+        Task<List<Player>> GetAllPlayersByTeam(long teamId);
     }
 }

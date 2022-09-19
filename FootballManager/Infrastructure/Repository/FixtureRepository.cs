@@ -17,9 +17,9 @@ namespace Infrastructure.Repository
             await _context.Fixtures.AddAsync(u);
         }
 
-        public async Task Clear()
+        public async Task ClearLeagueFixtures(long leagueId)
         {
-            await Task.Run(() => _context.Fixtures.RemoveRange(_context.Fixtures.ToList()));
+            await Task.Run(() => _context.Fixtures.RemoveRange(_context.Fixtures.Where(f => f.FixtureLeague.LeagueId == leagueId).ToList()));
         }
 
         public async Task DeleteFixture(Fixture u)
@@ -30,26 +30,49 @@ namespace Infrastructure.Repository
         public async Task<List<Fixture>> GetAllFixtures()
         {
             return await _context.Fixtures
-                .Include(l => l.HomeTeam).ThenInclude(t => t.CurrentTeamSheet)
-                .Include(l => l.AwayTeam).ThenInclude(t => t.CurrentTeamSheet)
-                .Include(l => l.HomeTeam).ThenInclude(t => t.CurrentSeasonStats)
-                .Include(l => l.AwayTeam).ThenInclude(t => t.CurrentSeasonStats)
-                .Include(l => l.HomeTeam).ThenInclude(t => t.Players).ThenInclude(p => p.PlayerRecord)
-                .Include(l => l.AwayTeam).ThenInclude(t => t.Players).ThenInclude(p => p.PlayerRecord)
+                .Include(f => f.HomeTeam)
+                .Include(f => f.AwayTeam)
                 .Include(f => f.FixtureLeague)
+                .Include(f => f.FixtureScore)
+                .ToListAsync();
+        }
+
+        public async Task<List<Fixture>> GetAllFixturesByLeague(long leagueId)
+        {
+            return await _context.Fixtures.Where(f => f.FixtureLeague.LeagueId == leagueId)
+                 .Include(f => f.HomeTeam)
+                 .Include(f => f.AwayTeam)
+                 .Include(f => f.FixtureLeague)
+                 .Include(f => f.FixtureScore)
+                 .ToListAsync();
+        }
+
+        public async Task<List<Fixture>> GetAllFixturesForSimulation()
+        {
+            return await _context.Fixtures
+                .Include(f => f.HomeTeam).ThenInclude(t => t.CurrentTeamSheet)
+                .Include(f => f.AwayTeam).ThenInclude(t => t.CurrentTeamSheet)
+                .Include(f => f.HomeTeam).ThenInclude(t => t.CurrentSeasonStats)
+                .Include(f => f.AwayTeam).ThenInclude(t => t.CurrentSeasonStats)
+                .Include(f => f.HomeTeam).ThenInclude(t => t.Players).ThenInclude(p => p.PlayerRecord)
+                .Include(f => f.AwayTeam).ThenInclude(t => t.Players).ThenInclude(p => p.PlayerRecord)
+                .Include(f => f.FixtureScore)
                 .ToListAsync();
         }
 
         public async Task<Fixture> GetFixtureById(long id)
         {
             return await _context.Fixtures
-                .Include(l => l.HomeTeam).ThenInclude(t => t.CurrentTeamSheet)
-                .Include(l => l.AwayTeam).ThenInclude(t => t.CurrentTeamSheet)
-                .Include(l => l.HomeTeam).ThenInclude(t => t.CurrentSeasonStats)
-                .Include(l => l.AwayTeam).ThenInclude(t => t.CurrentSeasonStats)
-                .Include(l => l.HomeTeam).ThenInclude(t => t.Players).ThenInclude(p => p.PlayerRecord)
-                .Include(l => l.AwayTeam).ThenInclude(t => t.Players).ThenInclude(p => p.PlayerRecord)
+                .Include(f => f.HomeTeam).ThenInclude(t => t.CurrentTeamSheet)
+                .Include(f => f.AwayTeam).ThenInclude(t => t.CurrentTeamSheet)
+                .Include(f => f.HomeTeam).ThenInclude(t => t.CurrentSeasonStats)
+                .Include(f => f.AwayTeam).ThenInclude(t => t.CurrentSeasonStats)
+                .Include(f => f.HomeTeam).ThenInclude(t => t.Players).ThenInclude(p => p.PlayerRecord)
+                .Include(f => f.AwayTeam).ThenInclude(t => t.Players).ThenInclude(p => p.PlayerRecord)
+                .Include(f => f.FixtureEvents).ThenInclude(f => f.GoalScorer.PlayerPerson)
+                .Include(f => f.FixtureEvents).ThenInclude(f => f.GoalAssister.PlayerPerson)
                 .Include(f => f.FixtureLeague)
+                .Include(f => f.FixtureScore)
                 .SingleOrDefaultAsync(f => f.FixtureId == id);
         }
 

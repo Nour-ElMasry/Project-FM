@@ -46,7 +46,7 @@ namespace IntegrationTests
         {
             _factory = new CustomWebApplicationFactory<Program>();
             var client = _factory.CreateClient();
-            var response = await client.GetAsync("api/v1/Players");
+            var response = await client.GetAsync("api/v1/Players/All");
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
@@ -56,7 +56,7 @@ namespace IntegrationTests
         {
             _factory = new CustomWebApplicationFactory<Program>();
             var client = _factory.CreateClient();
-            var response = await client.GetAsync("api/v1/Players");
+            var response = await client.GetAsync("api/v1/Players/All");
 
             var result = await response.Content.ReadAsStringAsync();
 

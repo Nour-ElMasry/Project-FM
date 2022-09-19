@@ -23,6 +23,7 @@ public class League
     {
         foreach (var team in Teams) team.ResetSeason();
         CurrentSeason = new Season(++CurrentSeason.Year);
+        CreateFixtures();
     }
     public void RemoveTeam(Team t)
     {
@@ -31,7 +32,6 @@ public class League
             throw new NullReferenceException("Team doesn't exist in this League!");
         Teams.Remove(teamToRemove);
     }
-
     public void CreateFixtures()
     {
         Fixtures = FixtureGenerator.Generate(this).Result;

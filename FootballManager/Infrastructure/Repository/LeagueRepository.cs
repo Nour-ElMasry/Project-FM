@@ -26,7 +26,7 @@ namespace Infrastructure.Repository
         {
             return await _context.Leagues
                 .Include(l => l.CurrentSeason)
-                .Take(100).ToListAsync();
+                .ToListAsync();
         }
 
         public async Task<League> GetLeagueById(long id)

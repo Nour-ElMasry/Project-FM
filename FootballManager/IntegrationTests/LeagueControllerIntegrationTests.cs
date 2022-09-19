@@ -1,4 +1,5 @@
 ﻿using FootballManagerAPI.Dto;
+using FootballManagerAPI.Pagination;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;
 using System.Net;
@@ -23,7 +24,7 @@ namespace IntegrationTests
         {
             _factory = new CustomWebApplicationFactory<Program>();
             var client = _factory.CreateClient();
-            var response = await client.GetAsync("api/v1/Leagues");
+            var response = await client.GetAsync("api/v1/Leagues/All");
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode);
         }
@@ -33,10 +34,10 @@ namespace IntegrationTests
         {
             _factory = new CustomWebApplicationFactory<Program>();
             var client = _factory.CreateClient();
-            var response = await client.GetAsync("api/v1/Leagues");
+            var response = await client.GetAsync("api/v1/Leagues/All");
 
             var result = await response.Content.ReadAsStringAsync();
-            var leagues = JsonConvert.DeserializeObject<List<LeagueGetDto>>(result);
+            var leagues = JsonConvert.DeserializeObject<Pager<LeagueGetDto>>(result);
 
             Assert.IsNotNull(leagues);
         }
@@ -104,7 +105,7 @@ namespace IntegrationTests
             var response = await client.GetAsync("api/v1/Leagues/1/Teams");
 
             var result = await response.Content.ReadAsStringAsync();
-            var teams = JsonConvert.DeserializeObject<List<TeamGetDto>>(result);
+            var teams = JsonConvert.DeserializeObject<Pager<TeamGetDto>>(result);
 
             Assert.IsNotNull(teams);
         }
@@ -159,7 +160,7 @@ namespace IntegrationTests
             var response = await client.GetAsync("api/v1/Leagues/1/Fixtures");
 
             var result = await response.Content.ReadAsStringAsync();
-            var teams = JsonConvert.DeserializeObject<List<FixtureGetDto>>(result);
+            var teams = JsonConvert.DeserializeObject<Pager<FixtureGetDto>>(result);
 
             Assert.IsNotNull(teams);
         }

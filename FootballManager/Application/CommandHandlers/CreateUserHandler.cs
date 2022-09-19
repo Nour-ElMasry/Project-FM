@@ -22,7 +22,7 @@ namespace Application.CommandHandlers
             {
                 var person = new Person(request.Name, request.DateOfBirth, request.Country);
 
-                if (request.Image != null)
+                if (request.Image != "")
                     person.Image = request.Image;
 
                 var user = new User(request.Username, request.Password, person);

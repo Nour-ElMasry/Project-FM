@@ -5,7 +5,7 @@ using MediatR;
 
 namespace Application.CommandHandlers
 {
-    public class AddManagerToTeamHandler : IRequestHandler<AddManagerToTeam, Manager>
+    public class AddManagerToTeamHandler : IRequestHandler<AddManagerToTeam, Team>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -14,7 +14,7 @@ namespace Application.CommandHandlers
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Manager> Handle(AddManagerToTeam request, CancellationToken cancellationToken)
+        public async Task<Team> Handle(AddManagerToTeam request, CancellationToken cancellationToken)
         {
             var manager = await _unitOfWork.ManagerRepository.GetManagerById(request.ManagerId);
             var team = await _unitOfWork.TeamRepository.GetTeamById(request.TeamId);
@@ -26,7 +26,7 @@ namespace Application.CommandHandlers
             manager.CurrentTeam = team;
 
             await _unitOfWork.Save();
-            return manager;
+            return team;
         }
     }
 }

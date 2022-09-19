@@ -34,15 +34,22 @@ namespace FootballManagerAPI.Controllers
 
             var numOfTeams = await _mediator.Send(new GetNumberOfTeams());
 
-            if (result == null)
+            if (result.Count <= 0)
             {
-                _logger.LogError($"Couldn't get all fixtures!!!");
+                _logger.LogError($"No Fixtures found!!!");
                 return NotFound();
             }
 
             var mappedResult = _mapper.Map<List<FixtureGetDto>>(result);
 
-            var page = new Pager<FixtureGetDto>(mappedResult.Count, pg, mappedResult.Count / (numOfTeams / 2));
+            _logger.LogInformation("All Fixtures have been recieved successfully!!");
+
+            if (pg == 0)
+            {
+                return Ok(mappedResult);
+            }
+
+            var page = new Pager<FixtureGetDto>(mappedResult.Count, pg, mappedResult.Count / ((numOfTeams - 1) * 2));
 
             var pageResults = mappedResult
                 .Skip((page.CurrentPage - 1) * page.PageNumOfResults)
@@ -50,8 +57,6 @@ namespace FootballManagerAPI.Controllers
                 .ToList();
 
             page.PageResults = pageResults;
-
-            _logger.LogInformation("All Fixtures have been recieved successfully!!");
 
             return Ok(page);
         }

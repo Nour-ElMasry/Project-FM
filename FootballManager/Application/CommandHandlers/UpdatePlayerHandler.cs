@@ -19,28 +19,28 @@ namespace Application.CommandHandlers
         {
             var player = await _unitOfWork.PlayerRepository.GetPlayerById(request.PlayerId);
 
-            if (player != null)
-            {
-                if (!PlayerPositions.IsCorrectPosition(request.Position, player.GetType().Name))
-                    throw new IncorrectPositionException("Incorrect position assigned to role!");
+            if (player == null)
+                return null;
 
-                if (!DateTime.TryParse(request.DateOfBirth, out DateTime tempDate))
-                    throw new IncorrectDateException("Invalid date! please input a correct date!");
+            if (!PlayerPositions.IsCorrectPosition(request.Position, player.GetType().Name))
+                throw new IncorrectPositionException("Incorrect position assigned to role!");
 
-                if (DateTime.Now.Year - 16 <= tempDate.Year)
-                    throw new IncorrectDateException("Invalid date! Player can't be under 16!");
+            if (!DateTime.TryParse(request.DateOfBirth, out DateTime tempDate))
+                throw new IncorrectDateException("Invalid date! please input a correct date!");
 
-                player.PlayerPerson.Name = request.Name;
-                player.PlayerPerson.Country = request.Country;
-                player.PlayerPerson.BirthDate = tempDate;
-                player.Position = request.Position;
+            if (DateTime.Now.Year - 16 <= tempDate.Year)
+                throw new IncorrectDateException("Invalid date! Player can't be under 16!");
 
-                await _unitOfWork.PlayerRepository.UpdatePlayer(player);
-                await _unitOfWork.Save();
+            player.PlayerPerson.Name = request.Name;
+            player.PlayerPerson.Country = request.Country;
+            player.PlayerPerson.BirthDate = tempDate;
+            player.PlayerPerson.Image = request.Image;
+            player.Position = request.Position;
 
-                return player;
-            }
-            return null;
+            await _unitOfWork.PlayerRepository.UpdatePlayer(player);
+            await _unitOfWork.Save();
+
+            return player;
         }
     }
 }

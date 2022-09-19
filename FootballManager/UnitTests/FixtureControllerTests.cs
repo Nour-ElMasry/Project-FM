@@ -68,8 +68,11 @@ namespace UnitTests
                             {
                                 Name = "League1"
                             },
-                            AwayTeamScore = 0,
-                            HomeTeamScore = 0,
+                            FixtureScore = new Score
+                            {
+                                HomeScore = 0,
+                                AwayScore = 0
+                            },
                             Date = DateTime.Now,
                             Venue = "HomeTeam1 Stadium"
                         });
@@ -101,8 +104,11 @@ namespace UnitTests
                             {
                                 Name = "League1"
                             },
-                            AwayTeamScore = 0,
-                            HomeTeamScore = 0,
+                            FixtureScore = new Score
+                            {
+                                HomeScore = 0,
+                                AwayScore = 0
+                            },
                             Date = DateTime.Now,
                             Venue = "HomeTeam1 Stadium"
                         });
@@ -133,8 +139,11 @@ namespace UnitTests
                 {
                     Name = "League1"
                 },
-                AwayTeamScore = 0,
-                HomeTeamScore = 0,
+                FixtureScore = new Score
+                {
+                    HomeScore = 0,
+                    AwayScore = 0
+                },
                 Date = DateTime.Now,
                 Venue = "HomeTeam1 Stadium"
             };
@@ -148,11 +157,28 @@ namespace UnitTests
                 {
                     return new FixtureGetDto
                     {
-                        FixtureLeagueName = f.FixtureLeague.Name,
-                        HomeTeamName = f.HomeTeam.Name,
-                        AwayTeamName = f.AwayTeam.Name,
-                        HomeTeamScore = f.HomeTeamScore,
-                        AwayTeamScore = f.AwayTeamScore,
+                        FixtureLeague = new ShortLeagueGetDto 
+                        {
+                            LeagueId = f.FixtureLeague.LeagueId,
+                            LeagueName = f.FixtureLeague.Name
+                        },
+                        HomeTeam = new ShortTeamGetDto 
+                        {
+                            TeamId = f.HomeTeam.TeamId,
+                            TeamName = f.HomeTeam.Name,
+                            TeamLogo = f.HomeTeam.Logo
+                        },
+                        AwayTeam = new ShortTeamGetDto
+                        {
+                            TeamId = f.AwayTeam.TeamId,
+                            TeamName = f.AwayTeam.Name,
+                            TeamLogo = f.AwayTeam.Logo
+                        },
+                        FixtureScore = new Score
+                        {
+                            HomeScore = 0,
+                            AwayScore = 0
+                        },
                         Date = f.Date,
                         Venue = f.Venue,
                     };
@@ -163,11 +189,11 @@ namespace UnitTests
             var result = await controller.GetFixtureById(1);
             var okResult = result as OkObjectResult;
 
-            Assert.AreEqual(fixture.HomeTeam.Name, ((FixtureGetDto)okResult.Value).HomeTeamName);
-            Assert.AreEqual(fixture.AwayTeam.Name, ((FixtureGetDto)okResult.Value).AwayTeamName);
-            Assert.AreEqual(fixture.FixtureLeague.Name, ((FixtureGetDto)okResult.Value).FixtureLeagueName);
-            Assert.AreEqual(fixture.HomeTeamScore, ((FixtureGetDto)okResult.Value).HomeTeamScore);
-            Assert.AreEqual(fixture.AwayTeamScore, ((FixtureGetDto)okResult.Value).AwayTeamScore);
+            Assert.AreEqual(fixture.HomeTeam.Name, ((FixtureGetDto)okResult.Value).HomeTeam.TeamName);
+            Assert.AreEqual(fixture.AwayTeam.Name, ((FixtureGetDto)okResult.Value).AwayTeam.TeamName);
+            Assert.AreEqual(fixture.FixtureLeague.Name, ((FixtureGetDto)okResult.Value).FixtureLeague.LeagueName);
+            Assert.AreEqual(fixture.FixtureScore.HomeScore, ((FixtureGetDto)okResult.Value).FixtureScore.HomeScore);
+            Assert.AreEqual(fixture.FixtureScore.AwayScore, ((FixtureGetDto)okResult.Value).FixtureScore.AwayScore);
             Assert.AreEqual(fixture.Venue, ((FixtureGetDto)okResult.Value).Venue);
             Assert.AreEqual(fixture.Date, ((FixtureGetDto)okResult.Value).Date);
         }

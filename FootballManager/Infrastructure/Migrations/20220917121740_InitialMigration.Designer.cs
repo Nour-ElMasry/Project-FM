@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220915074050_FluentApiModification")]
-    partial class FluentApiModification
+    [Migration("20220917121740_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -402,6 +402,9 @@ namespace Infrastructure.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<long?>("UserManagerId")
+                        .HasColumnType("bigint");
+
                     b.Property<long?>("UserPersonId")
                         .HasColumnType("bigint");
 
@@ -409,6 +412,10 @@ namespace Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("UserId");
+
+                    b.HasIndex("UserManagerId")
+                        .IsUnique()
+                        .HasFilter("[UserManagerId] IS NOT NULL");
 
                     b.HasIndex("UserPersonId");
 
@@ -505,8 +512,6 @@ namespace Infrastructure.Migrations
 
                     b.Property<long?>("UserManagerId")
                         .HasColumnType("bigint");
-
-                    b.HasIndex("UserManagerId");
 
                     b.HasDiscriminator().HasValue("RealManager");
                 });
@@ -622,20 +627,16 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.User", b =>
                 {
+                    b.HasOne("Domain.Entities.RealManager", null)
+                        .WithOne("UserManager")
+                        .HasForeignKey("Domain.Entities.User", "UserManagerId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("Domain.Entities.Person", "UserPerson")
                         .WithMany()
                         .HasForeignKey("UserPersonId");
 
                     b.Navigation("UserPerson");
-                });
-
-            modelBuilder.Entity("Domain.Entities.RealManager", b =>
-                {
-                    b.HasOne("Domain.Entities.User", "UserManager")
-                        .WithMany()
-                        .HasForeignKey("UserManagerId");
-
-                    b.Navigation("UserManager");
                 });
 
             modelBuilder.Entity("Domain.Entities.League", b =>
@@ -659,6 +660,11 @@ namespace Infrastructure.Migrations
                     b.Navigation("Players");
 
                     b.Navigation("TeamManager");
+                });
+
+            modelBuilder.Entity("Domain.Entities.RealManager", b =>
+                {
+                    b.Navigation("UserManager");
                 });
 #pragma warning restore 612, 618
         }

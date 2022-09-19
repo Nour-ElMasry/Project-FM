@@ -24,7 +24,7 @@ namespace Infrastructure
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(@"Data Source=TOPSKI\SQLEXPRESS;Initial Catalog=FM_DB;Integrated Security=True");
+                optionsBuilder.UseSqlServer(@"Data Source=TOPSKI\SQLEXPRESS;Initial Catalog=FootballManager_Database;Integrated Security=True");
             }
         }
 
@@ -55,6 +55,17 @@ namespace Infrastructure
                 .WithOne()
                 .HasForeignKey<Team>("TeamManagerId")
                 .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<RealManager>()
+                .HasOne(m => m.UserManager)
+                .WithOne()
+                .HasForeignKey<User>("UserManagerId")
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Fixture>()
+                .HasMany(f => f.FixtureEvents)
+                .WithOne(e => e.EventFixture)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<League>()
                 .HasMany(l => l.Teams)

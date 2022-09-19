@@ -101,7 +101,12 @@ namespace UnitTests
                 {
                     ManagerId = f.ManagerId,
                     ManagerPerson = f.ManagerPerson,
-                    CurrentTeamName = f.CurrentTeam.Name
+                    CurrentTeam = new ShortTeamGetDto
+                    {
+                        TeamId = f.CurrentTeam.TeamId,
+                        TeamName = f.CurrentTeam.Name,
+                        TeamLogo = f.CurrentTeam.Logo,
+                    }
                 };
             });
 
@@ -112,7 +117,7 @@ namespace UnitTests
 
             Assert.AreEqual(manager.ManagerId, ((ManagerGetDto)okResult.Value).ManagerId);
             Assert.AreEqual(manager.ManagerPerson.Name, ((ManagerGetDto)okResult.Value).ManagerPerson.Name);
-            Assert.AreEqual(manager.CurrentTeam.Name, ((ManagerGetDto)okResult.Value).CurrentTeamName);
+            Assert.AreEqual(manager.CurrentTeam.Name, ((ManagerGetDto)okResult.Value).CurrentTeam.TeamName);
         }
         [TestMethod]
         public async Task Delete_Manager_DeleteManagerIsCalled()

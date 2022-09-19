@@ -21,7 +21,7 @@ namespace Application.CommandHandlers
             if (league == null)
                 return null;
 
-            var fixtures = await _unitOfWork.FixtureRepository.GetAllFixtures();
+            var fixtures = await _unitOfWork.FixtureRepository.GetAllFixturesForSimulation();
 
             var leagueFixtures = fixtures.Where(f => f.FixtureLeague.LeagueId == league.LeagueId).ToList();
             leagueFixtures.ForEach(f => f.SimulateFixture());

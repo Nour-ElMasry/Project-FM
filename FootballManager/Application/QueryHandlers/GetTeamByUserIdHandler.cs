@@ -27,7 +27,12 @@ namespace Application.QueryHandlers
             if (userManager == null)
                 return null;
 
-            return await _unitOfWork.TeamRepository.GetTeamById(userManager.CurrentTeam.TeamId);
+            var team = userManager.CurrentTeam;
+
+            if (team == null)
+                return null;
+
+            return await _unitOfWork.TeamRepository.GetTeamById(team.TeamId);
         }
     }
 }
