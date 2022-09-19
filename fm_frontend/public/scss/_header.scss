@@ -1,0 +1,76 @@
+header{
+    background-color: $veryLightGray;
+}
+.navbar{
+    padding: 1.5rem 2rem;
+    &__brand{
+        .brand_logo{
+            width: fit-content;
+            .brandImg{
+                width: 3rem;
+                height: 1.5rem;
+                @include breakpoint-down(medium){
+                    width: 2.5rem;
+                    height: 1.25rem;
+                }
+            }
+        }
+    }
+    &__userProfile{
+        img{
+            width: 2.5rem;
+            height: 2.5rem;
+            border-radius: 100%;
+            @include breakpoint-down(medium){
+                width: 2rem;
+                height: 2rem;
+            }
+        }
+    }
+}
+
+.DesktopNav{
+    .navbar__links{
+        @include breakpoint-down(medium){
+            display: none
+        }
+        > a {
+            position: relative;
+            transition: color 300ms ease-in-out;
+            &:not(:last-child) {
+                margin-right: 2rem;
+            }
+        }
+        > a::before {
+            pointer-events: none;
+            content: "";
+            position: absolute;
+            background: $veryDarkBlue;
+            bottom: -35px;
+            left: 0px;
+            width: 100%;
+            height: 5px;
+            opacity: 0;
+            transition: opacity 300ms ease-in-out;
+        }
+        > a:hover {
+            color: $veryDarkBlue;
+        }
+        > a:hover::before {
+            opacity: 1;
+        } 
+    }
+}
+
+.MobileNav{
+    background-color: $veryLightGray;
+    border-top-left-radius: 0.75rem;
+    border-top-right-radius: 0.75rem;
+    overflow: hidden;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    @include breakpoint-up(large){
+        display: none
+    }
+}
