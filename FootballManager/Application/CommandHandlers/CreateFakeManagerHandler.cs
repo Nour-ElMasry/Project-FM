@@ -20,9 +20,6 @@ namespace Application.CommandHandlers
             if (!DateTime.TryParse(request.DateOfBirth, out DateTime tempDate))
                 throw new IncorrectDateException("Invalid date! please input a correct date!");
 
-            if (DateTime.Now.Year - 18 <= tempDate.Year)
-                throw new IncorrectDateException("Invalid date! Manager can't be under 18!");
-
             var person = new Person(request.Name, request.DateOfBirth, request.Country);
 
             var manager = new FakeManager(person);

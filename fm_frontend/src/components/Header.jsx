@@ -16,7 +16,9 @@ const Header = () => {
                     <a href="./">Matches</a>
                 </div>
                 <div className="navbar__userProfile">
-                    <img src="https://pbs.twimg.com/profile_images/1484245584978616324/PyqroykF_400x400.png" alt="profile"></img>
+                    <a href="./">
+                        <img src="https://pbs.twimg.com/profile_images/1484245584978616324/PyqroykF_400x400.png" alt="profile"></img>
+                    </a>
                 </div>
             </nav>
             <nav className="navbar MobileNav">

@@ -5,7 +5,7 @@ public static class FixtureGenerator
 {
     private static readonly Random rnd = new();
     private static List<Fixture> fixtures;
-    private static DateTime currentDate = DateTime.Now;
+    private static DateTime currentDate;
     public static async Task<List<Fixture>> Generate(League league)
     {
         fixtures = new List<Fixture>();
@@ -13,6 +13,8 @@ public static class FixtureGenerator
 
         if (teamsFirstLegs.Count % 2 != 0)
             throw new ArgumentException("Can't have even number of teams");
+
+        currentDate = new DateTime(league.CurrentSeason.Year, 9, 1);
             
         await Task.Run(() => CreateLeg(league, teamsFirstLegs));
 
