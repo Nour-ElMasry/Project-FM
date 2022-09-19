@@ -22,7 +22,7 @@ namespace Application.CommandHandlers
             if (user == null)
                 return null;
 
-            var check = managers.Single(m => m.ManagerPerson.PersonId == user.UserPerson.PersonId);
+            var check = managers.SingleOrDefault(m => m.ManagerPerson.PersonId == user.UserPerson.PersonId);
 
             if (check != null)
                 return (RealManager)check;

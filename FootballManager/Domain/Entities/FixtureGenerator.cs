@@ -11,6 +11,9 @@ public static class FixtureGenerator
         fixtures = new List<Fixture>();
         var teamsFirstLegs = league.Teams;
 
+        if (teamsFirstLegs.Count % 2 != 0)
+            throw new ArgumentException("Can't have even number of teams");
+            
         await Task.Run(() => CreateLeg(league, teamsFirstLegs));
 
         await Task.Run(() => ReverseLegFixtures());
@@ -49,13 +52,13 @@ public static class FixtureGenerator
     {
         var AwayFixtures = new List<Fixture>();
 
-        for(int i = 1; i < fixtures.Count + 1; i++)
+        for(int i = 0; i < fixtures.Count; i++)
         {
             if(i % 10 == 0)
             {
                 currentDate = currentDate.AddDays(7);
             }
-            AwayFixtures.Add(new Fixture(fixtures[i - 1].FixtureLeague, fixtures[i - 1].AwayTeam, fixtures[i - 1].HomeTeam) { Date = currentDate });
+            AwayFixtures.Add(new Fixture(fixtures[i].FixtureLeague, fixtures[i].AwayTeam, fixtures[i].HomeTeam) { Date = currentDate });
         }
 
         fixtures.AddRange(AwayFixtures);

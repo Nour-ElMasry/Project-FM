@@ -1,7 +1,9 @@
 ﻿using Application.Commands;
 using Application.Queries;
 using AutoMapper;
+using Domain.Entities;
 using FootballManagerAPI.Dto;
+using FootballManagerAPI.Filters;
 using FootballManagerAPI.Pagination;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -49,7 +51,7 @@ namespace FootballManagerAPI.Controllers
 
         [HttpGet]
         [Route("All/{pg?}")]
-        public async Task<IActionResult> GetAllTeams(int pg = 1)
+        public async Task<IActionResult> GetAllTeams([FromQuery] TeamFilter filter = null, int pg = 1)
         {
             _logger.LogInformation("Preparing to get all teams...");
 
@@ -61,7 +63,14 @@ namespace FootballManagerAPI.Controllers
                 return NotFound();
             }
 
+            result = await ApplyTeamFilter(filter, result);
+
             var mappedResult = _mapper.Map<List<TeamGetDto>>(result);
+
+            if(pg == 0)
+            {
+                return Ok(mappedResult);
+            }
 
             var page = new Pager<TeamGetDto>(mappedResult.Count, pg);
 
@@ -273,6 +282,31 @@ namespace FootballManagerAPI.Controllers
             _logger.LogInformation($"Manager with id {managerId} added to team with id {id} successfully!!!");
 
             return Ok(mappedResult);
+        }
+        private async Task<List<Team>> ApplyTeamFilter(TeamFilter filter, List<Team> result)
+        {
+
+            if (filter.LeagueId == 0 &&
+                String.IsNullOrWhiteSpace(filter.Name) &&
+                String.IsNullOrWhiteSpace(filter.Country))
+                return result;
+
+            if (filter.LeagueId != 0)
+                result = await Task.Run(() => result.Where(t =>
+                    t.CurrentLeague.LeagueId == filter.LeagueId
+                ).ToList());
+
+            if (!String.IsNullOrWhiteSpace(filter.Name))
+                result = await Task.Run(() => result.Where(t =>
+                    t.Name.Contains(filter.Name, StringComparison.CurrentCultureIgnoreCase)
+                ).ToList());
+
+            if (!String.IsNullOrWhiteSpace(filter.Country))
+                result = await Task.Run(() => result.Where(t =>
+                    t.Country == filter.Country
+                ).ToList());
+
+            return result;
         }
     }
 }

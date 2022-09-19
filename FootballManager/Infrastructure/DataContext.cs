@@ -59,12 +59,16 @@ namespace Infrastructure
             modelBuilder.Entity<RealManager>()
                 .HasOne(m => m.UserManager)
                 .WithOne()
-                .HasForeignKey<User>("UserManagerId")
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Fixture>()
                 .HasMany(f => f.FixtureEvents)
                 .WithOne(e => e.EventFixture)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Fixture>()
+                .HasOne(f => f.FixtureScore)
+                .WithOne()
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<League>()

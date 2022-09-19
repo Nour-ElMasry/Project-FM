@@ -73,6 +73,11 @@ namespace FootballManagerAPI.Controllers
 
             var mappedResult = _mapper.Map<List<PlayerGetDto>>(result);
 
+            if (pg == 0)
+            {
+                return Ok(mappedResult);
+            }
+
             var page = new Pager<PlayerGetDto>(mappedResult.Count, pg);
 
             var pageResults = mappedResult
