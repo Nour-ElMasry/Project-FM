@@ -40,7 +40,7 @@ namespace FootballManagerAPI.Controllers
                 return NotFound();
             }
 
-            var mappedResult = _mapper.Map<List<FixtureGetDto>>(result);
+            var mappedResult = _mapper.Map<List<FixtureGetDto>>(result.OrderBy(f => f.Date));
 
             _logger.LogInformation("All Fixtures have been recieved successfully!!");
 
@@ -49,7 +49,7 @@ namespace FootballManagerAPI.Controllers
                 return Ok(mappedResult);
             }
 
-            var page = new Pager<FixtureGetDto>(mappedResult.Count, pg, mappedResult.Count / ((numOfTeams - 1) * 2));
+            var page = new Pager<FixtureGetDto>(mappedResult.Count, pg, ((numOfTeams) / 2));
 
             var pageResults = mappedResult
                 .Skip((page.CurrentPage - 1) * page.PageNumOfResults)

@@ -1,6 +1,16 @@
-import React from "react";
+import * as React from 'react';
+import { Link } from 'react-router-dom';
+import Box from '@mui/material/Box';
+import BottomNavigation from '@mui/material/BottomNavigation';
+import BottomNavigationAction from '@mui/material/BottomNavigationAction';
+import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
+import HomeIcon from '@mui/icons-material/Home';
+import GroupsIcon from '@mui/icons-material/Groups';
+import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 
 const Header = () => {
+    const [value, setValue] = React.useState(0);
+
     return <>
         <header>
             <nav className="navbar container DesktopNav flex flex-ai-c flex-jc-sb">
@@ -10,10 +20,10 @@ const Header = () => {
                     </a>
                 </div>
                 <div className="navbar__links">
-                    <a href="./">Home</a>
-                    <a href="./">Leagues</a>
-                    <a href="./">Teams</a>
-                    <a href="./">Matches</a>
+                    <Link to="/">Home</Link>
+                    <Link to="/leagues">Leagues</Link>
+                    <Link to="/teams">Teams</Link>
+                    <Link to="/matches">Matches</Link>
                 </div>
                 <div className="navbar__userProfile">
                     <a href="./">
@@ -22,12 +32,38 @@ const Header = () => {
                 </div>
             </nav>
             <nav className="navbar MobileNav">
-                <div className="navbar__Links flex flex-ai-c flex-jc-sb">
-                    <a href="./">Home</a>
-                    <a href="./">Leagues</a>
-                    <a href="./">Teams</a>
-                    <a href="./">Matches</a>
-                </div>
+                <Box>
+                    <BottomNavigation
+                      showLabels
+                      value={value}
+                      sx = {{backgroundColor: 'inherit'}}
+                      onChange={(event, newValue) => {
+                        setValue(newValue);
+                      }}
+                    >
+                      <BottomNavigationAction 
+                        className="nav-item"
+                        component={Link}
+                        to="/"
+                        label="Home" icon={<HomeIcon sx={{ fontSize: 25 }}/>}
+                        />
+                      <BottomNavigationAction 
+                        component={Link}
+                        className="nav-item"
+                        to="/leagues"
+                        label="Leagues" icon={<EmojiEventsIcon sx={{ fontSize: 25 }} />}/>
+                      <BottomNavigationAction 
+                        component={Link}
+                        className="nav-item"
+                        to="/teams"
+                        label="Teams" icon={<GroupsIcon sx={{ fontSize: 30 }}/>}/>
+                      <BottomNavigationAction 
+                        component={Link}
+                        className="nav-item"
+                        to="/matches"
+                        label="Matches" icon={<SportsSoccerIcon sx={{ fontSize: 25 }}/>} />
+                    </BottomNavigation>
+                </Box>
             </nav>
         </header>
         

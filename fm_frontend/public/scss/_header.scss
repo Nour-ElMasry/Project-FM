@@ -2,7 +2,10 @@ header{
     background-color: $veryLightGray;
 }
 .navbar{
-    padding: 1.5rem 2rem;
+    padding: 1.3750rem 2rem;
+    @include breakpoint-down(medium){
+        padding: 0.8125rem 1.25rem;
+    }
     &__brand{
         .brand_logo{
             width: fit-content;
@@ -36,6 +39,7 @@ header{
         }
         > a {
             position: relative;
+            font-weight: 500;
             transition: color 300ms ease-in-out;
             &:not(:last-child) {
                 margin-right: 2rem;
@@ -46,7 +50,7 @@ header{
             content: "";
             position: absolute;
             background: $veryDarkBlue;
-            bottom: -35px;
+            bottom: -2.0625rem;
             left: 0px;
             width: 100%;
             height: 5px;
@@ -54,7 +58,7 @@ header{
             transition: opacity 300ms ease-in-out;
         }
         > a:hover {
-            color: $veryDarkBlue;
+            color: black;
         }
         > a:hover::before {
             opacity: 1;
@@ -63,6 +67,7 @@ header{
 }
 
 .MobileNav{
+    padding: 0;
     background-color: $veryLightGray;
     border-top-left-radius: 0.75rem;
     border-top-right-radius: 0.75rem;
@@ -72,5 +77,8 @@ header{
     width: 100%;
     @include breakpoint-up(large){
         display: none
+    }
+    .nav-item{
+        color: $veryDarkBlue;
     }
 }
