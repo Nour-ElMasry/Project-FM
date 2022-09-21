@@ -27,16 +27,19 @@
             border-radius: .75rem;
             margin-bottom: 2rem;
             max-width: 27.5rem;
+            min-width: 21rem;
             .title{
                 font-size: $font-md;
             }
             
             &Row{
                 cursor: pointer;
+                justify-content: center;
             }
 
             &Team{
                 text-align: center;
+                min-width: 11.25rem;
                 img{
                     height: 2.5rem;
                     width: 2.5rem;

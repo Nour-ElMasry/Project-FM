@@ -38,7 +38,9 @@ const LeagueMatchesTable = (props) => {
                         <p>{l.homeTeam.teamName}</p>
                     </TableCell>
                     <TableCell sx={{textAlign: 'center', padding: '0'}}>
-                        <h3>vs</h3>
+                        {l.isPlayed === true ? 
+                            <h3>{l.fixtureScore.homeScore} - {l.fixtureScore.awayScore}</h3> 
+                            : <h3>vs</h3>}
                     </TableCell>
                     <TableCell className='leagueTableTeam'>
                         <img src={l.awayTeam.teamLogo} alt='teamLogo'></img>
@@ -58,7 +60,9 @@ const LeagueMatchesTable = (props) => {
                         <p>{l.homeTeam.teamName}</p>
                     </TableCell>
                     <TableCell sx={{textAlign: 'center', padding: '0'}}>
-                        <h3>vs</h3>
+                    {l.isPlayed === true ? 
+                            <h3>{l.fixtureScore.homeScore} - {l.fixtureScore.awayScore}</h3> 
+                            : <h3>vs</h3>}
                     </TableCell>
                     <TableCell className='leagueTableTeam'>
                         <img src={l.awayTeam.teamLogo} alt='teamLogo'></img>

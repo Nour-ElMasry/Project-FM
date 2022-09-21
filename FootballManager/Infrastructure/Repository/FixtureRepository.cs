@@ -56,6 +56,7 @@ namespace Infrastructure.Repository
                 .Include(f => f.AwayTeam).ThenInclude(t => t.CurrentSeasonStats)
                 .Include(f => f.HomeTeam).ThenInclude(t => t.Players).ThenInclude(p => p.PlayerRecord)
                 .Include(f => f.AwayTeam).ThenInclude(t => t.Players).ThenInclude(p => p.PlayerRecord)
+                .Include(f => f.FixtureLeague)
                 .Include(f => f.FixtureScore)
                 .ToListAsync();
         }

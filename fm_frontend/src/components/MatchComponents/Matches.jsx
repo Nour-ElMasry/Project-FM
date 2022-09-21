@@ -13,6 +13,7 @@ const Matches = () => {
     const [loading, setLoading] = useState(true);
 
     var groupByLeagueName = (list) => {
+        console.log(list);
         return list.reduce((a, b) => {
           (a[b['fixtureLeague'].leagueName] = a[b['fixtureLeague'].leagueName] || []).push(b);
           return a;
