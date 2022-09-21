@@ -33,9 +33,9 @@ a {
     max-width: 69.375rem;
     margin: 0 auto;
     &--pa {
-        padding: 4.375rem 1.5rem;
+        padding: 2rem 1.25rem;
         @include breakpoint-up(large) {
-            padding: 6rem 1.5rem;
+            padding: 4rem 2rem;
         }
     }
     &--py {
@@ -49,5 +49,13 @@ a {
     &--px {
         padding-left: 1.5rem;
         padding-right: 1.5rem;
+    }
+}
+
+.title{
+    font-family: 'Orbitron', sans-serif;
+    font-size: $font-lg;
+    @include breakpoint-down(medium) {
+        font-size: $font-mb-lg;
     }
 }

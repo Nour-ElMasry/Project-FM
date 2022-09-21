@@ -1,0 +1,56 @@
+.matchSection{
+    .gameweekPagination{
+        max-width: 30rem;
+        background-color: $veryLightGray;
+        border-radius: .85rem;
+        overflow: hidden;
+        margin: 1.875rem auto;
+        @include breakpoint-down(medium){
+            margin: 1.25rem auto;
+        }
+    }
+
+    .title{
+        text-align: center;
+    }
+    
+    .gameweekTables{
+        @include breakpoint-up(medium) {
+            display: grid;
+            gap: 1.5rem;
+            grid-template-columns: repeat(2, 1fr);
+            align-items: start;
+        }
+        .leagueTable{
+            margin: 0 auto;
+            background-color: $veryLightGray;
+            border-radius: .75rem;
+            margin-bottom: 2rem;
+            max-width: 27.5rem;
+            .title{
+                font-size: $font-md;
+            }
+            
+            &Row{
+                cursor: pointer;
+            }
+
+            &Team{
+                text-align: center;
+                img{
+                    height: 2.5rem;
+                    width: 2.5rem;
+
+                    @include breakpoint-up(medium){
+                        height: 3.25rem;
+                        width: 3.25rem;
+                    }
+                }
+            }
+            .expandMoreRow{
+                padding: .5rem 1.5rem;
+                text-align: right;
+            }
+        }
+    }
+}
