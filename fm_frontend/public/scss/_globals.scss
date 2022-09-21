@@ -59,3 +59,13 @@ a {
         font-size: $font-mb-lg;
     }
 }
+
+.errorMsg{
+    color: $white;
+    text-align: center;
+    font-size: $font-md;
+    background-color: $errorRed;
+    padding: .75rem auto;
+    border-radius: .75rem;
+    margin: 4rem auto;
+}

@@ -21,13 +21,13 @@
             grid-template-columns: repeat(2, 1fr);
             align-items: start;
         }
+        
         .leagueTable{
             margin: 0 auto;
             background-color: $veryLightGray;
             border-radius: .75rem;
             margin-bottom: 2rem;
             max-width: 27.5rem;
-            min-width: 21rem;
             .title{
                 font-size: $font-md;
             }
@@ -39,7 +39,10 @@
 
             &Team{
                 text-align: center;
-                min-width: 11.25rem;
+                width: 40%;
+                @include breakpoint-up(large) {
+                    min-width: 11.25rem;
+                }
                 img{
                     height: 2.5rem;
                     width: 2.5rem;
