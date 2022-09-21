@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 import GeneralAxiosService from '../../services/GeneralAxiosService';
 import LeagueMatchesTable from './LeagueMatchesTable';
 import _ from 'lodash';
+import { width } from '@mui/system';
 
 const Matches = () => {
     const [pageApi, setPageApi] = useState(1);
@@ -32,24 +33,26 @@ const Matches = () => {
     const TablesDisplay = () => {
         
         if(loading === false){
+
             return <>
-                {_.map(matches, (x, i) => {
-                    return <LeagueMatchesTable league={x} key={i}/>
-                })}
-            </> 
+                <GameweekMatchPagination page={pageApi} setPage={setPageApi} maxPages={apiData.totalPages} setPageLoading={setLoading}/>
+                <div className='gameweekTables'>
+                    {_.map(matches, (x, i) => {
+                        return <LeagueMatchesTable league={x} key={i}/>
+                    })}
+                </div> 
+            </>
         }
 
-        return <Box>
-            <CircularProgress />
+        return <Box sx={{textAlign: 'center', marginTop: "10rem"}}>
+            <CircularProgress style={ {width: "3rem", height: "3rem"}} />
         </Box>
     }
 
     return <section className='matchSection container container--pa'> 
         <h1 className='title'>Matches From All Leagues</h1>
-        <GameweekMatchPagination page={pageApi} setPage={setPageApi} maxPages={apiData.totalPages} setPageLoading={setLoading}/>
-        <div className='gameweekTables'>
-            {TablesDisplay()}
-        </div>
+        {TablesDisplay()}
+
     </section>
 }
 
