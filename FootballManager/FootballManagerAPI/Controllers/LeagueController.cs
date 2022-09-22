@@ -246,8 +246,8 @@ namespace FootballManagerAPI.Controllers
 
 
         [HttpGet]
-        [Route("{id}/GenerateFixtures/{pg?}")]
-        public async Task<IActionResult> GenerateLeagueFixture(int id, int pg = 1)
+        [Route("{id}/GenerateFixtures")]
+        public async Task<IActionResult> GenerateLeagueFixture(int id)
         {
             _logger.LogInformation($"Preparing to generate fixtures for league with id {id}...");
 

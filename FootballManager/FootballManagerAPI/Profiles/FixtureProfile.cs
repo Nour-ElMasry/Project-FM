@@ -43,7 +43,7 @@ namespace FootballManagerAPI.Profiles
                             TeamLogo = e.GoalScorer.CurrentTeam.Logo,
                         },
                     },
-                    PlayerAssister = new ShortPlayerGetDto
+                    PlayerAssister = e.GoalAssister == null ? null : new ShortPlayerGetDto
                     {
                         Id = e.GoalAssister.PlayerId,
                         PlayerPerson = e.GoalAssister.PlayerPerson,

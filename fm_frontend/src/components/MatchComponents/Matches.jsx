@@ -5,7 +5,6 @@ import Box from '@mui/material/Box';
 import GeneralAxiosService from '../../services/GeneralAxiosService';
 import LeagueMatchesTable from './LeagueMatchesTable';
 import _ from 'lodash';
-import { width } from '@mui/system';
 
 const Matches = () => {
     const [pageApi, setPageApi] = useState(1);
@@ -56,7 +55,7 @@ const Matches = () => {
 
     return <section className='matchSection container container--pa'> 
         <h1 className='title'>Matches From All Leagues</h1>
-        {!hasError && <GameweekMatchPagination page={pageApi} setPage={setPageApi} maxPages={apiData.totalPages} setPageLoading={setLoading}/>}
+        {!hasError && <GameweekMatchPagination page={pageApi} setPage={setPageApi} maxPages={apiData.totalPages} pageLoading={loading} setPageLoading={setLoading}/>}
         {TablesDisplay()}
 
     </section>

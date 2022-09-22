@@ -16,7 +16,7 @@ const Header = () => {
             <nav className="navbar container DesktopNav flex flex-ai-c flex-jc-sb">
                 <div className="navbar__brand">
                     <a className="brand_logo flex flex-ai-c" href="./">
-                        <img className="brandImg" src="./Images/logo.png" alt="logo"></img>
+                        <img className="brandImg" src="/Images/logo.png" alt="logo"></img>
                     </a>
                 </div>
                 <div className="navbar__links">

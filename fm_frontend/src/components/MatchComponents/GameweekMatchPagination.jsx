@@ -9,9 +9,11 @@ const GameweekMatchPagination = (prop) => {
             aria-label="backwardPage"
             sx={{borderRadius: '0'}}
             onClick={() => {
-                if(parseInt(prop.page) > 1){
-                    prop.setPageLoading(true);
-                    prop.setPage(parseInt(prop.page) - 1)
+                if(!prop.pageLoading){
+                    if(parseInt(prop.page) > 1){
+                        prop.setPageLoading(true);
+                        prop.setPage(parseInt(prop.page) - 1)
+                    }
                 }
             }}>
             <ChevronLeftIcon />
@@ -23,9 +25,11 @@ const GameweekMatchPagination = (prop) => {
             aria-label="forwardPage" 
             sx={{borderRadius: '0'}}
             onClick={() => {
-                if(parseInt(prop.page) < parseInt(prop.maxPages)){
-                    prop.setPageLoading(true);
-                    prop.setPage(parseInt(prop.page) + 1)
+                if(!prop.pageLoading){
+                    if(parseInt(prop.page) < parseInt(prop.maxPages)){
+                        prop.setPageLoading(true);
+                        prop.setPage(parseInt(prop.page) + 1)
+                    }  
                 }
             }}
             >

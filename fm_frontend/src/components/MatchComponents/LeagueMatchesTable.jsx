@@ -7,6 +7,7 @@ import TableRow from '@mui/material/TableRow';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { styled } from '@mui/material/styles';
 import IconButton from '@mui/material/IconButton';
+import MatchTableItem from './MatchTableItem';
 
 
 const ExpandMore = styled((props) => {
@@ -23,30 +24,15 @@ const ExpandMore = styled((props) => {
 const LeagueMatchesTable = (props) => {
     const [expanded, setExpanded] = useState(false);
 
-    
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
 
-    const tableExpand = () => {
+    const tableDisplay = () => {
         if(expanded) {
             return <>
                 {props.league.map((l, i) => {
-                return <TableRow hover className='leagueTableRow' key={i}>
-                    <TableCell className='leagueTableTeam'>
-                        <img src={l.homeTeam.teamLogo} alt='teamLogo'></img>
-                        <p>{l.homeTeam.teamName}</p>
-                    </TableCell>
-                    <TableCell sx={{textAlign: 'center', padding: '0'}}>
-                        {l.isPlayed === true ? 
-                            <h3>{l.fixtureScore.homeScore} - {l.fixtureScore.awayScore}</h3> 
-                            : <h3>vs</h3>}
-                    </TableCell>
-                    <TableCell className='leagueTableTeam'>
-                        <img src={l.awayTeam.teamLogo} alt='teamLogo'></img>
-                        <p>{l.awayTeam.teamName}</p>
-                    </TableCell>
-                </TableRow>
+                return  <MatchTableItem match={l} key={i} />;
                 })}
             </>
         }
@@ -54,36 +40,22 @@ const LeagueMatchesTable = (props) => {
             {props.league
             .slice(0, 5)
             .map((l, i) => {
-                return <TableRow hover className='leagueTableRow' key={i}>
-                    <TableCell className='leagueTableTeam'>
-                        <img src={l.homeTeam.teamLogo} alt='teamLogo'></img>
-                        <p>{l.homeTeam.teamName}</p>
-                    </TableCell>
-                    <TableCell sx={{textAlign: 'center', padding: '0'}}>
-                    {l.isPlayed === true ? 
-                            <h3>{l.fixtureScore.homeScore} - {l.fixtureScore.awayScore}</h3> 
-                            : <h3>vs</h3>}
-                    </TableCell>
-                    <TableCell className='leagueTableTeam'>
-                        <img src={l.awayTeam.teamLogo} alt='teamLogo'></img>
-                        <p>{l.awayTeam.teamName}</p>
-                    </TableCell>
-                </TableRow>
+                return <MatchTableItem match={l} key={i} />;
             })}
         </>
     }
     return <Table className='leagueTable'>
         <TableHead>
            <TableRow>
-                <TableCell colSpan={3}>
+                <TableCell>
                     <p className='title'>{props.league[0].fixtureLeague.leagueName}</p>
                 </TableCell>
            </TableRow>
         </TableHead>
         <TableBody>
-            {tableExpand()}
+            {tableDisplay()}
             <TableRow>
-                <TableCell className='expandMoreRow' colSpan={3}>
+                <TableCell className='expandMoreRow'>
                     <ExpandMore
                         expand={expanded}
                         onClick={handleExpandClick}

@@ -1,0 +1,27 @@
+.singleMatchSection{
+    .matchHeader{
+        background-color: $veryLightGray;
+        padding: 1.5rem .5rem;
+        max-width: 42rem;
+        margin: 2rem auto 0;
+        div{
+            text-align: center;
+            img{
+                width: 50%;
+                height: 50%;
+                @include breakpoint-up(medium){
+                    width: 65%;
+                    height: 65%;
+                }
+            }
+            p{
+                font-weight: bold;
+            }
+        }
+        
+       
+        h3{
+            font-size: $font-mb-lg;
+        }
+    }
+}

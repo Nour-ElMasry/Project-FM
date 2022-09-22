@@ -21,6 +21,9 @@ a {
     &-jc-sb {
         justify-content: space-between;
     }
+    &-jc-sa {
+        justify-content: space-around;
+    }
     &-jc-c {
         justify-content: center;
     }
@@ -55,6 +58,7 @@ a {
 .title{
     font-family: 'Orbitron', sans-serif;
     font-size: $font-lg;
+    text-align: center;
     @include breakpoint-down(medium) {
         font-size: $font-mb-lg;
     }

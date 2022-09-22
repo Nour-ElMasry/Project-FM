@@ -5,6 +5,7 @@ import Home from "./components/HomeComponents/Home.jsx";
 import Matches from "./components/MatchComponents/Matches";
 import Leagues from "./components/LeagueComponents/Leagues";
 import Teams from "./components/TeamComponents/Teams";
+import SingleMatch from "./components/MatchComponents/SingleMatch";
 
 function App() {
   return <>
@@ -15,6 +16,7 @@ function App() {
             <Route path="/leagues" element={<Leagues />}/>
             <Route path="/teams" element={<Teams />}/>
             <Route path="/matches" element={<Matches />}/>
+            <Route path="/matches/:id" element={<SingleMatch />}/>
         </Routes>
       </Router>
   </>;
