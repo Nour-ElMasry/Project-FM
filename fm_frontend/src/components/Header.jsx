@@ -23,7 +23,7 @@ const Header = () => {
                     <Link to="/">Home</Link>
                     <Link to="/leagues">Leagues</Link>
                     <Link to="/teams">Teams</Link>
-                    <Link to="/matches">Matches</Link>
+                    <Link to="/matches" onClick={() => sessionStorage.setItem("Page_Key", 1)}>Matches</Link>
                 </div>
                 <div className="navbar__userProfile">
                     <a href="./">
@@ -61,7 +61,9 @@ const Header = () => {
                         component={Link}
                         className="nav-item"
                         to="/matches"
-                        label="Matches" icon={<SportsSoccerIcon sx={{ fontSize: 25 }}/>} />
+                        label="Matches" icon={<SportsSoccerIcon sx={{ fontSize: 25 }}
+                        onClick={() => sessionStorage.setItem("Page_Key", 1)}
+                        />} />
                     </BottomNavigation>
                 </Box>
             </nav>

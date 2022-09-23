@@ -5,6 +5,8 @@ import Box from '@mui/material/Box';
 import GeneralAxiosService from '../../services/GeneralAxiosService';
 import MatchItem from './MatchItem';
 import MatchEvents from './MatchEvents';
+import MatchInfo from './MatchInfo';
+import MatchTeamsLeagueTable from './MatchTeamsLeagueTable';
 
 const SingleMatch = () => {
     const params = useParams();
@@ -19,15 +21,24 @@ const SingleMatch = () => {
 
     return <section className='singleMatchSection container container--pa'>
         <h1 className='title'>Match Details</h1>
-        
-       
-            {loading ? <Box sx={{textAlign: "center", marginTop: "10rem"}}>
+
+            {loading && <Box sx={{textAlign: "center", marginTop: "10rem"}}>
                 <CircularProgress style={ {width: "3rem", height: "3rem"}} />
-            </Box> : 
-            <div className='flex flex-ai-c flex-jc-sa matchHeader'>
-                <MatchItem match={match}/>
-                <MatchEvents events={match.fixtureEvents}/>
-            </div>}
+            </Box>}
+            {!loading && <>
+                <div className='matchesContainer matchHeader flex flex-ai-c flex-jc-sa '>
+                    <MatchItem tableView={false} match={match}/>
+                </div>
+                {match.isPlayed && <div className='matchesContainer eventContainer'>
+                    <MatchEvents match={match}/>
+                </div>}
+                <div className='infoAndLeagueContainer'>
+                <MatchTeamsLeagueTable league={match.fixtureLeague} homeTeam={match.homeTeam} awayTeam={match.awayTeam}/>
+                    <div className='matchesContainer matchInfo'>
+                        <MatchInfo match={match}/>
+                    </div>
+                </div>
+            </>}
      
 
     </section>

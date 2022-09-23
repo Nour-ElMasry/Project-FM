@@ -120,6 +120,11 @@ namespace FootballManagerAPI.Controllers
 
             var mappedResult = _mapper.Map<List<TeamGetDto>>(result);
 
+            if (pg == 0)
+            {
+                return Ok(mappedResult);
+            }
+
             var page = new Pager<TeamGetDto>(mappedResult.Count, pg);
 
             var pageResults = mappedResult
@@ -173,6 +178,11 @@ namespace FootballManagerAPI.Controllers
 
             var mappedResult = _mapper.Map<List<ShortPlayerGetDto>>(result);
 
+            if (pg == 0)
+            {
+                return Ok(mappedResult);
+            }
+
             var page = new Pager<ShortPlayerGetDto>(mappedResult.Count, pg);
 
             var pageResults = mappedResult
@@ -208,6 +218,11 @@ namespace FootballManagerAPI.Controllers
             }
 
             var mappedResult = _mapper.Map<List<FixtureGetDto>>(result);
+
+            if (pg == 0)
+            {
+                return Ok(mappedResult);
+            }
 
             var page = new Pager<FixtureGetDto>(mappedResult.Count, pg, mappedResult.Count / ((numOfTeams - 1) * 2));
 

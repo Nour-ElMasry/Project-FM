@@ -10,8 +10,9 @@ const GameweekMatchPagination = (prop) => {
             sx={{borderRadius: '0'}}
             onClick={() => {
                 if(!prop.pageLoading){
-                    if(parseInt(prop.page) > 1){
+                    if(prop.page > 1){
                         prop.setPageLoading(true);
+                        sessionStorage.setItem("Page_Key", prop.page - 1)
                         prop.setPage(parseInt(prop.page) - 1)
                     }
                 }
@@ -26,9 +27,10 @@ const GameweekMatchPagination = (prop) => {
             sx={{borderRadius: '0'}}
             onClick={() => {
                 if(!prop.pageLoading){
-                    if(parseInt(prop.page) < parseInt(prop.maxPages)){
+                    if(prop.page < prop.maxPages){
                         prop.setPageLoading(true);
-                        prop.setPage(parseInt(prop.page) + 1)
+                        sessionStorage.setItem("Page_Key", prop.page + 1)
+                        prop.setPage(prop.page + 1)
                     }  
                 }
             }}

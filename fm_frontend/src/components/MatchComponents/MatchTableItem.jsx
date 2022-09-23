@@ -5,10 +5,10 @@ import { Link } from 'react-router-dom';
 import MatchItem from './MatchItem';
 
 const MatchTableItem = (props) => {
-    return <TableRow hover className='leagueTableRow'>
-    <TableCell className='leagueTableMatch'>
+    return <TableRow hover className='leagueTableMatchRow'>
+    <TableCell className='leagueTableMatchInfo'>
         <Link className='matchLink flex flex-ai-c flex-jc-sa' to={'/matches/'+props.match.id}>
-            <MatchItem match={props.match} />
+            <MatchItem tableView={true} match={props.match} />
         </Link>
     </TableCell>
 </TableRow>

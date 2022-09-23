@@ -6,8 +6,15 @@ import GeneralAxiosService from '../../services/GeneralAxiosService';
 import LeagueMatchesTable from './LeagueMatchesTable';
 import _ from 'lodash';
 
+const getPageNumber = () => {
+  if(sessionStorage && parseInt(sessionStorage.getItem("Page_Key")) > 0) {
+    return parseInt(sessionStorage.getItem("Page_Key"));
+  }
+  return 1;
+}
+
 const Matches = () => {
-    const [pageApi, setPageApi] = useState(1);
+    const [pageApi, setPageApi] = useState(getPageNumber());
     const [apiData, setApiData] = useState({});
     const [hasError, setHasError] = useState(false);
     const [matches, setMatches] = useState({});

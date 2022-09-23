@@ -23,7 +23,7 @@
             gap: 3rem;
         }
 
-        .leagueTable{
+        .leagueTableMatch{
             margin: 0 auto;
             background-color: $veryLightGray;
             border-radius: .75rem;  
@@ -44,7 +44,7 @@
                 justify-content: center;
             }
 
-            &Match{
+            &Info{
                 text-align: center;
                 .matchLink{
                     text-decoration: none;
@@ -55,12 +55,6 @@
                             width: 30%;
                         }
                         text-align: center;
-                    }
-
-                    p{
-                        @include breakpoint-down(medium){
-                            font-size: $font-sm;
-                        }
                     }
 
                     img{

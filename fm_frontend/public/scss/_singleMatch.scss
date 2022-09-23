@@ -1,27 +1,134 @@
 .singleMatchSection{
-    .matchHeader{
+    .matchesContainer{
         background-color: $veryLightGray;
-        padding: 1.5rem .5rem;
+        padding: 1.5rem 1.5rem;
         max-width: 42rem;
+        border-radius: .25rem;
+    }
+    .matchHeader{
         margin: 2rem auto 0;
+
         div{
+            width: 40%;
             text-align: center;
             img{
-                width: 50%;
-                height: 50%;
+                width: 35%;
+                height: 35%;
                 @include breakpoint-up(medium){
-                    width: 65%;
-                    height: 65%;
+                    width: 40%;
+                    height: 40%;
                 }
             }
-            p{
-                font-weight: bold;
+            h4{
+                color: black;
             }
         }
-        
        
         h3{
-            font-size: $font-mb-lg;
+            font-size: $font-md;
+            @include breakpoint-up(medium){
+                font-size: $font-mb-lg;
+            }
+        }
+    }
+
+    .eventContainer{
+        margin: 2rem auto 0;
+
+        hr{
+            border-color: $veryDarkBlue;
+            border-right-width: 3px;
+            margin: 0 10%;
+            border-radius: 15%;
+        }
+
+        .teamEvent{
+            width: 45%;
+            .goal{
+                position: relative;
+                &:not(:last-child){
+                    margin-bottom: 2rem;
+                }
+                .score{
+                    font-size: .75rem;
+                    font-weight: bold;
+                }
+                .scorer{
+                    font-weight: bold;
+                }
+                .assister{
+                    color: $grayishBlue;
+                    font-size: $font-sm;
+                }
+            }
+        }
+
+        .homeTeamEvents{
+            text-align: right;
+            .goal{  
+                .score::after{
+                    content: "-->";
+                    position: absolute;
+                    right: -1.5rem;
+                }
+            }
+        }
+
+        .awayTeamEvents{
+            .goal{  
+                .score::before{
+                    content: "<--";
+                    position: absolute;
+                    left: -1.5rem;
+                }
+            }
+        }
+    }
+
+    .matchInfo{
+        margin: 2rem auto 3rem;
+        @include breakpoint-up(medium){
+            max-width: 19rem;
+        }
+        .infoContainer{
+            margin-top: 1rem;
+            .infoIcon{
+                display: flex;
+                align-items: center;
+                padding: .125rem;
+                border: solid 1px black;
+                border-radius: 100%;
+                a{
+                    color: black;
+                    width: 1.5rem;
+                    height: 1.5rem;
+                }
+
+                svg{
+                    width: 1.5rem;
+                    height: 1.5rem;
+                }
+                
+            }
+            .infoText{
+                margin-left: 2.5%;
+                p{
+                    font-size: $font-sm;
+                }
+            }
+        }
+
+        .hoverableIcon{
+            .infoIcon{
+                transition: background-color 150ms linear;
+                &:hover{
+                    background-color: $grayishBlue;
+                }
+            }
+        }
+
+        .infoRowTitle{
+            font-weight: bold;
         }
     }
 }

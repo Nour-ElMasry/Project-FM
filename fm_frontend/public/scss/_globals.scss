@@ -5,7 +5,7 @@
 }
 
 body{
-    background-color: rgba(64, 125, 136, 0.15);  
+    background-color: $lightGrey;  
     min-height: 100vh;
     font-family: 'Nunito', sans-serif;
 }
@@ -14,6 +14,14 @@ a {
     font-size: $font-md;
     text-decoration: none;
     color: $grayishBlue;
+}
+
+p{
+    font-family: 'Nunito', sans-serif;
+    font-size: $font-sm;
+    @include breakpoint-up(medium){
+        font-size: $font-md;
+    }
 }
 
 .flex {
@@ -73,3 +81,4 @@ a {
     border-radius: .75rem;
     margin: 4rem auto;
 }
+
