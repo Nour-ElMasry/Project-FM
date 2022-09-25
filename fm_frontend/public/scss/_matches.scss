@@ -34,14 +34,13 @@
                     margin-bottom: 1rem;
                 }
             }
-
-            .title{
-                font-size: $font-md;
-            }
             
             &Row{
                 cursor: pointer;
                 justify-content: center;
+                td{
+                    font-family: 'Nunito', sans-serif;
+                }
             }
 
             &Info{

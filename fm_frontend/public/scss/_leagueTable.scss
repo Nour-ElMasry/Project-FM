@@ -1,4 +1,21 @@
 .leagueTable{
+    background-color: $veryLightGray;
+    border-radius: .25rem;
+    tbody{
+        tr{
+            cursor: pointer;
+        }
+    }
+    .position{
+        margin-right: 1rem;
+    }
+
+    .tableTeamLogo{
+        width: 1.25rem;
+        height: 1.25rem;
+        margin-right: 0.5rem;
+    }
+
     .tableColumnHide{
         @include breakpoint-down(small){
             display: none;

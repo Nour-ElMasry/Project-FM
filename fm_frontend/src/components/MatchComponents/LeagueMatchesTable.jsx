@@ -48,7 +48,7 @@ const LeagueMatchesTable = (props) => {
         <TableHead>
            <TableRow>
                 <TableCell>
-                    <p className='title'>{props.league[0].fixtureLeague.leagueName}</p>
+                    <p className='table-title'>{props.league[0].fixtureLeague.leagueName}</p>
                 </TableCell>
            </TableRow>
         </TableHead>

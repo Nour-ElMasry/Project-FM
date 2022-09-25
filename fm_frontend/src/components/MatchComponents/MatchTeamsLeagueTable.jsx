@@ -21,67 +21,103 @@ const MatchTeamsLeagueTable = (props) => {
         GeneralAxiosService.getMethod('https://localhost:7067/api/v1/Leagues/'+league.leagueId+'/Teams/0')
         .then((response) => 
         setLeagueTeams(
-            response.data.sort((a, b) => 
+            response.data.sort((a, b) => a.name.localeCompare(b.name))
+            
+            .sort((a, b) => 
                 b.currentSeasonStats.points - a.currentSeasonStats.points
-        ).sort((a, b) => 
+            )
+            
+            .sort((a, b) => 
             (b.currentSeasonStats.goalsFor - b.currentSeasonStats.goalsAgainst)
             -
             (a.currentSeasonStats.goalsFor - a.currentSeasonStats.goalsAgainst)
         )))
         .then(() => setLoading(false))
-    },[])
+    },[league])
 
     return <div>
         {loading && <Box sx={{textAlign: "center", marginTop: "10rem"}}>
         <CircularProgress style={ {width: "3rem", height: "3rem"}} />
         </Box>}
-        
         {!loading && <Table className='leagueTable'>
                 <TableHead>
                     <TableRow>
                         <TableCell colSpan={4}>
-                            <p>{league.leagueName}</p>
+                            <h4>{league.leagueName} standings</h4>
                         </TableCell>
                         <TableCell align="right">
-                            <p>PL</p>
+                            <h5>PL</h5>
                         </TableCell>
                         <TableCell className='tableColumnHide' align="right">
-                            <p>W</p>
+                            <h5>W</h5>
                         </TableCell>
                         <TableCell className='tableColumnHide' align="right">
-                            <p>D</p>
+                            <h5>D</h5>
                         </TableCell>
                         <TableCell className='tableColumnHide' align="right">
-                            <p>L</p>
+                            <h5>L</h5>
                         </TableCell>
                         <TableCell align="right">
-                            <p>GD</p>
+                            <h5>GD</h5>
                         </TableCell>
                         <TableCell align="right">
-                            <p>PTS</p>
+                            <h5>PTS</h5>
                         </TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     <LeagueTableTeam 
-                    team={leagueTeams[leagueTeams.findIndex(t => 
-                            t.id === homeTeam.teamId &&
-                            t.name === homeTeam.teamName &&
-                            t.logo === homeTeam.teamLogo)]} 
-                    position={1 + leagueTeams.findIndex(t => 
-                            t.id === homeTeam.teamId &&
-                            t.name === homeTeam.teamName &&
-                            t.logo === homeTeam.teamLogo)}
+                        team={leagueTeams[Math.min(
+                            leagueTeams.findIndex(t => 
+                                t.id === homeTeam.teamId &&
+                                t.name === homeTeam.teamName &&
+                                t.logo === homeTeam.teamLogo)
+                            ,
+                            leagueTeams.findIndex(t => 
+                                t.id === awayTeam.teamId &&
+                                t.name === awayTeam.teamName &&
+                                t.logo === awayTeam.teamLogo)
+                        )]} 
+                        position={1 + Math.min(
+                            leagueTeams.findIndex(t => 
+                                t.id === homeTeam.teamId &&
+                                t.name === homeTeam.teamName &&
+                                t.logo === homeTeam.teamLogo)
+                            ,
+                            leagueTeams.findIndex(t => 
+                                t.id === awayTeam.teamId &&
+                                t.name === awayTeam.teamName &&
+                                t.logo === awayTeam.teamLogo)
+                        )}
                      />
+                     <TableRow style={{cursor: 'unset'}}>
+                        <TableCell style={{textAlign: 'center', padding: "0", paddingBottom: ".5rem"}} colSpan={10}>
+                            <p>...</p>
+                        </TableCell>
+                     </TableRow>
                     <LeagueTableTeam 
-                    team={leagueTeams[leagueTeams.findIndex(t => 
-                            t.id === awayTeam.teamId &&
-                            t.name === awayTeam.teamName &&
-                            t.logo === awayTeam.teamLogo)]} 
-                    position={1 + leagueTeams.findIndex(t => 
-                            t.id === awayTeam.teamId &&
-                            t.name === awayTeam.teamName &&
-                            t.logo === awayTeam.teamLogo)}
+                        team={leagueTeams[Math.max(
+                            leagueTeams.findIndex(t => 
+                                t.id === homeTeam.teamId &&
+                                t.name === homeTeam.teamName &&
+                                t.logo === homeTeam.teamLogo)
+                            ,
+                            leagueTeams.findIndex(t => 
+                                t.id === awayTeam.teamId &&
+                                t.name === awayTeam.teamName &&
+                                t.logo === awayTeam.teamLogo)
+                        )]} 
+                        position={1 + Math.max(
+                            leagueTeams.findIndex(t => 
+                                t.id === homeTeam.teamId &&
+                                t.name === homeTeam.teamName &&
+                                t.logo === homeTeam.teamLogo)
+                            ,
+                            leagueTeams.findIndex(t => 
+                                t.id === awayTeam.teamId &&
+                                t.name === awayTeam.teamName &&
+                                t.logo === awayTeam.teamLogo)
+                        )}
                      />
                 </TableBody>
             </Table>}
