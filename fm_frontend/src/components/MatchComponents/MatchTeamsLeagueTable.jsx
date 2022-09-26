@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import GeneralAxiosService from '../../services/GeneralAxiosService';
 import Box from '@mui/material/Box';
 import CircularProgress from '@mui/material/CircularProgress';

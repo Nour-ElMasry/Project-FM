@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import BottomNavigation from '@mui/material/BottomNavigation';
@@ -7,30 +7,35 @@ import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
 import HomeIcon from '@mui/icons-material/Home';
 import GroupsIcon from '@mui/icons-material/Groups';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
+import UserProfileButton from './ProfileComponents/UserProfileButton';
 
 const Header = () => {
-    const [value, setValue] = React.useState(0);
-
+    const [value, setValue] = useState(0);
+  
     return <>
         <header>
             <nav className="navbar container DesktopNav flex flex-ai-c flex-jc-sb">
                 <div className="navbar__brand">
-                    <a className="brand_logo flex flex-ai-c" href="./">
+                    <Link className="brand_logo flex flex-ai-c" to="/">
                         <img className="brandImg" src="/Images/logo.png" alt="logo"></img>
-                    </a>
+                    </Link>
                 </div>
+
+
                 <div className="navbar__links">
                     <Link to="/">Home</Link>
                     <Link to="/leagues">Leagues</Link>
-                    <Link to="/teams">Teams</Link>
+                    <Link to="/players">Players</Link>
                     <Link to="/matches" onClick={() => sessionStorage.setItem("Page_Key", 1)}>Matches</Link>
                 </div>
+
+
                 <div className="navbar__userProfile">
-                    <a href="./">
-                        <img src="https://pbs.twimg.com/profile_images/1484245584978616324/PyqroykF_400x400.png" alt="profile"></img>
-                    </a>
+                  <UserProfileButton/>
                 </div>
+
             </nav>
+
             <nav className="navbar MobileNav">
                 <Box>
                     <BottomNavigation
@@ -55,8 +60,8 @@ const Header = () => {
                       <BottomNavigationAction 
                         component={Link}
                         className="nav-item"
-                        to="/teams"
-                        label="Teams" icon={<GroupsIcon sx={{ fontSize: 30 }}/>}/>
+                        to="/players"
+                        label="Players" icon={<GroupsIcon sx={{ fontSize: 30 }}/>}/>
                       <BottomNavigationAction 
                         component={Link}
                         className="nav-item"

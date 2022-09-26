@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -21,7 +21,7 @@ const ExpandMore = styled((props) => {
     }),
   }));
 
-const LeagueMatchesTable = (props) => {
+const MatchesTable = (props) => {
     const [expanded, setExpanded] = useState(false);
 
     const handleExpandClick = () => {
@@ -31,16 +31,16 @@ const LeagueMatchesTable = (props) => {
     const tableDisplay = () => {
         if(expanded) {
             return <>
-                {props.league.map((l, i) => {
-                return  <MatchTableItem match={l} key={i} />;
+                {props.fixtures.map((f, i) => {
+                return  <MatchTableItem match={f} key={i} />;
                 })}
             </>
         }
         return <>
-            {props.league
+            {props.fixtures
             .slice(0, 5)
-            .map((l, i) => {
-                return <MatchTableItem match={l} key={i} />;
+            .map((f, i) => {
+                return <MatchTableItem match={f} key={i} />;
             })}
         </>
     }
@@ -48,7 +48,7 @@ const LeagueMatchesTable = (props) => {
         <TableHead>
            <TableRow>
                 <TableCell>
-                    <p className='table-title'>{props.league[0].fixtureLeague.leagueName}</p>
+                    <p className='table-title'>{props.tableTitle}</p>
                 </TableCell>
            </TableRow>
         </TableHead>
@@ -70,4 +70,4 @@ const LeagueMatchesTable = (props) => {
     </Table>
 }
 
-export default LeagueMatchesTable;
+export default MatchesTable;

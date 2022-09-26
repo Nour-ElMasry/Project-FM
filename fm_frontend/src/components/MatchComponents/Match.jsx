@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
@@ -8,7 +8,7 @@ import MatchEvents from './MatchEvents';
 import MatchInfo from './MatchInfo';
 import MatchTeamsLeagueTable from './MatchTeamsLeagueTable';
 
-const SingleMatch = () => {
+const Match = () => {
     const params = useParams();
     const [match, setMatch] = useState({});
     const [loading, setLoading] = useState(true);
@@ -44,4 +44,4 @@ const SingleMatch = () => {
     </section>
 }
 
-export default SingleMatch;
+export default Match;

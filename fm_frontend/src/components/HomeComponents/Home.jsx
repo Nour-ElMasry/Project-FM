@@ -1,7 +1,5 @@
-import React from "react";
-
 const Home = () => {
-    return <section className="homepage">
+    return <section className="homepage container container--pa">
         <p>This is the Home page</p>
     </section>
 }

@@ -1,9 +1,9 @@
-import React, {useEffect, useState}  from 'react';
+import {useEffect, useState}  from 'react';
 import GameweekMatchPagination from './GameweekMatchPagination';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import GeneralAxiosService from '../../services/GeneralAxiosService';
-import LeagueMatchesTable from './LeagueMatchesTable';
+import MatchesTable from './MatchesTable';
 import _ from 'lodash';
 
 const getPageNumber = () => {
@@ -49,7 +49,7 @@ const Matches = () => {
             return <>
                 <div className='gameweekTables'>
                     {_.map(matches, (x, i) => {
-                        return <LeagueMatchesTable league={x} key={i}/>
+                        return <MatchesTable tableTitle={x[0].fixtureLeague.leagueName} fixtures={x} key={i}/>
                     })}
                 </div> 
             </>
