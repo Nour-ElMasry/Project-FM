@@ -403,7 +403,10 @@ namespace UnitTests
                 {
                     leagueId = q.LeagueId;
                     return await Task.FromResult(
-                       new List<Fixture>());
+                       new List<Fixture>() {
+                            new Fixture(),
+                            new Fixture()
+                       });
                 });
 
             _mockMapper.Setup(x => x.Map<List<FixtureGetDto>>(It.IsAny<List<Fixture>>()))
@@ -435,7 +438,11 @@ namespace UnitTests
             _mockMediator
                 .Setup(m => m.Send(It.IsAny<GetFixturesByLeague>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(
-                       new List<Fixture>());
+                       new List<Fixture>() 
+                       {
+                            new Fixture(),
+                            new Fixture()
+                       });
 
             _mockMapper.Setup(x => x.Map<List<FixtureGetDto>>(It.IsAny<List<Fixture>>()))
             .Returns((List<Fixture> fs) =>

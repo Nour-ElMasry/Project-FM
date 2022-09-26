@@ -22,8 +22,9 @@ public class League
     public void NextSeason()
     {
         foreach (var team in Teams) team.ResetSeason();
-        CurrentSeason = new Season(++CurrentSeason.Year);
-        CreateFixtures();
+        CurrentSeason = new Season(CurrentSeason.Year + 1);
+        Fixtures = new();
+        this.CreateFixtures();
     }
     public void RemoveTeam(Team t)
     {

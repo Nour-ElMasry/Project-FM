@@ -151,6 +151,12 @@ public static class FixtureSimulation
             var player = RandomPlayer();
             FixtureEvent.GoalAssister = player;
 
+            while(FixtureEvent.GoalScorer == FixtureEvent.GoalAssister)
+            {
+                player = RandomPlayer();
+                FixtureEvent.GoalAssister = player;
+            }
+
             AssistGoal(player);
         }
 

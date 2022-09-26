@@ -24,14 +24,14 @@ const MatchTeamsLeagueTable = (props) => {
             response.data.sort((a, b) => a.name.localeCompare(b.name))
             
             .sort((a, b) => 
-                b.currentSeasonStats.points - a.currentSeasonStats.points
-            )
-            
-            .sort((a, b) => 
             (b.currentSeasonStats.goalsFor - b.currentSeasonStats.goalsAgainst)
             -
             (a.currentSeasonStats.goalsFor - a.currentSeasonStats.goalsAgainst)
-        )))
+            )
+
+            .sort((a, b) => 
+                b.currentSeasonStats.points - a.currentSeasonStats.points
+            )))
         .then(() => setLoading(false))
     },[league])
 

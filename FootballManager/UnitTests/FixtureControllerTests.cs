@@ -23,6 +23,7 @@ namespace UnitTests
         {
             _mockMediator
                 .Setup(m => m.Send(It.IsAny<GetAllFixtures>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new List<Fixture>())
                 .Verifiable();
 
             var controller = new FixtureController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);

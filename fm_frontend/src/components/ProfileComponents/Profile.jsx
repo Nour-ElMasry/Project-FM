@@ -1,6 +1,6 @@
 const Profile = () => {
     return <section className="profileSection container container--pa">
-        <p>This is the Profile Page</p>
+        <h1 className="title">Profile</h1>
     </section>
 }
 export default Profile;

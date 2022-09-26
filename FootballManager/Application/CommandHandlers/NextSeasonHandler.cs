@@ -21,6 +21,7 @@ namespace Application.CommandHandlers
             if (league == null)
                 return null;
 
+            await _unitOfWork.FixtureRepository.ClearLeagueFixtures(league.LeagueId);
             league.NextSeason();
             await _unitOfWork.Save();
 
