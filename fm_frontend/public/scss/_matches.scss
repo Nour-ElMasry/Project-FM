@@ -23,11 +23,11 @@
             gap: 3rem;
         }
 
-        .leagueTableMatch{
+        .matchesTable{
             margin: 0 auto;
             background-color: $veryLightGray;
             border-radius: .75rem;  
-            max-width: 27.5rem;
+            max-width: 26rem;
 
             @include breakpoint-down(small) {
                 &:not(:last-child){

@@ -44,7 +44,7 @@ const MatchesTable = (props) => {
             })}
         </>
     }
-    return <Table className='leagueTableMatch'>
+    return <Table className='matchesTable'>
         <TableHead>
            <TableRow>
                 <TableCell>

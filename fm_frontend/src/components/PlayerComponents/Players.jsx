@@ -1,6 +1,6 @@
 const Players = () => {
     return <section className='PlayersPage container container--pa'>
-        <p>This is the Players Page!</p>
+        <h1 className="title">Players Page</h1>
     </section>
 }
 

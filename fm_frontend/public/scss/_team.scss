@@ -1,0 +1,97 @@
+.teamSection{
+    .teamHeader{
+        img{
+            width: 60%;
+            height: 60%;
+            max-width: 10rem;
+            margin-right: 2.5%;
+        }
+
+        &TeamInfo{
+            padding: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            @include breakpoint-up(medium){
+                display: block;
+                padding-bottom: 0;
+            }
+        }
+        &TeamName{
+            font-size: $font-mb-lg;
+            @include breakpoint-down(small){
+                font-size: $font-md;
+            }
+        }
+        .MuiTabs-flexContainer{
+            @include breakpoint-down(small){
+                justify-content: center;
+            }
+        }
+        
+        .css-1gsv261{ //Reset styles applied by mui to the tabs
+            all: unset;
+        }
+
+        &Ratings{
+            text-align: center;
+            @include breakpoint-up(medium){
+                display: flex;
+                text-align: unset;
+                align-items: center;
+                justify-content: space-between;
+                width: 27.5%;
+                margin: 0.5rem 0;
+            }
+            .ratingTitle{
+                font-family: 'Orbitron', sans-serif;
+                margin-bottom: 1rem;
+            }
+
+            &Rate{
+                &:not(:last-child){
+                    margin-bottom: 1.25rem;
+                }
+            }
+        }
+    }
+
+    .tabContent{
+        margin: 1.5rem 0 2.5rem;
+        @include breakpoint-up(medium){
+            margin-top: 2.5rem;
+        }
+        .gameweekTables{
+            margin: 0;
+        }
+
+        .loading{
+            margin-top: 5rem;
+        }
+        .teamPlayersTable{
+            .playerImg{
+                height: 2rem;
+                width: 2rem;
+
+                @include breakpoint-up(medium){
+                    height: 2.5rem;
+                    width: 2.5rem;
+                }
+
+                border: solid 2px $veryDarkBlue;
+                border-radius: 100%;
+                margin-right: .5rem;
+            }
+            &PlayerName{
+                font-size: 1rem;
+                @include breakpoint-up(medium){
+                    font-size: 1.125rem;
+                }
+            }
+            &PlayerPosition{
+                font-size: $font-sm;
+            }
+        }
+    }
+}

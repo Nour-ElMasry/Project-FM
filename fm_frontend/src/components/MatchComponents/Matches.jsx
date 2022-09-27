@@ -1,10 +1,9 @@
 import {useEffect, useState}  from 'react';
 import GameweekMatchPagination from './GameweekMatchPagination';
-import CircularProgress from '@mui/material/CircularProgress';
-import Box from '@mui/material/Box';
 import GeneralAxiosService from '../../services/GeneralAxiosService';
 import MatchesTable from './MatchesTable';
 import _ from 'lodash';
+import Loading from '../Loading';
 
 const getPageNumber = () => {
   if(sessionStorage && parseInt(sessionStorage.getItem("Page_Key")) > 0) {
@@ -55,9 +54,7 @@ const Matches = () => {
             </>
         }
 
-        return <Box sx={{textAlign: "center", marginTop: "10rem"}}>
-            <CircularProgress style={ {width: "3rem", height: "3rem"}} />
-        </Box>
+        return <Loading/>
     }
 
     return <section className='matchSection container container--pa'> 

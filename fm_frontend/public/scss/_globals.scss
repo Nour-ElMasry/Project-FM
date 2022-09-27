@@ -60,6 +60,21 @@ p{
         padding-left: 1.5rem;
         padding-right: 1.5rem;
     }
+    &--styled{
+        background-color: $veryLightGray;
+        -webkit-box-shadow: 3px 3px 7px -1px rgba(0,0,0,0.83); 
+        box-shadow: 3px 3px 7px -1px rgba(0,0,0,0.83);
+    }
+}
+
+.emptyMsg{
+    text-align: center;
+    padding: 1rem;
+}
+
+.loading{
+    text-align: center;
+    margin-top: 10rem;
 }
 
 .table-title{

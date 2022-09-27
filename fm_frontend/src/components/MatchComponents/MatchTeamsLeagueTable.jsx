@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react';
 import GeneralAxiosService from '../../services/GeneralAxiosService';
-import Box from '@mui/material/Box';
-import CircularProgress from '@mui/material/CircularProgress';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import LeagueTableTeam from '../LeagueComponents/LeagueTableTeam';
+import Loading from '../Loading';
 
 const MatchTeamsLeagueTable = (props) => {
     const [leagueTeams, setLeagueTeams] = useState({})
@@ -36,10 +35,8 @@ const MatchTeamsLeagueTable = (props) => {
     },[league])
 
     return <div>
-        {loading && <Box sx={{textAlign: "center", marginTop: "10rem"}}>
-        <CircularProgress style={ {width: "3rem", height: "3rem"}} />
-        </Box>}
-        {!loading && <Table className='leagueTable'>
+        {loading && <Loading />}
+        {!loading && <Table className='leagueTable container--styled'>
                 <TableHead>
                     <TableRow>
                         <TableCell colSpan={4}>

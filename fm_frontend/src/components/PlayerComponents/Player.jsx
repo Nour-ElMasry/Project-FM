@@ -1,7 +1,7 @@
 const Player = () => {
     return <section className='PlayerPage container container--pa'>
-    <p>This is the Player Page!</p>
-</section>
+        <h1 className="title">Player Page</h1>
+    </section>
 }
 
 export default Player;
