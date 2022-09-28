@@ -5,6 +5,6 @@ namespace Application.Queries
 {
     public class GetUserById : IRequest<User>
     {
-        public long UserId { get; set; }
+        public string UserId { get; set; }
     }
 }

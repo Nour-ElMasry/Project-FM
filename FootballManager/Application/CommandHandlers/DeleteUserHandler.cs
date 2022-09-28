@@ -2,27 +2,27 @@
 using Application.Commands;
 using Domain.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 
 namespace Application.CommandHandlers
 {
     public class DeleteUserHandler : IRequestHandler<DeleteUser, User>
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly UserManager<User> _userManager;
 
-        public DeleteUserHandler(IUnitOfWork unitOfWork)
+        public DeleteUserHandler(UserManager<User> userManager)
         {
-            _unitOfWork = unitOfWork;
+            _userManager = userManager;
         }
 
         public async Task<User> Handle(DeleteUser request, CancellationToken cancellationToken)
         {
-            var user = await _unitOfWork.UserRepository.GetUserById(request.UserId);
+            var user = await _userManager.FindByIdAsync(request.UserId);
 
             if (user == null)
                 return null;
 
-            await _unitOfWork.UserRepository.DeleteUser(user);
-            await _unitOfWork.Save();
+            await _userManager.DeleteAsync(user);
 
             return user;
         }

@@ -35,7 +35,9 @@ namespace IntegrationTests.Helpers
 
             var teamManager = new FakeManager(new Person("FakeManager1", "2001-02-16", "Country11")) { ManagerId = 1 };
 
-            var user = new User("username", "password", new Person("UserPerson", "2001-02-16", "UserCountry"));
+            var user = new User(new Person("UserPerson", "2001-02-16", "UserCountry"));
+            user.UserName = "username";
+            user.PasswordHash = "password";
 
             var team1Manager = new RealManager(user) { ManagerId = 2 };
 

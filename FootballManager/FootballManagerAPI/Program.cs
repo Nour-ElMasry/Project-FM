@@ -1,25 +1,31 @@
 using Application;
 using Application.Abstract;
+using Domain.Entities;
 using FootballManagerAPI;
 using FootballManagerAPI.Middleware;
 using Infrastructure;
 using Infrastructure.Repository;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Logging.ClearProviders()
     .AddFilter("Microsoft", LogLevel.Error)
     .AddFilter("System", LogLevel.Warning)
     .AddConsole();
-// Add services to the container.
 
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(
         policy =>
         {
-            policy.WithOrigins("http://localhost:3000");
+            policy.WithOrigins("http://localhost:3000")
+               .AllowAnyMethod()
+               .AllowAnyHeader();
         });
 });
 
@@ -30,17 +36,35 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<ITeamRepository, TeamRepository>();
 builder.Services.AddScoped<IManagerRepository, ManagerRepository>();
 builder.Services.AddScoped<ILeagueRepository, LeagueRepository>();
 builder.Services.AddScoped<IFixtureRepository, FixtureRepository>();
 
-
 builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
 builder.Services.AddMediatR(typeof(ApplicationAssemblyMaker));
 builder.Services.AddAutoMapper(typeof(AssemblyMaker));
+
+builder.Services.AddIdentity<User, IdentityRole>()
+    .AddEntityFrameworkStores<DataContext>();
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options => 
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidAudience = "audience",
+        ValidIssuer = "https://localhost:7067",
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("idjf12-dnm341-ewppa6-dfh8-vcef5"))
+    };
+});
 
 var app = builder.Build();
 

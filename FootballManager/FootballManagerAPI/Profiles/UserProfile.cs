@@ -10,8 +10,8 @@ namespace FootballManagerAPI.Profiles
         public UserProfile()
         {
             CreateMap<User, UserGetDto>()
-                .ForMember(ud => ud.Id, opt => opt.MapFrom(u => u.UserId))
-                .ForMember(ud => ud.Username, opt => opt.MapFrom(u => u.Username))
+                .ForMember(ud => ud.Id, opt => opt.MapFrom(u => u.Id))
+                .ForMember(ud => ud.Username, opt => opt.MapFrom(u => u.UserName))
                 .ForMember(ud => ud.UserPerson, opt => opt.MapFrom(u => u.UserPerson));
 
 

@@ -8,6 +8,5 @@
         public IManagerRepository ManagerRepository { get; }
         public IPlayerRepository PlayerRepository { get; }
         public ITeamRepository TeamRepository { get; }
-        public IUserRepository UserRepository { get; }
     }
 }

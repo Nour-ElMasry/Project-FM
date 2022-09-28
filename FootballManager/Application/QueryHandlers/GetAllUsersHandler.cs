@@ -2,21 +2,23 @@
 using Application.Queries;
 using Domain.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.QueryHandlers
 {
     public class GetAllUsersHandler : IRequestHandler<GetAllUsers, List<User>>
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly UserManager<User> _userManager;
 
-        public GetAllUsersHandler(IUnitOfWork unitOfWork)
+        public GetAllUsersHandler(UserManager<User> userManager)
         {
-            _unitOfWork = unitOfWork;
+            _userManager = userManager;
         }
 
         public async Task<List<User>> Handle(GetAllUsers request, CancellationToken cancellationToken)
         {
-            return await _unitOfWork.UserRepository.GetAllUsers();
+            return await _userManager.Users.Include(u => u.UserPerson).ToListAsync();
         }
     }
 }

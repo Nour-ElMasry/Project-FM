@@ -1,19 +1,15 @@
 ﻿using Domain.Entities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure
 {
-    public class DataContext : DbContext
+    public class DataContext : IdentityDbContext<User>
     {
-        public DataContext()
+        public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
         }
 
-        public DataContext(DbContextOptions options) : base(options)
-        {
-        }
-
-        public DbSet<User> Users { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<Player> Players { get; set; }
         public DbSet<Manager> Managers { get; set; }
@@ -30,6 +26,8 @@ namespace Infrastructure
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
             modelBuilder.Entity<Team>()
                .HasMany(t => t.Players)
                .WithOne(p => p.CurrentTeam)

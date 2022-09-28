@@ -26,7 +26,7 @@ const TeamMatches = (props) => {
         </div>}
         {loading && <Loading/>}
         { (!loading && homeMatches.length <= 0 && awayMatches.length <= 0) && <div className="emptyMsg container--styled">
-            <p>No upcoming matches</p>
+            <p>No matches found</p>
         </div>}
      </div>
 }

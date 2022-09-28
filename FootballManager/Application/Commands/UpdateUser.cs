@@ -5,7 +5,7 @@ namespace Application.Commands
 {
     public class UpdateUser : IRequest<User>
     {
-        public long UserId { get; set; }
+        public string UserId { get; set; }
         public string Name { get; set; }
         public string Country { get; set; }
         public string DateOfBirth { get; set; }

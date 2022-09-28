@@ -2,21 +2,22 @@
 using Application.Commands;
 using Domain.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 
 namespace Application.CommandHandlers
 {
     public class CreateUserHandler : IRequestHandler<CreateUser, User>
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly UserManager<User> _userManager;
 
-        public CreateUserHandler(IUnitOfWork unitOfWork)
+        public CreateUserHandler(UserManager<User> userManager)
         {
-            this._unitOfWork = unitOfWork;
+            _userManager = userManager;
         }
 
         public async Task<User> Handle(CreateUser request, CancellationToken cancellationToken)
         {
-            var uniqueCheck = await _unitOfWork.UserRepository.GetUserByName(request.Username) == null;
+            var uniqueCheck = await _userManager.FindByNameAsync(request.Username) == null;
 
             if (uniqueCheck)
             {
@@ -25,12 +26,13 @@ namespace Application.CommandHandlers
                 if (request.Image != "")
                     person.Image = request.Image;
 
-                var user = new User(request.Username, request.Password, person);
+                var user = new User(person);
+                user.UserName = request.Username;
 
-                await _unitOfWork.UserRepository.AddUser(user);
-                await _unitOfWork.Save();
-
-                return user;
+                var create = await _userManager.CreateAsync(user, request.Password);
+         
+                if(create.Succeeded)
+                    return user;
             }
 
             return null;

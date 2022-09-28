@@ -25,7 +25,6 @@ namespace ConsolePresentation
                 .AddScoped<IFixtureRepository, FixtureRepository>()
                 .AddScoped<IManagerRepository, ManagerRepository>()
                 .AddScoped<ITeamRepository, TeamRepository>()
-                .AddScoped<IUserRepository, UserRepository>()
                 .AddScoped<ILeagueRepository, LeagueRepository>()
                 .AddScoped<IUnitOfWork, UnitOfWork>()
                 .BuildServiceProvider();
@@ -45,12 +44,12 @@ namespace ConsolePresentation
 
             var league = await mediator.Send(new CreateLeague
             {
-                Name = "Amdaris League"
+                Name = "Serie A"
             });
 
-            dynamic leagueTeams = JsonConvert.DeserializeObject<dynamic>(await GetLeagueTeams(39));
+            dynamic leagueTeams = JsonConvert.DeserializeObject<dynamic>(await GetLeagueTeams(135));
 
-            for (int i = 0; i < leagueTeams.response.Count; i++)
+            for (int i = 3; i < leagueTeams.response.Count; i++)
             {
                 var team = await mediator.Send(new CreateTeam
                 {
@@ -70,12 +69,28 @@ namespace ConsolePresentation
 
                 dynamic teamManager = JsonConvert.DeserializeObject<dynamic>(await GetTeamManager(teamId));
 
-                var manager = await mediator.Send(new CreateFakeManager
+                var managerCommand = new CreateFakeManager();
+
+                if (teamManager.response.Count > 0)
                 {
-                    Name = teamManager.response[0].name,
-                    Country = teamManager.response[0].birth.country,
-                    DateOfBirth = teamManager.response[0].birth.date,
-                });
+                    managerCommand = new CreateFakeManager
+                    {
+                        Name = teamManager.response[0].name,
+                        Country = teamManager.response[0].birth.country,
+                        DateOfBirth = teamManager.response[0].birth.date,
+                    };
+                }
+                else
+                {
+                    managerCommand = new CreateFakeManager
+                    {
+                        Name = $"{team.Name}'s Manager",
+                        Country = team.Country,
+                        DateOfBirth = "1977-08-16",
+                    };
+                }
+ 
+                var manager = await mediator.Send(managerCommand);
 
                 await mediator.Send(new AddManagerToTeam
                 {

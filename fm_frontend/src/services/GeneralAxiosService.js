@@ -10,7 +10,7 @@ class GeneralAxiosService {
     }
 
     async postMethod(url, obj){
-        return await axios.post(url, obj)
+        return await axios.post(url, obj);
     }
 
     async deleteMethod(url){ 

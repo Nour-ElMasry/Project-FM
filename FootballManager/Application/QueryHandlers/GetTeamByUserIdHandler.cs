@@ -2,21 +2,24 @@
 using Application.Queries;
 using Domain.Entities;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 
 namespace Application.QueryHandlers
 {
     public class GetTeamByUserIdHandler : IRequestHandler<GetTeamByUserId, Team>
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly UserManager<User> _userManager;
 
-        public GetTeamByUserIdHandler(IUnitOfWork unitOfWork)
+        public GetTeamByUserIdHandler(IUnitOfWork unitOfWork, UserManager<User> userManager)
         {
             _unitOfWork = unitOfWork;
+            _userManager = userManager;
         }
 
         public async Task<Team> Handle(GetTeamByUserId request, CancellationToken cancellationToken)
         {
-            var user = await _unitOfWork.UserRepository.GetUserById(request.UserId);
+            var user = await _userManager.FindByIdAsync(request.UserId);
             var managers = await _unitOfWork.ManagerRepository.GetAllManagers();
 
             if (user == null)

@@ -5,10 +5,24 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Infrastructure.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class AddedIdentity : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "AspNetRoles",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetRoles", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Person",
                 columns: table => new
@@ -56,6 +70,20 @@ namespace Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Record", x => x.RecordId);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Score",
+                columns: table => new
+                {
+                    ScoreId = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    HomeScore = table.Column<int>(type: "int", nullable: false),
+                    AwayScore = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Score", x => x.ScoreId);
                 });
 
             migrationBuilder.CreateTable(
@@ -108,6 +136,59 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AspNetRoleClaims",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetRoleClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetRoleClaims_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUsers",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<long>(type: "bigint", nullable: false),
+                    UserPersonId = table.Column<long>(type: "bigint", nullable: true),
+                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUsers_Person_UserPersonId",
+                        column: x => x.UserPersonId,
+                        principalTable: "Person",
+                        principalColumn: "PersonId");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Leagues",
                 columns: table => new
                 {
@@ -147,27 +228,133 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "AspNetUserClaims",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserClaims", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AspNetUserClaims_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserLogins",
+                columns: table => new
+                {
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserLogins", x => new { x.LoginProvider, x.ProviderKey });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserLogins_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserRoles",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserRoles", x => new { x.UserId, x.RoleId });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserRoles_AspNetRoles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "AspNetRoles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_AspNetUserRoles_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUserTokens",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUserTokens", x => new { x.UserId, x.LoginProvider, x.Name });
+                    table.ForeignKey(
+                        name: "FK_AspNetUserTokens_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Event",
+                columns: table => new
+                {
+                    EventId = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    GoalScorerId = table.Column<long>(type: "bigint", nullable: true),
+                    GoalAssisterId = table.Column<long>(type: "bigint", nullable: true),
+                    EventFixtureId = table.Column<long>(type: "bigint", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Event", x => x.EventId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Fixtures",
                 columns: table => new
                 {
                     FixtureId = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FixtureLeagueID = table.Column<long>(type: "bigint", nullable: true),
-                    HomeTeamID = table.Column<long>(type: "bigint", nullable: true),
-                    AwayTeamID = table.Column<long>(type: "bigint", nullable: true),
+                    FixtureLeagueId = table.Column<long>(type: "bigint", nullable: true),
+                    HomeTeamId = table.Column<long>(type: "bigint", nullable: true),
+                    AwayTeamId = table.Column<long>(type: "bigint", nullable: true),
+                    FixtureScoreId = table.Column<long>(type: "bigint", nullable: true),
                     Venue = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Date = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    HomeTeamScore = table.Column<int>(type: "int", nullable: false),
-                    AwayTeamScore = table.Column<int>(type: "int", nullable: false)
+                    isPlayed = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Fixtures", x => x.FixtureId);
                     table.ForeignKey(
-                        name: "FK_Fixtures_Leagues_FixtureLeagueID",
-                        column: x => x.FixtureLeagueID,
+                        name: "FK_Fixtures_Leagues_FixtureLeagueId",
+                        column: x => x.FixtureLeagueId,
                         principalTable: "Leagues",
                         principalColumn: "LeagueId");
+                    table.ForeignKey(
+                        name: "FK_Fixtures_Score_FixtureScoreId",
+                        column: x => x.FixtureScoreId,
+                        principalTable: "Score",
+                        principalColumn: "ScoreId",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -179,11 +366,17 @@ namespace Infrastructure.Migrations
                     ManagerPersonId = table.Column<long>(type: "bigint", nullable: true),
                     CurrentTeamId = table.Column<long>(type: "bigint", nullable: true),
                     Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    UserManagerId = table.Column<long>(type: "bigint", nullable: true)
+                    UserManagerId = table.Column<string>(type: "nvarchar(450)", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Managers", x => x.ManagerId);
+                    table.ForeignKey(
+                        name: "FK_Managers_AspNetUsers_UserManagerId",
+                        column: x => x.UserManagerId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Managers_Person_ManagerPersonId",
                         column: x => x.ManagerPersonId,
@@ -234,33 +427,6 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Users",
-                columns: table => new
-                {
-                    UserId = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Username = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserPersonId = table.Column<long>(type: "bigint", nullable: true),
-                    UserManagerId = table.Column<long>(type: "bigint", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Users", x => x.UserId);
-                    table.ForeignKey(
-                        name: "FK_Users_Managers_UserManagerId",
-                        column: x => x.UserManagerId,
-                        principalTable: "Managers",
-                        principalColumn: "ManagerId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Users_Person_UserPersonId",
-                        column: x => x.UserPersonId,
-                        principalTable: "Person",
-                        principalColumn: "PersonId");
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Players",
                 columns: table => new
                 {
@@ -300,19 +466,85 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Fixtures_AwayTeamID",
-                table: "Fixtures",
-                column: "AwayTeamID");
+                name: "IX_AspNetRoleClaims_RoleId",
+                table: "AspNetRoleClaims",
+                column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Fixtures_FixtureLeagueID",
-                table: "Fixtures",
-                column: "FixtureLeagueID");
+                name: "RoleNameIndex",
+                table: "AspNetRoles",
+                column: "NormalizedName",
+                unique: true,
+                filter: "[NormalizedName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Fixtures_HomeTeamID",
+                name: "IX_AspNetUserClaims_UserId",
+                table: "AspNetUserClaims",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserLogins_UserId",
+                table: "AspNetUserLogins",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUserRoles_RoleId",
+                table: "AspNetUserRoles",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "EmailIndex",
+                table: "AspNetUsers",
+                column: "NormalizedEmail");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_AspNetUsers_UserPersonId",
+                table: "AspNetUsers",
+                column: "UserPersonId");
+
+            migrationBuilder.CreateIndex(
+                name: "UserNameIndex",
+                table: "AspNetUsers",
+                column: "NormalizedUserName",
+                unique: true,
+                filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Event_EventFixtureId",
+                table: "Event",
+                column: "EventFixtureId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Event_GoalAssisterId",
+                table: "Event",
+                column: "GoalAssisterId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Event_GoalScorerId",
+                table: "Event",
+                column: "GoalScorerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Fixtures_AwayTeamId",
                 table: "Fixtures",
-                column: "HomeTeamID");
+                column: "AwayTeamId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Fixtures_FixtureLeagueId",
+                table: "Fixtures",
+                column: "FixtureLeagueId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Fixtures_FixtureScoreId",
+                table: "Fixtures",
+                column: "FixtureScoreId",
+                unique: true,
+                filter: "[FixtureScoreId] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Fixtures_HomeTeamId",
+                table: "Fixtures",
+                column: "HomeTeamId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Leagues_CurrentSeasonId",
@@ -330,6 +562,13 @@ namespace Infrastructure.Migrations
                 name: "IX_Managers_ManagerPersonId",
                 table: "Managers",
                 column: "ManagerPersonId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Managers_UserManagerId",
+                table: "Managers",
+                column: "UserManagerId",
+                unique: true,
+                filter: "[UserManagerId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Players_CurrentPlayerStatsId",
@@ -378,30 +617,40 @@ namespace Infrastructure.Migrations
                 table: "TeamSheet",
                 column: "TeamTacticId");
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_UserManagerId",
-                table: "Users",
-                column: "UserManagerId",
-                unique: true,
-                filter: "[UserManagerId] IS NOT NULL");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_UserPersonId",
-                table: "Users",
-                column: "UserPersonId");
+            migrationBuilder.AddForeignKey(
+                name: "FK_Event_Fixtures_EventFixtureId",
+                table: "Event",
+                column: "EventFixtureId",
+                principalTable: "Fixtures",
+                principalColumn: "FixtureId",
+                onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Fixtures_Teams_AwayTeamID",
+                name: "FK_Event_Players_GoalAssisterId",
+                table: "Event",
+                column: "GoalAssisterId",
+                principalTable: "Players",
+                principalColumn: "PlayerId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Event_Players_GoalScorerId",
+                table: "Event",
+                column: "GoalScorerId",
+                principalTable: "Players",
+                principalColumn: "PlayerId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_Fixtures_Teams_AwayTeamId",
                 table: "Fixtures",
-                column: "AwayTeamID",
+                column: "AwayTeamId",
                 principalTable: "Teams",
                 principalColumn: "TeamId",
                 onDelete: ReferentialAction.Restrict);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Fixtures_Teams_HomeTeamID",
+                name: "FK_Fixtures_Teams_HomeTeamId",
                 table: "Fixtures",
-                column: "HomeTeamID",
+                column: "HomeTeamId",
                 principalTable: "Teams",
                 principalColumn: "TeamId");
 
@@ -417,6 +666,14 @@ namespace Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
+                name: "FK_Managers_AspNetUsers_UserManagerId",
+                table: "Managers");
+
+            migrationBuilder.DropForeignKey(
+                name: "FK_Managers_Person_ManagerPersonId",
+                table: "Managers");
+
+            migrationBuilder.DropForeignKey(
                 name: "FK_Teams_Leagues_CurrentLeagueId",
                 table: "Teams");
 
@@ -425,19 +682,46 @@ namespace Infrastructure.Migrations
                 table: "Managers");
 
             migrationBuilder.DropTable(
+                name: "AspNetRoleClaims");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserClaims");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserLogins");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserRoles");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "Event");
+
+            migrationBuilder.DropTable(
+                name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
                 name: "Fixtures");
 
             migrationBuilder.DropTable(
                 name: "Players");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "Score");
 
             migrationBuilder.DropTable(
                 name: "PlayerStats");
 
             migrationBuilder.DropTable(
                 name: "Record");
+
+            migrationBuilder.DropTable(
+                name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Person");
 
             migrationBuilder.DropTable(
                 name: "Leagues");
@@ -456,9 +740,6 @@ namespace Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "TeamSheet");
-
-            migrationBuilder.DropTable(
-                name: "Person");
 
             migrationBuilder.DropTable(
                 name: "Tactic");

@@ -9,6 +9,7 @@ import Match from "./components/MatchComponents/Match";
 import Player from "./components/PlayerComponents/Player";
 import Team from "./components/TeamComponents/Team";
 import Profile from "./components/ProfileComponents/Profile";
+import Login from "./components/AuthComponents/SignInPage";
 
 function App() {
   return <>
@@ -23,6 +24,7 @@ function App() {
             <Route path="/matches/:id" element={<Match />}/>
             <Route path="/teams/:id" element={<Team />}/>
             <Route path="/profile" element={<Profile />}/>
+            <Route path="/login" element={<Login />}/>
         </Routes>
       </Router>
   </>;

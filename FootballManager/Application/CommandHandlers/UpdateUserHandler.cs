@@ -3,21 +3,22 @@ using Application.Commands;
 using Domain.Entities;
 using Domain.Exceptions;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 
 namespace Application.CommandHandlers
 {
     public class UpdateUserHandler : IRequestHandler<UpdateUser, User>
     {
-        private readonly IUnitOfWork _unitOfWork;
+        private readonly UserManager<User> _userManager;
 
-        public UpdateUserHandler(IUnitOfWork unitOfWork)
+        public UpdateUserHandler(UserManager<User> userManager)
         {
-            _unitOfWork = unitOfWork;
+            _userManager = userManager;
         }
 
         public async Task<User> Handle(UpdateUser request, CancellationToken cancellationToken)
         {
-            var user = await _unitOfWork.UserRepository.GetUserById(request.UserId);
+            var user = await _userManager.FindByIdAsync(request.UserId);
 
             if (user == null)
                 return null;
@@ -33,8 +34,7 @@ namespace Application.CommandHandlers
             user.UserPerson.BirthDate = tempDate;
             user.UserPerson.Image = request.Image;
 
-            await _unitOfWork.UserRepository.UpdateUser(user);
-            await _unitOfWork.Save();
+            await _userManager.UpdateAsync(user);
 
             return user;
         }

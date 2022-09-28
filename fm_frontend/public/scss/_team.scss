@@ -21,7 +21,7 @@
         &TeamName{
             font-size: $font-mb-lg;
             @include breakpoint-down(small){
-                font-size: $font-md;
+                font-size: 0.9375rem;
             }
         }
         .MuiTabs-flexContainer{

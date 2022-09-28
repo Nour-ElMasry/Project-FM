@@ -35,12 +35,12 @@ const Team = (props) => {
         {hasError && <h2 className='errorMsg'>Oops! Something went wrong!</h2>}
         {loading && <Loading/>}
 
-        {!loading && <div className="teamHeader container container--styled">
+        {(!loading && !hasError) && <div className="teamHeader container container--styled">
             <TeamHeader teamName={team.name} ratings={team.currentTeamSheet} teamLogo={team.logo}/>
             <TeamTabs value={value} handleChange={handleChange}/>
         </div>
         }
-        {!loading && <div className="tabContent">
+        {(!loading && !hasError)  && <div className="tabContent">
             <TeamTabPanel value={value} index={0}>
                 <TeamMatches teamId={team.id} played={false}/>
             </TeamTabPanel>
@@ -48,7 +48,7 @@ const Team = (props) => {
                 <TeamMatches teamId={team.id} played={true}/>
             </TeamTabPanel>
             <TeamTabPanel value={value} index={2}>
-              <TeamPlayers teamId={team.id}/>
+                <TeamPlayers teamId={team.id}/>
             </TeamTabPanel>     
         </div>}
     </section>

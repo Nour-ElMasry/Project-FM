@@ -38,7 +38,7 @@ namespace UnitTests
                 .Verifiable();
 
             var controller = new UserController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
-            await controller.GetUserById(1);
+            await controller.GetUserById("1");
 
             _mockMediator.Verify(x => x.Send(It.IsAny<GetUserById>(), It.IsAny<CancellationToken>()), Times.Once());
         }
@@ -46,7 +46,7 @@ namespace UnitTests
         [TestMethod]
         public async Task Get_User_By_Id_GetUserByIdWithCorrectUserIdIsCalled()
         {
-            long userId = 0;
+            string userId = "";
 
             _mockMediator
                 .Setup(m => m.Send(It.IsAny<GetUserById>(), It.IsAny<CancellationToken>()))
@@ -58,9 +58,9 @@ namespace UnitTests
                 });
 
             var controller = new UserController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
-            await controller.GetUserById(1);
+            await controller.GetUserById("1");
 
-            Assert.AreEqual(userId, 1);
+            Assert.AreEqual(userId, "1");
         }
 
         [TestMethod]
@@ -73,7 +73,7 @@ namespace UnitTests
 
             var controller = new UserController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
 
-            var result = await controller.GetUserById(1);
+            var result = await controller.GetUserById("1");
             var okResult = result as OkObjectResult;
 
             Assert.IsNotNull(okResult);
@@ -83,12 +83,10 @@ namespace UnitTests
         [TestMethod]
         public async Task Get_User_By_Id_ShouldreturnFoundUser()
         {
-            var user = new User
-            {
-                UserId = 1,
-                Username = "FakeUser",
-                Password = "1234"
-            };
+            var user = new User();
+
+            user.UserName = "FakeUser";
+            user.PasswordHash = "1234";
 
             _mockMediator
                 .Setup(m => m.Send(It.IsAny<GetUserById>(), It.IsAny<CancellationToken>()))
@@ -99,18 +97,16 @@ namespace UnitTests
             {
                 return new UserGetDto
                 {
-                    Id = u.UserId,
-                    Username = u.Username,
+                    Username = u.UserName,
                 };
             });
 
             var controller = new UserController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
 
-            var result = await controller.GetUserById(1);
+            var result = await controller.GetUserById("1");
             var okResult = result as OkObjectResult;
 
-            Assert.AreEqual(user.UserId, ((UserGetDto)okResult.Value).Id);
-            Assert.AreEqual(user.Username, ((UserGetDto)okResult.Value).Username);
+            Assert.AreEqual(user.UserName, ((UserGetDto)okResult.Value).Username);
         }
         [TestMethod]
         public async Task Get_User_Team_GetUserTeamIsCalled()
@@ -120,7 +116,7 @@ namespace UnitTests
                 .Verifiable();
 
             var controller = new UserController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
-            await controller.GetUserTeam(1);
+            await controller.GetUserTeam("1");
 
             _mockMediator.Verify(x => x.Send(It.IsAny<GetTeamByUserId>(), It.IsAny<CancellationToken>()), Times.Once());
         }
@@ -128,7 +124,7 @@ namespace UnitTests
         [TestMethod]
         public async Task Get_User_Team_GetUserTeamWithCorrectUserIdIsCalled()
         {
-            long userId = 0;
+            string userId = "";
 
             _mockMediator
                 .Setup(m => m.Send(It.IsAny<GetTeamByUserId>(), It.IsAny<CancellationToken>()))
@@ -140,9 +136,9 @@ namespace UnitTests
                 });
 
             var controller = new UserController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
-            await controller.GetUserTeam(1);
+            await controller.GetUserTeam("1");
 
-            Assert.AreEqual(userId, 1);
+            Assert.AreEqual(userId, "1");
         }
 
         [TestMethod]
@@ -155,7 +151,7 @@ namespace UnitTests
 
             var controller = new UserController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
 
-            var result = await controller.GetUserTeam(1);
+            var result = await controller.GetUserTeam("1");
             var okResult = result as OkObjectResult;
 
             Assert.IsNotNull(okResult);
@@ -188,7 +184,7 @@ namespace UnitTests
 
             var controller = new UserController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
 
-            var result = await controller.GetUserTeam(1);
+            var result = await controller.GetUserTeam("1");
             var okResult = result as OkObjectResult;
 
             Assert.AreEqual(userTeam.TeamId, ((TeamGetDto)okResult.Value).Id);
@@ -201,14 +197,14 @@ namespace UnitTests
             var user = new UserAuthDto();
 
             _mockMediator
-                .Setup(m => m.Send(It.IsAny<AuthUser>(), It.IsAny<CancellationToken>()))
+                .Setup(m => m.Send(It.IsAny<LoginUser>(), It.IsAny<CancellationToken>()))
                 .Verifiable();
 
             var controller = new UserController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
 
-            await controller.AuthUser(user);
+            await controller.LoginUser(user);
 
-            _mockMediator.Verify(x => x.Send(It.IsAny<AuthUser>(), It.IsAny<CancellationToken>()), Times.Once());
+            _mockMediator.Verify(x => x.Send(It.IsAny<LoginUser>(), It.IsAny<CancellationToken>()), Times.Once());
         }
 
         [TestMethod]
@@ -220,7 +216,7 @@ namespace UnitTests
 
             var controller = new UserController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
 
-            await controller.DeleteUser(1);
+            await controller.DeleteUser("1");
 
             _mockMediator.Verify(x => x.Send(It.IsAny<DeleteUser>(), It.IsAny<CancellationToken>()), Times.Once());
         }

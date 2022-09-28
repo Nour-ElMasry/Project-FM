@@ -1,11 +1,14 @@
 ﻿using Application.Commands;
 using Application.Queries;
 using AutoMapper;
+using Domain.Entities;
 using FootballManagerAPI.Dto;
 using FootballManagerAPI.Pagination;
 using MediatR;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.VisualBasic;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace FootballManagerAPI.Controllers
 {
@@ -80,12 +83,12 @@ namespace FootballManagerAPI.Controllers
 
             _logger.LogInformation("User created successfully!!!");
 
-            return CreatedAtAction(nameof(GetUserById), new { id = result.UserId }, dto);
+            return CreatedAtAction(nameof(GetUserById), new { id = result.Id }, dto);
         }
 
         [HttpPost]
         [Route("{id}/CreateTeam")]
-        public async Task<IActionResult> CreateUserTeam([FromBody] TeamPutPostDto team, int id)
+        public async Task<IActionResult> CreateUserTeam([FromBody] TeamPutPostDto team, string id)
         {
             _logger.LogInformation("Preparing to create a User Team...");
 
@@ -134,7 +137,7 @@ namespace FootballManagerAPI.Controllers
 
         [HttpPut]
         [Route("{id}")]
-        public async Task<IActionResult> UpdatePlayer(int id, [FromBody] UserPutDto updated)
+        public async Task<IActionResult> UpdateUser(string id, [FromBody] UserPutDto updated)
         {
             _logger.LogInformation($"Preparing to update user with id {id}...");
 
@@ -162,7 +165,7 @@ namespace FootballManagerAPI.Controllers
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<IActionResult> GetUserById(int id)
+        public async Task<IActionResult> GetUserById(string id)
         {
             _logger.LogInformation($"Preparing to get user with id {id}...");
 
@@ -189,7 +192,7 @@ namespace FootballManagerAPI.Controllers
 
         [HttpGet]
         [Route("{id}/Team")]
-        public async Task<IActionResult> GetUserTeam(int id)
+        public async Task<IActionResult> GetUserTeam(string id)
         {
             _logger.LogInformation($"Preparing to get team of user with id {id}...");
 
@@ -215,7 +218,7 @@ namespace FootballManagerAPI.Controllers
 
         [HttpPost]
         [Route("Auth")]
-        public async Task<IActionResult> AuthUser(UserAuthDto user)
+        public async Task<IActionResult> LoginUser(UserAuthDto user)
         {
             _logger.LogInformation($"Preparing to authenticate user...");
 
@@ -225,7 +228,7 @@ namespace FootballManagerAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            var command = new AuthUser
+            var command = new LoginUser
             {
                 UserName = user.Username,
                 Password = user.Password
@@ -236,18 +239,18 @@ namespace FootballManagerAPI.Controllers
             if (result == null)
             {
                 _logger.LogError("Failed to authenticate user!!!");
-                return NotFound();
+                return Unauthorized();
             }
 
             _logger.LogInformation("User authenticated successfully!!!");
 
-            return NoContent();
+            return Ok(result);
         }
 
 
         [HttpDelete]
         [Route("{id}")]
-        public async Task<IActionResult> DeleteUser(int id)
+        public async Task<IActionResult> DeleteUser(string id)
         {
             _logger.LogInformation($"Preparing to delete user with id {id}...");
 
