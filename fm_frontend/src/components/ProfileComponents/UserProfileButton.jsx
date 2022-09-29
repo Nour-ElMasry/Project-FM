@@ -43,6 +43,12 @@ const UserProfileButton = () => {
               Profile
             </Link>
         </MenuItem>
+
+        <MenuItem onClick={handleClose}>
+            <Link to="/login" style={{color: "black"}}>
+              Log Out
+            </Link>
+        </MenuItem>
     </Menu>
   </Box>
 }

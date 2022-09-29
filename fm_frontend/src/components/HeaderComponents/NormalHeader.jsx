@@ -7,9 +7,9 @@ import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
 import HomeIcon from '@mui/icons-material/Home';
 import GroupsIcon from '@mui/icons-material/Groups';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
-import UserProfileButton from './ProfileComponents/UserProfileButton';
+import UserProfileButton from '../ProfileComponents/UserProfileButton';
 
-const Header = () => {
+const NormalHeader = () => {
     const [value, setValue] = useState(0);
   
     return <>
@@ -77,4 +77,4 @@ const Header = () => {
     </>;        
 }
 
-export default Header;
+export default NormalHeader;

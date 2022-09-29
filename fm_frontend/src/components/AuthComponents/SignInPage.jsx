@@ -1,7 +1,6 @@
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
@@ -9,12 +8,15 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useForm } from "react-hook-form";
 import GeneralAxiosService from '../../services/GeneralAxiosService';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import Alert from '@mui/material/Alert';
 
-export default function SignIn() {
+export default function LogIn() {
     const { register, handleSubmit, formState: { errors }} = useForm();
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [wrongCredentials, setWrongCredentials] = useState(false);
+    const [successfulLogIn, setSuccessfulLogIn] = useState(false);
+    const navigate = useNavigate();
 
     const handleCredentialsSubmit = (data) => {
       var credentials = {
@@ -22,19 +24,23 @@ export default function SignIn() {
         password: data['password'],
       };
       GeneralAxiosService.postMethod("https://localhost:7067/api/v1/Users/Auth", credentials)
-      .then((res) => console.log(res.data))
+      .then((res) => {
+        console.log(res.data);
+        setWrongCredentials(false);
+        setSuccessfulLogIn(true);
+      })
       .then(() => setTimeout(() => {
-        setIsLoggedIn(true)
-     }, 3000));
+        navigate("/");
+      }, 3000))
+      .catch((err) => {
+        setWrongCredentials(true);
+        setSuccessfulLogIn(false);
+      });
     };
 
-    if (isLoggedIn){
-        return <Navigate to='/' />
-    }
-
     return <>
-        <section className='LoginSection container container--pa'>
-        <Container className="FormsPosition container--styled container--pa" maxWidth="xs">
+        <section className='LoginSection PositionAboluteMiddle container container--pa'>
+        <Container className="container--styled container--pa" maxWidth="xs">
           <Box
             sx={{
               display: 'flex',
@@ -75,6 +81,10 @@ export default function SignIn() {
                 {...register('password', { required: true })}
                 autoComplete="current-password"
               />
+              {wrongCredentials && <Alert sx={{ width: '100%' }} severity="error">Wrong credentials!</Alert>}
+              {successfulLogIn && <Alert severity="success" sx={{ width: '100%' }}>
+                  Successfully logged in
+                </Alert>}
               <Button
                 type="submit"
                 fullWidth
@@ -84,11 +94,9 @@ export default function SignIn() {
                 Sign In
               </Button>
               <Grid container>
-                <Grid item>
-                  <Link href="#" variant="body2">
-                    {"Don't have an account? Sign Up"}
-                  </Link>
-                </Grid>
+                <Link className="formLink" to="/signup">
+                    Don't have an account? Sign Up
+                </Link>
               </Grid>
             </Box>
           </Box>

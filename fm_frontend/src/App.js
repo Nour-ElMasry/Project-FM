@@ -1,6 +1,4 @@
-import React from "react";
-import Header from "./components/Header";
-import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./components/HomeComponents/Home.jsx";
 import Matches from "./components/MatchComponents/Matches";
 import Leagues from "./components/LeagueComponents/Leagues";
@@ -10,11 +8,14 @@ import Player from "./components/PlayerComponents/Player";
 import Team from "./components/TeamComponents/Team";
 import Profile from "./components/ProfileComponents/Profile";
 import Login from "./components/AuthComponents/SignInPage";
+import Header from "./components/HeaderComponents/Header.jsx";
+import SignUp from "./components/AuthComponents/SignUpPage.jsx";
 
-function App() {
+const App = () => {
+  
   return <>
-    <Router>
-    <Header></Header>
+      <Router>
+        <Header />
         <Routes>
             <Route path="/" element={<Home />}/>
             <Route path="/leagues" element={<Leagues />}/>
@@ -25,6 +26,7 @@ function App() {
             <Route path="/teams/:id" element={<Team />}/>
             <Route path="/profile" element={<Profile />}/>
             <Route path="/login" element={<Login />}/>
+            <Route path="/signup" element={<SignUp />}/>
         </Routes>
       </Router>
   </>;

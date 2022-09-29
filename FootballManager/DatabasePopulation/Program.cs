@@ -44,12 +44,12 @@ namespace ConsolePresentation
 
             var league = await mediator.Send(new CreateLeague
             {
-                Name = "Serie A"
+                Name = "La Liga"
             });
 
-            dynamic leagueTeams = JsonConvert.DeserializeObject<dynamic>(await GetLeagueTeams(135));
+            dynamic leagueTeams = JsonConvert.DeserializeObject<dynamic>(await GetLeagueTeams(140));
 
-            for (int i = 3; i < leagueTeams.response.Count; i++)
+            for (int i = 0; i < leagueTeams.response.Count; i++)
             {
                 var team = await mediator.Send(new CreateTeam
                 {

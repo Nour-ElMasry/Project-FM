@@ -1,5 +1,13 @@
-.FormsPosition{
-    position: absolute;
-    left: 50%;
-    right: 50%;
+.LoginSection{
+    .container--pa{
+        padding-bottom: 2.5rem;
+    }
+    .formLink{
+        color: hsl(217, 64%, 49%);
+        text-decoration: underline;
+        font-size: $font-sm;
+        @include breakpoint-up(medium){
+            font-size: $font-md;
+        }
+    }
 }
