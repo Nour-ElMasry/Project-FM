@@ -54,7 +54,7 @@ const MatchesTable = (props) => {
         </TableHead>
         <TableBody>
             {tableDisplay()}
-            <TableRow>
+            {props.fixtures.length > 4 && <TableRow>
                 <TableCell className='expandMoreRow'>
                     <ExpandMore
                         expand={expanded}
@@ -65,7 +65,7 @@ const MatchesTable = (props) => {
                         <ExpandMoreIcon />
                     </ExpandMore>
                 </TableCell>
-            </TableRow>
+            </TableRow>}
         </TableBody>
     </Table>
 }

@@ -58,6 +58,28 @@ namespace FootballManagerAPI.Controllers
             return Ok(page);
         }
 
+        [HttpGet]
+        [Route("unique/{username}")]
+        public async Task<IActionResult> CheckUnique(string username)
+        {
+            _logger.LogInformation("Preparing to check if username is unique...");
+
+            var result = await _mediator.Send(new CheckUniqueUsernameCommand
+            { 
+                Username = username
+            });
+
+            if (result)
+            {
+                _logger.LogInformation("Username is unique!!!");
+            }
+            else {
+                _logger.LogInformation("Username is not unique!!!");
+            }
+
+            return Ok(result);
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateUser([FromBody] UserPostDto user)
         {
