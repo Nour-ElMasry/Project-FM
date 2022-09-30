@@ -2,19 +2,39 @@ import axios from "axios";
 
 class GeneralAxiosService {
     async getMethod(url){
-        return await axios.get(url);
+        const user = JSON.parse(localStorage.getItem("User"));
+        var token = ""
+        if(user != null)
+            token = user.token
+    
+        return await axios.get(url, { headers: { "Authorization" : "Bearer " + token }});
     }
 
     async getMethodWithParams(url, parameters){
-        return await axios.get(url, { params: parameters });
+        const user = JSON.parse(localStorage.getItem("User"));
+        var token = ""
+        if(user != null)
+            token = user.token
+
+        return await axios.get(url, { params: parameters }, { headers: { "Authorization" : "Bearer " + token }});
     }
 
     async postMethod(url, obj){
-        return await axios.post(url, obj);
+        const user = JSON.parse(localStorage.getItem("User"));
+        var token = ""
+        if(user != null)
+            token = user.token
+
+        return await axios.post(url, obj, { headers: { "Authorization" : "Bearer " + token }});
     }
 
     async deleteMethod(url){ 
-        return await axios.delete(url);
+        const user = JSON.parse(localStorage.getItem("User"));
+        var token = ""
+        if(user != null)
+            token = user.token
+            
+        return await axios.delete(url, { headers: { "Authorization" : "Bearer " + token }});
     }
 }
 

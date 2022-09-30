@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import GeneralAxiosService from "../../services/GeneralAxiosService";
 import TeamHeader from "./TeamHeader";
 import TeamTabs from "./TeamTabs";
@@ -13,7 +13,9 @@ const Team = (props) => {
     const [team, setTeam] = useState({});
     const [loading, setLoading] = useState(true);
     const [hasError, setHasError] = useState(false);
-    
+    const [user] = useState(JSON.parse(localStorage.getItem("User")));
+    const navigate = useNavigate();
+
     const [value, setValue] = useState(0);
 
     const handleChange = (event, newValue) => {
@@ -21,14 +23,18 @@ const Team = (props) => {
     };
 
     useEffect(() => {
-        GeneralAxiosService.getMethod("https://localhost:7067/api/v1/Teams/" + params.id)
-        .then((response) => setTeam(response.data))
-        .then(() => setLoading(false))
-        .catch((e) => {
-            setLoading(false);
-            setHasError(true);
-        });
-    }, [params])
+        if(user == null){
+            navigate("/login");
+        }else{
+            GeneralAxiosService.getMethod("https://localhost:7067/api/v1/Teams/" + params.id)
+            .then((response) => setTeam(response.data))
+            .then(() => setLoading(false))
+            .catch((e) => {
+                setLoading(false);
+                setHasError(true);
+            });
+        }
+    }, [params, user, navigate])
 
     return <section className="teamSection container container--pa">
         <h1 className='title'>Team Details</h1>

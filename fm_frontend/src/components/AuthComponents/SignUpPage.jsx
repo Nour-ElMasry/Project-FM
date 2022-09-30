@@ -9,16 +9,33 @@ import Container from '@mui/material/Container';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import GeneralAxiosService from '../../services/GeneralAxiosService';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Alert } from '@mui/material';
-
+import Tooltip from '@mui/material/Tooltip';
+import InputAdornment from '@mui/material/InputAdornment';
+import InfoIcon from '@mui/icons-material/Info';
+import countryList from 'react-select-country-list';
+import MenuItem from '@mui/material/MenuItem';
 
 export default function SignUp() {
   const { register, handleSubmit, formState: { errors }} = useForm();
   const [successfulSignUp, setSuccessfulSignUp] = useState(false);
   const [uniqueCheck, setUniqueCheck] = useState(undefined);
 
+  const [openUserNameToolTip, setOpenUserNameToolTip] = useState(false);
+
+  const [openPasswordToolTip, setopenPasswordToolTip] = useState(false);
+
   const navigate = useNavigate();
+
+
+  const [country, setCountries] = useState("None");
+  const options = useMemo(() => countryList().getData(), []);
+
+  const countryChangeHandler = value => {
+    setCountries(value.target.value);
+  }
+
   
   const handleUniqueCheck = (event) => {
       const username = event.target.value;
@@ -40,7 +57,7 @@ export default function SignUp() {
     }
 
     GeneralAxiosService.postMethod("https://localhost:7067/api/v1/Users", creds)
-    .then((res) => console.log(res.data))
+    .then((res) => localStorage.setItem("User", JSON.stringify(res.data)))
     .then(() => setTimeout(() => {
       navigate("/");
     }, 3000))
@@ -59,53 +76,57 @@ export default function SignUp() {
               alignItems: 'center',
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <Avatar sx={{ m: 1, bgcolor: '#1976d2' }}>
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">
               Sign up
             </Typography>
-            <Box component="form" noValidate onSubmit={handleSubmit(handleSignUp)} sx={{ mt: 3 }}>
+            <Box component="form" onSubmit={handleSubmit(handleSignUp)} sx={{ mt: 3 }}>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                   <TextField
                     name="firstName"
-                    required
                     fullWidth
                     id="firstName"
                     label="First Name"
-                    autoFocus
                     error={!!errors['firstName']}
                     helperText={errors['firstName']?.message}
-                    {...register('firstName', { required: true })}
+                    {...register('firstName', { required: '*Field is required' })}
                   />
                 </Grid>
                 
                 <Grid item xs={12} sm={6}>
                   <TextField
                     name="lastName"
-                    required
                     fullWidth
                     id="lastName"
                     label="Last Name"
-                    autoFocus
                     error={!!errors['lastName']}
                     helperText={errors['lastName']?.message}
-                    {...register('lastName', { required: true})}
+                    {...register('lastName', { required: '*Field is required' })}
                   />
                 </Grid>
 
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={6}>  
                   <TextField
-                    required
+                    id="demo-simple-select-autowidth"
+                    select
                     fullWidth
-                    id="country"
-                    label="Country"
-                    name="country"
-                    error={!!errors['country']}
-                    helperText={errors['country']?.message}
-                    {...register('country', { required: true })}
-                  />
+                    value={country}
+                    label="Countries"
+                    error={!!errors['dateOfBirth']}
+                    helperText={errors['dateOfBirth']?.message}
+                    {...register('country', { required: '*Field is required' })}
+                    onChange={countryChangeHandler}
+                  >
+                    <MenuItem disabled value="None">
+                      <em>None</em>
+                    </MenuItem>
+                    {options.map((c,i) => {
+                      return <MenuItem value={c.label} key={i}>{c.label}</MenuItem>
+                    })}
+                  </TextField>
                 </Grid>
 
                 <Grid item xs={12} sm={6}>
@@ -119,22 +140,46 @@ export default function SignUp() {
                   }}
                   error={!!errors['dateOfBirth']}
                   helperText={errors['dateOfBirth']?.message}
-                  {...register('dateOfBirth', { required: true })}
+                  {...register('dateOfBirth', { required: '*Field is required' })}
                 />
                 </Grid>
 
                 <Grid item xs={12}>
                   <TextField
-                    required
                     fullWidth
                     id="username"
                     label="Username"
                     name="username"
+                    onFocus={() => {
+                      setOpenUserNameToolTip(true);
+                    }}
+                    InputProps={{
+                      endAdornment: <InputAdornment position="end">
+                        <Tooltip 
+                          open={openUserNameToolTip}
+                          onClose={() => {
+                            setOpenUserNameToolTip(false);
+                          }}
+                          disableFocusListener
+                          disableHoverListener
+                          disableTouchListener
+                          title="Username must not contain any special characters">
+                          <InfoIcon style={{color: "#1976d2", cursor: "pointer"}}/>
+                        </Tooltip>  
+                      </InputAdornment>,
+                    }}
+                    
                     autoComplete='off'
                     error={!!errors['username']}
                     helperText={errors['username']?.message}
-                    {...register('username', { required: true })}
-                    onBlur={handleUniqueCheck}
+                    {...register('username', { required: '*Field is required', pattern:{
+                      value: /^^[a-zA-Z0-9]+$/,
+                      message: "*Username must not contain any special characters"
+                    }})}
+                    onBlur={(event) => {
+                      setOpenUserNameToolTip(false);
+                      handleUniqueCheck(event);
+                    }}
                   />
                   {(uniqueCheck !== undefined && uniqueCheck) && <Alert severity="success"> Username entered is available!</Alert>}
                   {(uniqueCheck !== undefined && !uniqueCheck) && <Alert severity="error"> Username entered is not available!</Alert>}
@@ -142,19 +187,41 @@ export default function SignUp() {
 
                 <Grid item xs={12}>
                   <TextField
-                    required
                     fullWidth
                     name="password"
                     label="Password"
                     type="password"
                     id="password"
                     autoComplete="new-password"
+                    onFocus={() => {
+                      setopenPasswordToolTip(true);
+                    }}
+                    InputProps={{
+                      endAdornment: <InputAdornment position="end">
+                        <Tooltip 
+                          open={openPasswordToolTip}
+                          onClose={() => {
+                            setopenPasswordToolTip(false);
+                          }}
+                          disableFocusListener
+                          disableHoverListener
+                          disableTouchListener
+                          title="Password must be at least 8 characters long and must contain at least 1 capital letter, 1 number and 1 special character.">
+                          <InfoIcon style={{color: "#1976d2", cursor: "pointer"}}/>
+                        </Tooltip>  
+                      </InputAdornment>,
+                    }}
+
                     error={!!errors['password']}
                     helperText={errors['password']?.message}
-                    {...register('password', { required: true, pattern:{
+                    {...register('password', { required: '*Field is required', pattern:{
                       value: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/,
-                      message: "Password must be at least 8 characters long and must contain at least 1 capital letter, 1 number and 1 special character. "
+                      message: "*Password must be at least 8 characters long and must contain at least 1 capital letter, 1 number and 1 special character. "
                     }})}
+                    onBlur={() => {
+                      setopenPasswordToolTip(false);
+                    }}
+
                   />
                 </Grid>
 

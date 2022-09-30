@@ -20,7 +20,7 @@ namespace Application.CommandHandlers
             var role = request.Position.ToLower();
             var playerPerson = new Person(request.Name, request.DateOfBirth, request.Country);
 
-            if (request.Image != "")
+            if (request.Image != "" && request.Image != null)
                 playerPerson.Image = request.Image;
 
             switch (role)

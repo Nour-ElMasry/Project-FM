@@ -5,6 +5,7 @@ using Domain.Entities;
 using FootballManagerAPI.Dto;
 using FootballManagerAPI.Filters;
 using FootballManagerAPI.Pagination;
+using FootballManagerAPI.Services;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,6 +29,7 @@ namespace FootballManagerAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreateTeam([FromBody] TeamPutPostDto team)
         {
             _logger.LogInformation("Preparing to create a Team...");
@@ -51,6 +53,7 @@ namespace FootballManagerAPI.Controllers
 
         [HttpGet]
         [Route("All/{pg?}")]
+        [Authorize]
         public async Task<IActionResult> GetAllTeams([FromQuery] TeamFilter filter = null, int pg = 1)
         {
             _logger.LogInformation("Preparing to get all teams...");
@@ -88,6 +91,7 @@ namespace FootballManagerAPI.Controllers
 
         [HttpGet]
         [Route("{id}")]
+        [Authorize]
         public async Task<IActionResult> GetTeamById(int id)
         {
             _logger.LogInformation($"Preparing to get team with id {id}...");
@@ -110,6 +114,7 @@ namespace FootballManagerAPI.Controllers
 
         [HttpGet]
         [Route("{id}/Players/{pg?}")]
+        [Authorize]
         public async Task<IActionResult> GetTeamPlayersById(int id, int pg = 1)
         {
             _logger.LogInformation($"Preparing to get players of team with id {id}...");
@@ -146,6 +151,7 @@ namespace FootballManagerAPI.Controllers
 
         [HttpGet]
         [Route("{id}/Fixtures/{pg?}")]
+        [Authorize]
         public async Task<IActionResult> GetTeamFixturesById(int id, int pg = 1)
         {
             _logger.LogInformation($"Preparing to get fixtures of team with id {id}...");
@@ -184,6 +190,7 @@ namespace FootballManagerAPI.Controllers
 
         [HttpPut]
         [Route("{teamId}")]
+        [Authorize]
         public async Task<IActionResult> UpdateTeam(int teamId, [FromBody] TeamPutPostDto updated)
         {
             _logger.LogInformation($"Preparing to update team with id {teamId}...");
@@ -212,6 +219,7 @@ namespace FootballManagerAPI.Controllers
 
         [HttpDelete]
         [Route("{teamId}")]
+        [Authorize]
         public async Task<IActionResult> DeleteTeam(int teamId)
         {
             _logger.LogInformation($"Preparing to delete team with id {teamId}...");
@@ -233,6 +241,7 @@ namespace FootballManagerAPI.Controllers
 
         [HttpGet]
         [Route("{teamId}/Players/AddPlayer/{playerId}")]
+        [Authorize]
         public async Task<IActionResult> AddPlayerToTeam(int teamId, int playerId)
         {
             _logger.LogInformation($"Preparing to add player with id {playerId} to team with id {teamId}...");
@@ -254,6 +263,7 @@ namespace FootballManagerAPI.Controllers
 
         [HttpDelete]
         [Route("{teamId}/Players/{playerId}")]
+        [Authorize]
         public async Task<IActionResult> RemovePlayerFromTeam(int teamId, int playerId)
         {
             _logger.LogInformation($"Preparing to remove player with id {playerId} from team with id {teamId}...");
@@ -274,6 +284,7 @@ namespace FootballManagerAPI.Controllers
 
         [HttpGet]
         [Route("{id}/AddManager/{managerId}")]
+        [Authorize]
         public async Task<IActionResult> AddManagerToTeam(int id, int managerId)
         {
             _logger.LogInformation($"Preparing to add manager with id {managerId} to team with id {id}...");

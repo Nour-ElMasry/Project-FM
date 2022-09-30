@@ -4,6 +4,7 @@ using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -14,10 +15,12 @@ namespace Application.CommandHandlers
     public class LogInUserHandler : IRequestHandler<LoginUser, Object>
     {
         private readonly UserManager<User> _userManager;
+        private readonly IConfiguration _configuration;
 
-        public LogInUserHandler(UserManager<User> userManager)
+        public LogInUserHandler(UserManager<User> userManager, IConfiguration configuration)
         {
             _userManager = userManager;
+            _configuration = configuration;
         }
 
         public async Task<Object> Handle(LoginUser request, CancellationToken cancellationToken)
@@ -30,7 +33,7 @@ namespace Application.CommandHandlers
 
                 var authClaims = new List<Claim>
                 {
-                    new Claim(ClaimTypes.Name, user.UserName)
+                    new Claim("Name", user.UserName)
                 };
 
                 foreach(var userRole in userRoles)
@@ -38,11 +41,11 @@ namespace Application.CommandHandlers
                     authClaims.Add(new Claim(ClaimTypes.Role, userRole));
                 }
 
-                var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("idjf12-dnm341-ewppa6-dfh8-vcef5"));
+                var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Secret"]));
 
                 var token = new JwtSecurityToken(
-                        issuer: "https://localhost:7067",
-                        audience: "audience",
+                        issuer: _configuration["Jwt:Issuer"],
+                        audience: _configuration["Jwt:Audience"],
                         claims: authClaims,
                         expires: DateTime.Now.AddHours(3),
                         signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)

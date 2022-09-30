@@ -3,6 +3,7 @@ using Application.Queries;
 using AutoMapper;
 using FootballManagerAPI.Dto;
 using FootballManagerAPI.Pagination;
+using FootballManagerAPI.Services;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,6 +26,7 @@ namespace FootballManagerAPI.Controllers
 
         [HttpGet]
         [Route("All/{pg?}")]
+        [Authorize]
         public async Task<IActionResult> GetAllManagers(int pg = 1)
         {
             _logger.LogInformation("Preparing to get all managers...");
@@ -61,6 +63,7 @@ namespace FootballManagerAPI.Controllers
 
         [HttpGet]
         [Route("{id}")]
+        [Authorize]
         public async Task<IActionResult> GetManagerById(int id)
         {
             _logger.LogInformation($"Preparing to get manager with id {id}...");
@@ -83,6 +86,7 @@ namespace FootballManagerAPI.Controllers
 
         [HttpDelete]
         [Route("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteManager(int id)
         {
             _logger.LogInformation($"Preparing to delete manager with id {id}...");

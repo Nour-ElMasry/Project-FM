@@ -45,7 +45,7 @@ const UserProfileButton = () => {
         </MenuItem>
 
         <MenuItem onClick={handleClose}>
-            <Link to="/login" style={{color: "black"}}>
+            <Link to="/login" style={{color: "black"}} onClick={() => window.localStorage.clear()}>
               Log Out
             </Link>
         </MenuItem>

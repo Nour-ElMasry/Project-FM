@@ -3,6 +3,7 @@ using Application.Queries;
 using AutoMapper;
 using FootballManagerAPI.Dto;
 using FootballManagerAPI.Pagination;
+using FootballManagerAPI.Services;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,6 +27,7 @@ namespace FootballManagerAPI.Controllers
 
         [HttpGet]
         [Route("All/{pg?}")]
+        [Authorize]
         public async Task<IActionResult> GetAllLeagues(int pg = 1)
         {
             _logger.LogInformation("Preparing to get all leagues...");
@@ -61,6 +63,7 @@ namespace FootballManagerAPI.Controllers
 
         [HttpGet]
         [Route("{id}")]
+        [Authorize]
         public async Task<IActionResult> GetLeagueById(int id)
         {
             _logger.LogInformation($"Preparing to get league with id {id}...");
@@ -84,6 +87,7 @@ namespace FootballManagerAPI.Controllers
 
         [HttpDelete]
         [Route("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeleteLeague(int id)
         {
             _logger.LogInformation($"Preparing to delete league with id {id}...");
@@ -105,6 +109,7 @@ namespace FootballManagerAPI.Controllers
 
         [HttpGet]
         [Route("{id}/Teams/{pg?}")]
+        [Authorize]
         public async Task<IActionResult> GetLeagueTeamsById(int id, int pg = 1)
         {
             _logger.LogInformation($"Preparing to get teams of league with id {id}...");
@@ -142,6 +147,7 @@ namespace FootballManagerAPI.Controllers
 
         [HttpDelete]
         [Route("{id}/Teams/{teamId}")]
+        [Authorize]
         public async Task<IActionResult> RemoveTeamFromLeague(int id, int teamId)
         {
             _logger.LogInformation($"Preparing to remove team with id {teamId} from league with id {id}...");
@@ -163,6 +169,7 @@ namespace FootballManagerAPI.Controllers
 
         [HttpGet]
         [Route("{id}/Players/{pg?}")]
+        [Authorize]
         public async Task<IActionResult> GetLeaguePlayersById(int id, int pg = 1)
         {
             _logger.LogInformation($"Preparing to get players from league with id {id}...");
@@ -199,6 +206,7 @@ namespace FootballManagerAPI.Controllers
 
         [HttpGet]
         [Route("{id}/Fixtures/{pg?}")]
+        [Authorize]
         public async Task<IActionResult> GetLeagueFixturesById(int id, int pg = 1)
         {
             _logger.LogInformation($"Preparing to get fixtures from league with id {id}...");
@@ -240,6 +248,7 @@ namespace FootballManagerAPI.Controllers
 
         [HttpGet]
         [Route("{id}/Fixtures/Simulate")]
+        [Authorize]
         public async Task<IActionResult> SimulateAllLeagueFixture(int id)
         {
             _logger.LogInformation($"Preparing to simulate fixtures from league with id {id}...");
@@ -262,6 +271,7 @@ namespace FootballManagerAPI.Controllers
 
         [HttpGet]
         [Route("{id}/GenerateFixtures")]
+        [Authorize]
         public async Task<IActionResult> GenerateLeagueFixture(int id)
         {
             _logger.LogInformation($"Preparing to generate fixtures for league with id {id}...");
@@ -285,6 +295,7 @@ namespace FootballManagerAPI.Controllers
 
         [HttpGet]
         [Route("{id}/Fixtures/{fixtureId}/SimulateFixture")]
+        [Authorize]
         public async Task<IActionResult> SimulateALeagueFixture(int id, int fixtureId)
         {
             _logger.LogInformation($"Preparing to simulate a fixture with id {fixtureId} from league with id {id}...");
@@ -309,6 +320,7 @@ namespace FootballManagerAPI.Controllers
 
         [HttpGet]
         [Route("{id}/NextSeason")]
+        [Authorize]
         public async Task<IActionResult> NextLeagueSeason(int id)
         {
             _logger.LogInformation($"Preparing to update league with id {id} to next season...");

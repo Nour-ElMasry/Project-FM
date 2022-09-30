@@ -25,13 +25,13 @@ export default function LogIn() {
       };
       GeneralAxiosService.postMethod("https://localhost:7067/api/v1/Users/Auth", credentials)
       .then((res) => {
-        console.log(res.data);
+        localStorage.setItem("User", JSON.stringify(res.data));
         setWrongCredentials(false);
         setSuccessfulLogIn(true);
       })
       .then(() => setTimeout(() => {
         navigate("/");
-      }, 3000))
+      }, 1500))
       .catch((err) => {
         setWrongCredentials(true);
         setSuccessfulLogIn(false);
@@ -48,7 +48,7 @@ export default function LogIn() {
               alignItems: 'center',
             }}
           >
-            <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <Avatar sx={{ m: 1, bgcolor: '#1976d2' }}>
               <LockOutlinedIcon />
             </Avatar>
             <Typography component="h1" variant="h5">

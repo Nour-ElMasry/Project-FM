@@ -18,7 +18,7 @@ namespace Application.CommandHandlers
         {
             var team = new Team(request.Name, request.Country, request.Venue);
 
-            if (request.Logo != "")
+            if (request.Logo != "" && request.Logo != null)
                 team.Logo = request.Logo;
 
             await _unitOfWork.TeamRepository.AddTeam(team);

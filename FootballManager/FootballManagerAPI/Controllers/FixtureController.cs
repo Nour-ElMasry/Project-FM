@@ -3,6 +3,7 @@ using Application.Queries;
 using AutoMapper;
 using FootballManagerAPI.Dto;
 using FootballManagerAPI.Pagination;
+using FootballManagerAPI.Services;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -26,6 +27,7 @@ namespace FootballManagerAPI.Controllers
 
         [HttpGet]
         [Route("All/{pg?}")]
+        [Authorize]
         public async Task<IActionResult> GetAllFixtures(int pg = 1)
         {
             _logger.LogInformation("Preparing to get all Fixtures...");
@@ -63,6 +65,7 @@ namespace FootballManagerAPI.Controllers
 
         [HttpGet]
         [Route("{id}")]
+        [Authorize]
         public async Task<IActionResult> GetFixtureById(int id)
         {
             _logger.LogInformation($"Preparing to get fixture with id {id}...");
@@ -85,6 +88,7 @@ namespace FootballManagerAPI.Controllers
 
         [HttpPut]
         [Route("{fixtureId}")]
+        [Authorize]
         public async Task<IActionResult> UpdateFixture(int fixtureId, [FromBody] FixturePutDto updated)
         {
             _logger.LogInformation($"Preparing to update fixture with id {fixtureId}...");

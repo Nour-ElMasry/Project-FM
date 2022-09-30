@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import GeneralAxiosService from '../../services/GeneralAxiosService';
 import MatchItem from './MatchItem';
 import MatchEvents from './MatchEvents';
@@ -12,16 +12,22 @@ const Match = () => {
     const [match, setMatch] = useState({});
     const [loading, setLoading] = useState(true);
     const [hasError, setHasError] = useState(false);
+    const [user] = useState(JSON.parse(localStorage.getItem("User")));
+    const navigate = useNavigate();
 
     useEffect(() => {
-        GeneralAxiosService.getMethod("https://localhost:7067/api/v1/Fixtures/"+params.id)
-        .then((response) => setMatch(response.data))
-        .then(() => setLoading(false))
-        .catch((e) => {
-            setLoading(false);
-            setHasError(true);
-        });
-    },[params.id])
+        if(user == null){
+            navigate("/login");
+        }else{
+            GeneralAxiosService.getMethod("https://localhost:7067/api/v1/Fixtures/"+params.id)
+            .then((response) => setMatch(response.data))
+            .then(() => setLoading(false))
+            .catch((e) => {
+                setLoading(false);
+                setHasError(true);
+            });
+        }
+    },[params.id, user, navigate])
 
     return <section className='singleMatchSection container container--pa'>
         <h1 className='title'>Match Details</h1>

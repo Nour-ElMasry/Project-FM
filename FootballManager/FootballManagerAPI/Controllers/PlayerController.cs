@@ -5,9 +5,9 @@ using Domain.Entities;
 using FootballManagerAPI.Dto;
 using FootballManagerAPI.Filters;
 using FootballManagerAPI.Pagination;
+using FootballManagerAPI.Services;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace FootballManagerAPI.Controllers
 {
@@ -28,6 +28,7 @@ namespace FootballManagerAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> CreatePlayer([FromBody] PlayerPutPostDto player)
         {
             _logger.LogInformation("Preparing to create a player...");
@@ -50,6 +51,7 @@ namespace FootballManagerAPI.Controllers
 
         [HttpGet]
         [Route("All/{pg?}")]
+        [Authorize]
         public async Task<IActionResult> GetAllPlayers([FromQuery] PlayerFilter filter = null, int pg = 1)
         {
             _logger.LogInformation("Preparing to get all players...");
@@ -94,6 +96,7 @@ namespace FootballManagerAPI.Controllers
 
         [HttpGet]
         [Route("{id}")]
+        [Authorize]
         public async Task<IActionResult> GetPlayerById(int id)
         {
             _logger.LogInformation($"Preparing to get a player with id {id}...");
@@ -116,6 +119,7 @@ namespace FootballManagerAPI.Controllers
 
         [HttpDelete]
         [Route("{id}")]
+        [Authorize]
         public async Task<IActionResult> DeletePlayer(int id)
         {
             _logger.LogInformation($"Preparing to delete player with id {id}...");
@@ -137,6 +141,7 @@ namespace FootballManagerAPI.Controllers
 
         [HttpPut]
         [Route("{playerId}")]
+        [Authorize]
         public async Task<IActionResult> UpdatePlayer(int playerId, [FromBody] PlayerPutPostDto updated)
         {
             _logger.LogInformation($"Preparing to update player with id {playerId}...");

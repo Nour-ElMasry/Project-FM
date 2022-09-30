@@ -5,6 +5,7 @@ using FootballManagerAPI;
 using FootballManagerAPI.Middleware;
 using Infrastructure;
 using Infrastructure.Repository;
+using JWTAuth_Validation.Middleware;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -60,9 +61,9 @@ builder.Services.AddAuthentication(options =>
     {
         ValidateIssuer = true,
         ValidateAudience = true,
-        ValidAudience = "audience",
-        ValidIssuer = "https://localhost:7067",
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("idjf12-dnm341-ewppa6-dfh8-vcef5"))
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Secret"]))
     };
 });
 
@@ -80,6 +81,8 @@ app.UseCors("http://localhost:3000");
 app.UseHttpsRedirection();
 
 app.UseCustomMiddleware();
+
+app.UseJwtMiddleware();
 
 app.UseCors();
 

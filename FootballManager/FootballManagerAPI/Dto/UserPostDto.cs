@@ -24,7 +24,7 @@ namespace FootballManagerAPI.Dto
         [Required]
         [MaxLength(20)]
         [MinLength(4)]
-        [RegularExpression("^[A-Za-z][A-Za-z0-9_]{7,29}$")]
+        [RegularExpression("^[a-zA-Z0-9]+$")]
         public string Username { get; set; }
 
         [Required]

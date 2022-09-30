@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Application.Commands
 {
-    public class CreateUser : IRequest<User>
+    public class CreateUser : IRequest<Object>
     {
         public string Username { get; set; }
         public string Password { get; set; }

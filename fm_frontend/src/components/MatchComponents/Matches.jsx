@@ -4,6 +4,7 @@ import GeneralAxiosService from '../../services/GeneralAxiosService';
 import MatchesTable from './MatchesTable';
 import _ from 'lodash';
 import Loading from '../Loading';
+import { useNavigate } from 'react-router-dom';
 
 const getPageNumber = () => {
   if(sessionStorage && parseInt(sessionStorage.getItem("Page_Key")) > 0) {
@@ -18,6 +19,8 @@ const Matches = () => {
     const [hasError, setHasError] = useState(false);
     const [matches, setMatches] = useState({});
     const [loading, setLoading] = useState(true);
+    const [user] = useState(JSON.parse(localStorage.getItem("User")));
+    const navigate = useNavigate();
 
     var groupByLeagueName = (list) => {
         return list.reduce((a, b) => {
@@ -27,17 +30,21 @@ const Matches = () => {
     };    
 
     useEffect(() => {
-        GeneralAxiosService.getMethod("https://localhost:7067/api/v1/Fixtures/All/" + pageApi)
-        .then(res => {
-            setApiData(res.data);
-            setMatches(groupByLeagueName(res.data.pageResults));
-        })
-        .then(() => setLoading(false))
-        .catch((e) => {
-            setLoading(false);
-            setHasError(true);
-        });
-    },[pageApi]);
+        if(user == null){
+            navigate("/login");
+        }else{
+            GeneralAxiosService.getMethod("https://localhost:7067/api/v1/Fixtures/All/" + pageApi)
+            .then(res => {
+                setApiData(res.data);
+                setMatches(groupByLeagueName(res.data.pageResults));
+            })
+            .then(() => setLoading(false))
+            .catch((e) => {
+                setLoading(false);
+                setHasError(true);
+            });
+        }
+    },[pageApi, user, navigate]);
 
     const TablesDisplay = () => {
         
