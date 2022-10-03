@@ -1,11 +1,12 @@
 ﻿using Application.Abstract;
+using Application.Pagination;
 using Application.Queries;
 using Domain.Entities;
 using MediatR;
 
 namespace Application.QueryHandlers
 {
-    public class GetAllFixturesHandler : IRequestHandler<GetAllFixtures, List<Fixture>>
+    public class GetAllFixturesHandler : IRequestHandler<GetAllFixtures, Pager<Fixture>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -14,9 +15,9 @@ namespace Application.QueryHandlers
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<List<Fixture>> Handle(GetAllFixtures request, CancellationToken cancellationToken)
+        public async Task<Pager<Fixture>> Handle(GetAllFixtures request, CancellationToken cancellationToken)
         {
-            return await _unitOfWork.FixtureRepository.GetAllFixtures();
+            return await _unitOfWork.FixtureRepository.GetAllFixtures(request.Page);
         }
     }
 }

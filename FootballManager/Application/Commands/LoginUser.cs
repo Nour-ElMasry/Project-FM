@@ -1,6 +1,4 @@
-﻿using Domain.Entities;
-using MediatR;
-using System.IdentityModel.Tokens.Jwt;
+﻿using MediatR;
 
 namespace Application.Commands
 {

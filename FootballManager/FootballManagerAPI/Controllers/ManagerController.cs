@@ -2,9 +2,8 @@
 using Application.Queries;
 using AutoMapper;
 using FootballManagerAPI.Dto;
-using FootballManagerAPI.Pagination;
-using FootballManagerAPI.Services;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FootballManagerAPI.Controllers
@@ -41,24 +40,9 @@ namespace FootballManagerAPI.Controllers
 
             var mappedResult = _mapper.Map<List<ManagerGetDto>>(result);
 
-
-            if (pg == 0)
-            {
-                return Ok(mappedResult);
-            }
-
-            var page = new Pager<ManagerGetDto>(mappedResult.Count, pg);
-
-            var pageResults = mappedResult
-                .Skip((page.CurrentPage - 1) * page.PageNumOfResults)
-                .Take(page.PageNumOfResults)
-                .ToList();
-
-            page.PageResults = pageResults;
-
             _logger.LogInformation("All managers received successfully!!!");
 
-            return Ok(page);
+            return Ok(mappedResult);
         }
 
         [HttpGet]

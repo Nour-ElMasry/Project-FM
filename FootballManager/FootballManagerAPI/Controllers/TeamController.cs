@@ -1,12 +1,12 @@
 ﻿using Application.Commands;
+using Application.Pagination;
 using Application.Queries;
 using AutoMapper;
 using Domain.Entities;
 using FootballManagerAPI.Dto;
 using FootballManagerAPI.Filters;
-using FootballManagerAPI.Pagination;
-using FootballManagerAPI.Services;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FootballManagerAPI.Controllers
@@ -58,7 +58,7 @@ namespace FootballManagerAPI.Controllers
         {
             _logger.LogInformation("Preparing to get all teams...");
 
-            var result = await _mediator.Send(new GetAllTeams());
+            var result = await _mediator.Send(new GetAllTeams() { Page = pg });
 
             if (result == null)
             {
@@ -66,27 +66,11 @@ namespace FootballManagerAPI.Controllers
                 return NotFound();
             }
 
-            result = await ApplyTeamFilter(filter, result);
-
             var mappedResult = _mapper.Map<List<TeamGetDto>>(result);
-
-            if(pg == 0)
-            {
-                return Ok(mappedResult);
-            }
-
-            var page = new Pager<TeamGetDto>(mappedResult.Count, pg);
-
-            var pageResults = mappedResult
-                .Skip((page.CurrentPage - 1) * page.PageNumOfResults)
-                .Take(page.PageNumOfResults)
-                .ToList();
-
-            page.PageResults = pageResults;
 
             _logger.LogInformation("All teams received successfully!!!");
 
-            return Ok(page);
+            return Ok(mappedResult);
         }
 
         [HttpGet]
@@ -119,7 +103,10 @@ namespace FootballManagerAPI.Controllers
         {
             _logger.LogInformation($"Preparing to get players of team with id {id}...");
 
-            var query = new GetPlayersByTeam { TeamId = id };
+            var query = new GetPlayersByTeam { 
+                TeamId = id,
+                Page = pg
+            };
             var result = await _mediator.Send(query);
 
             if (result == null)
@@ -128,21 +115,9 @@ namespace FootballManagerAPI.Controllers
                 return NotFound();
             }
 
-            var mappedResult = _mapper.Map<List<ShortPlayerGetDto>>(result);
+            var mappedResult = _mapper.Map<List<ShortPlayerGetDto>>(result.PageResults);
 
-            if (pg == 0)
-            {
-                return Ok(mappedResult);
-            }
-
-            var page = new Pager<ShortPlayerGetDto>(mappedResult.Count, pg);
-
-            var pageResults = mappedResult
-                .Skip((page.CurrentPage - 1) * page.PageNumOfResults)
-                .Take(page.PageNumOfResults)
-                .ToList();
-
-            page.PageResults = pageResults;
+            var page = new Pager<ShortPlayerGetDto>(result.TotalResults, result.CurrentPage) { PageResults = mappedResult };
 
             _logger.LogInformation($"Players of team with id {id} received successfully!!!");
 
@@ -156,7 +131,10 @@ namespace FootballManagerAPI.Controllers
         {
             _logger.LogInformation($"Preparing to get fixtures of team with id {id}...");
 
-            var query = new GetFixturesByTeam { TeamId = id };
+            var query = new GetFixturesByTeam { 
+                TeamId = id,
+                Page = pg
+            };
             var result = await _mediator.Send(query);
 
             if (result == null)
@@ -165,22 +143,9 @@ namespace FootballManagerAPI.Controllers
                 return NotFound();
             }
 
-            var mappedResult = _mapper.Map<List<FixtureGetDto>>(result);
+            var mappedResult = _mapper.Map<List<FixtureGetDto>>(result.PageResults);
 
-            if (pg == 0)
-            {
-                return Ok(mappedResult);
-            }
-
-            var page = new Pager<FixtureGetDto>(mappedResult.Count, pg);
-
-            var pageResults = mappedResult
-                .Skip((page.CurrentPage - 1) * page.PageNumOfResults)
-                .Take(page.PageNumOfResults)
-                .ToList();
-
-            page.PageResults = pageResults;
-
+            var page = new Pager<FixtureGetDto>(result.TotalResults, result.CurrentPage) { PageResults = mappedResult };
 
             _logger.LogInformation($"Fixtures of team with id {id} received successfully!!!");
 

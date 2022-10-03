@@ -14,10 +14,4 @@
         height: 1.25rem;
         margin-right: 0.5rem;
     }
-
-    .tableColumnHide{
-        @include breakpoint-down(small){
-            display: none;
-        }
-    }
 }

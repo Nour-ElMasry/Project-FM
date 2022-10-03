@@ -1,4 +1,4 @@
-﻿namespace FootballManagerAPI.Pagination
+﻿namespace Application.Pagination
 {
     public class Pager<T>
     {
@@ -8,7 +8,7 @@
         public int TotalPages { get; private set; }
         public int StartPage { get; private set; }
         public int EndPage { get; private set; }
-        public List<T> PageResults { get; set; }
+        public List<T> PageResults { get; set; } = new();
 
         public Pager(int totalResults, int currentPage, int pageNumOfResults = 10)
         {

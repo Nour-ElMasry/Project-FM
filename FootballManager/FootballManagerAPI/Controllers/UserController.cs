@@ -1,10 +1,10 @@
 ﻿using Application.Commands;
+using Application.Pagination;
 using Application.Queries;
 using AutoMapper;
 using FootballManagerAPI.Dto;
-using FootballManagerAPI.Pagination;
-using FootballManagerAPI.Services;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -33,7 +33,7 @@ namespace FootballManagerAPI.Controllers
         {
             _logger.LogInformation("Preparing to get all users...");
 
-            var result = await _mediator.Send(new GetAllUsers());
+            var result = await _mediator.Send(new GetAllUsers { Page = pg });
 
             if (result == null)
             {
@@ -41,16 +41,9 @@ namespace FootballManagerAPI.Controllers
                 return NotFound();
             }
 
-            var mappedResult = _mapper.Map<List<UserGetDto>>(result);
+            var mappedResult = _mapper.Map<List<UserGetDto>>(result.PageResults);
 
-            var page = new Pager<UserGetDto>(mappedResult.Count, pg);
-
-            var pageResults = mappedResult
-                .Skip((page.CurrentPage - 1) * page.PageNumOfResults)
-                .Take(page.PageNumOfResults)
-                .ToList();
-
-            page.PageResults = pageResults;
+            var page = new Pager<UserGetDto>(result.TotalResults, result.CurrentPage) { PageResults = mappedResult };
 
             _logger.LogInformation("All users received successfully!!!");
 

@@ -1,9 +1,11 @@
-﻿using Domain.Entities;
+﻿using Application.Pagination;
+using Domain.Entities;
 using MediatR;
 
 namespace Application.Queries
 {
-    public class GetAllFixtures : IRequest<List<Fixture>>
+    public class GetAllFixtures : IRequest<Pager<Fixture>>
     {
+        public int Page { get; set; }
     }
 }

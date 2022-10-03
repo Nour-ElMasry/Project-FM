@@ -1,5 +1,5 @@
 import {useEffect, useState}  from 'react';
-import GameweekMatchPagination from './GameweekMatchPagination';
+import Pagination from '../Pagination';
 import GeneralAxiosService from '../../services/GeneralAxiosService';
 import MatchesTable from './MatchesTable';
 import _ from 'lodash';
@@ -21,6 +21,12 @@ const Matches = () => {
     const [loading, setLoading] = useState(true);
     const [user] = useState(JSON.parse(localStorage.getItem("User")));
     const navigate = useNavigate();
+
+
+    const handlePageChange = (pageNumber) => {
+        setPageApi(pageNumber);
+        sessionStorage.setItem("Page_Key", pageNumber)
+    }
 
     var groupByLeagueName = (list) => {
         return list.reduce((a, b) => {
@@ -66,7 +72,7 @@ const Matches = () => {
 
     return <section className='matchSection container container--pa'> 
         <h1 className='title'>Matches From All Leagues</h1>
-        {!hasError && <GameweekMatchPagination page={pageApi} setPage={setPageApi} maxPages={apiData.totalPages} pageLoading={loading} setPageLoading={setLoading}/>}
+        {!hasError && <Pagination gameweekPagination={true} page={pageApi} maxPages={apiData.totalPages} pageLoading={loading} handlePageChange={handlePageChange}/>}
         {TablesDisplay()}
 
     </section>

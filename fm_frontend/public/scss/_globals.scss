@@ -65,6 +65,11 @@ p{
         -webkit-box-shadow: 3px 3px 7px -1px rgba(0,0,0,0.83); 
         box-shadow: 3px 3px 7px -1px rgba(0,0,0,0.83);
     }
+    &--styledDarker{
+        background-color: $lightGrey;
+        -webkit-box-shadow: 3px 3px 7px -1px rgba(0,0,0,0.83); 
+        box-shadow: 3px 3px 7px -1px rgba(0,0,0,0.83);
+    }
 }
 
 .emptyMsg{
@@ -104,6 +109,80 @@ p{
     margin: 4rem auto;
 }
 
+.dialogContainer{
+    max-width: 28rem;
+    margin: 0 auto;
+}
+
+.tablesContainer{
+    .tableColumnHide{
+        @include breakpoint-down(small){
+            display: none;
+        }
+    }
+    .MuiTable-root{
+        border-top: 1px solid $grayishBlue;
+    }
+    .teamPlayersTable{
+        .MuiTableCell-root{
+            border-bottom: 1px solid $grayishBlue;
+        }
+        .playerImg{
+            height: 2rem;
+            width: 2rem;
+
+            @include breakpoint-up(medium){
+                height: 2.5rem;
+                width: 2.5rem;
+            }
+
+            border: solid 2px $veryDarkBlue;
+            border-radius: 100%;
+            margin-right: .5rem;
+        }
+        .teamLogo{
+            height: 1rem;
+            width: 1rem;
+
+            @include breakpoint-up(medium){
+                height: 2rem;
+                width: 2rem;
+            }
+        }
+        .countryImg{
+            height: 1.25rem;
+            width: 2rem;
+        }
+        .playerRating{
+            padding: 0.5rem;
+            border-radius: 0.25rem;
+            &__green{
+                color: white;
+                box-shadow: 0px 0px 15px 1px hsla(119, 79%, 52%, 0.4);
+                background-color: hsl(144, 100%, 25%);
+            }
+            &__red{
+                color: white;
+                box-shadow: 0px 0px 15px 1px hsla(0, 92%, 47%, 0.4);
+                background-color: hsl(4, 63%, 45%);
+            }
+            &__yellow{
+                color: white;
+                box-shadow: 0px 0px 15px 1px hsla(64, 100%, 45%, 0.4);
+                background-color: hsl(59, 100%, 40%);
+            }
+        }
+        &PlayerName{
+            font-size: 1rem;
+            @include breakpoint-up(medium){
+                font-size: 1.125rem;
+            }
+        }
+        &PlayerPosition{
+            font-size: $font-sm;
+        }
+    }
+}
 
 .PositionAboluteMiddle{
     position: absolute;

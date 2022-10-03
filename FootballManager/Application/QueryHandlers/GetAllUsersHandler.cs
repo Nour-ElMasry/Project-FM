@@ -1,4 +1,4 @@
-﻿using Application.Abstract;
+﻿using Application.Pagination;
 using Application.Queries;
 using Domain.Entities;
 using MediatR;
@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Application.QueryHandlers
 {
-    public class GetAllUsersHandler : IRequestHandler<GetAllUsers, List<User>>
+    public class GetAllUsersHandler : IRequestHandler<GetAllUsers, Pager<User>>
     {
         private readonly UserManager<User> _userManager;
 
@@ -16,9 +16,23 @@ namespace Application.QueryHandlers
             _userManager = userManager;
         }
 
-        public async Task<List<User>> Handle(GetAllUsers request, CancellationToken cancellationToken)
+        public async Task<Pager<User>> Handle(GetAllUsers request, CancellationToken cancellationToken)
         {
-            return await _userManager.Users.Include(u => u.UserPerson).ToListAsync();
+            var page = new Pager<User>(await _userManager.Users.CountAsync(), request.Page);
+
+            if (request.Page == 0)
+            {
+                page.PageResults = await _userManager.Users.Include(u => u.UserPerson).ToListAsync();
+
+                return page;
+            }
+
+            page.PageResults = await _userManager.Users.Include(u => u.UserPerson)
+                .Skip((request.Page - 1) * 10)
+                .Take(10)
+                .ToListAsync();
+
+            return page;
         }
     }
 }

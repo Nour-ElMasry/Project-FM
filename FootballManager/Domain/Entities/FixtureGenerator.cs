@@ -1,6 +1,4 @@
-﻿using System.Text;
-
-namespace Domain.Entities;
+﻿namespace Domain.Entities;
 public static class FixtureGenerator
 {
     private static readonly Random rnd = new();

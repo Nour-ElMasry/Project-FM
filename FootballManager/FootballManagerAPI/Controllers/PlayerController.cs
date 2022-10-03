@@ -1,12 +1,12 @@
 ﻿using Application.Commands;
+using Application.Pagination;
 using Application.Queries;
 using AutoMapper;
 using Domain.Entities;
 using FootballManagerAPI.Dto;
 using FootballManagerAPI.Filters;
-using FootballManagerAPI.Pagination;
-using FootballManagerAPI.Services;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FootballManagerAPI.Controllers
@@ -51,12 +51,13 @@ namespace FootballManagerAPI.Controllers
 
         [HttpGet]
         [Route("All/{pg?}")]
-        [Authorize]
         public async Task<IActionResult> GetAllPlayers([FromQuery] PlayerFilter filter = null, int pg = 1)
         {
             _logger.LogInformation("Preparing to get all players...");
 
-            var result = await _mediator.Send(new GetAllPlayers());
+            var result = await _mediator.Send(new GetAllPlayers { 
+                Page = pg,
+            });
 
             if (result == null)
             {
@@ -71,23 +72,9 @@ namespace FootballManagerAPI.Controllers
                 return BadRequest("Date range invalid!!!");
             }
 
-            result = await ApplyPlayerFilter(filter, result);
+            var mappedResult = _mapper.Map<List<PlayerGetDto>>(result.PageResults);
 
-            var mappedResult = _mapper.Map<List<PlayerGetDto>>(result);
-
-            if (pg == 0)
-            {
-                return Ok(mappedResult);
-            }
-
-            var page = new Pager<PlayerGetDto>(mappedResult.Count, pg);
-
-            var pageResults = mappedResult
-                .Skip((page.CurrentPage - 1) * page.PageNumOfResults)
-                .Take(page.PageNumOfResults)
-                .ToList();
-
-            page.PageResults = pageResults;
+            var page = new Pager<PlayerGetDto>(result.TotalResults, result.CurrentPage) { PageResults = mappedResult };
 
             _logger.LogInformation("All players received successfully!!!");
 

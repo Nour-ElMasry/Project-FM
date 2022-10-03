@@ -2,7 +2,6 @@
 using Application.Commands;
 using Domain.Entities;
 using MediatR;
-using System;
 
 namespace Application.CommandHandlers
 {

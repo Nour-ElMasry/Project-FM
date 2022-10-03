@@ -1,0 +1,5 @@
+.playersSection{
+    @include breakpoint-down(medium){
+        margin-bottom: 2rem;
+    }
+}

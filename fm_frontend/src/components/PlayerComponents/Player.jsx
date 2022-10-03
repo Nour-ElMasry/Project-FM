@@ -1,15 +1,15 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Player = () => {
-    const user = JSON.parse(localStorage.getItem("User"));
+    const [user] = useState(JSON.parse(localStorage.getItem("User")));
     const navigate = useNavigate();
 
     useEffect(() => {
         if(user == null){
             navigate("/login");
         }
-    }, []);
+    }, [user, navigate]);
 
     return <section className='PlayerPage container container--pa'>
         <h1 className="title">Player Page</h1>

@@ -1,4 +1,5 @@
 using Application.Commands;
+using Application.Pagination;
 using Application.Queries;
 using AutoMapper;
 using Domain.Entities;
@@ -23,11 +24,11 @@ namespace UnitTests
         {
             _mockMediator
                 .Setup(m => m.Send(It.IsAny<GetAllFixtures>(), It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new List<Fixture>())
+                .ReturnsAsync(new Pager<Fixture>(1, 1))
                 .Verifiable();
 
             var controller = new FixtureController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
-            await controller.GetAllFixtures();
+            await controller.GetAllFixtures(1);
 
             _mockMediator.Verify(x => x.Send(It.IsAny<GetAllFixtures>(), It.IsAny<CancellationToken>()), Times.Once());
         }

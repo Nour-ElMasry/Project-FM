@@ -24,11 +24,11 @@ function RatingProgress(props) {
         <Typography variant="caption" component="div" color="text.secondary">
           {`${Math.round(props.value)}`}
         </Typography>
-        <Typography 
+        {props.title && <Typography 
         sx={{marginTop: '1rem'}}
         variant="caption" component="div" color="text.secondary">
           {props.title}
-        </Typography>
+        </Typography>}
       </Box>
     </Box>
   );

@@ -20,7 +20,7 @@ const MatchTeamsLeagueTable = (props) => {
         GeneralAxiosService.getMethod('https://localhost:7067/api/v1/Leagues/'+league.leagueId+'/Teams/0')
         .then((response) => 
         setLeagueTeams(
-            response.data.sort((a, b) => a.name.localeCompare(b.name))
+            response.data.pageResults.sort((a, b) => a.name.localeCompare(b.name))
             
             .sort((a, b) => 
             (b.currentSeasonStats.goalsFor - b.currentSeasonStats.goalsAgainst)
@@ -36,7 +36,7 @@ const MatchTeamsLeagueTable = (props) => {
 
     return <div>
         {loading && <Loading />}
-        {!loading && <Table className='leagueTable container--styled'>
+        {!loading && <Table className='leagueTable tablesContainer container--styled'>
                 <TableHead>
                     <TableRow>
                         <TableCell colSpan={4}>

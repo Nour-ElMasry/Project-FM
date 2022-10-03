@@ -1,11 +1,12 @@
 ﻿using Application.Abstract;
+using Application.Pagination;
 using Application.Queries;
 using Domain.Entities;
 using MediatR;
 
 namespace Application.QueryHandlers
 {
-    public class GetFixturesByTeamHandler : IRequestHandler<GetFixturesByTeam, List<Fixture>>
+    public class GetFixturesByTeamHandler : IRequestHandler<GetFixturesByTeam, Pager<Fixture>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -14,16 +15,14 @@ namespace Application.QueryHandlers
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<List<Fixture>> Handle(GetFixturesByTeam request, CancellationToken cancellationToken)
+        public async Task<Pager<Fixture>> Handle(GetFixturesByTeam request, CancellationToken cancellationToken)
         {
-            var fixtures = await _unitOfWork.FixtureRepository.GetAllFixtures();
+            var fixtures = await _unitOfWork.FixtureRepository.GetAllFixturesByTeam(request.TeamId, request.Page);
 
             if (fixtures == null)
                 return null;
 
-            var teamFixtures = fixtures.Where(f => f.HomeTeam.TeamId == request.TeamId || f.AwayTeam.TeamId == request.TeamId).ToList();
-
-            return teamFixtures;
+            return fixtures;
         }
     }
 }

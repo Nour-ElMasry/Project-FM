@@ -35,7 +35,6 @@ export default function SignUp() {
   const countryChangeHandler = value => {
     setCountries(value.target.value);
   }
-
   
   const handleUniqueCheck = (event) => {
       const username = event.target.value;
@@ -48,22 +47,24 @@ export default function SignUp() {
   }
 
   const handleSignUp = (data) => {
-    const creds = {
-      name: data['firstName'] + ' ' + data['lastName'],
-      country: data['country'],
-      dateOfBirth: data['dateOfBirth'],
-      username: data['username'],
-      password: data['password'],
-    }
+    if(uniqueCheck){
+      const creds = {
+        name: data['firstName'] + ' ' + data['lastName'],
+        country: data['country'],
+        dateOfBirth: data['dateOfBirth'],
+        username: data['username'],
+        password: data['password'],
+      }
 
-    GeneralAxiosService.postMethod("https://localhost:7067/api/v1/Users", creds)
-    .then((res) => localStorage.setItem("User", JSON.stringify(res.data)))
-    .then(() => setTimeout(() => {
-      navigate("/");
-    }, 3000))
-    .catch((err) => {
-      setSuccessfulSignUp(false);
-    });
+      GeneralAxiosService.postMethod("https://localhost:7067/api/v1/Users", creds)
+      .then((res) => localStorage.setItem("User", JSON.stringify(res.data)))
+      .then(() => setTimeout(() => {
+        navigate("/");
+      }, 3000))
+      .catch((err) => {
+        setSuccessfulSignUp(false);
+      });
+    }
   };
 
   return (
@@ -115,8 +116,8 @@ export default function SignUp() {
                     fullWidth
                     value={country}
                     label="Countries"
-                    error={!!errors['dateOfBirth']}
-                    helperText={errors['dateOfBirth']?.message}
+                    error={!!errors['country']}
+                    helperText={errors['country']?.message}
                     {...register('country', { required: '*Field is required' })}
                     onChange={countryChangeHandler}
                   >

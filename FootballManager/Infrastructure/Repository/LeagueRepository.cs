@@ -1,4 +1,5 @@
 ﻿using Application.Abstract;
+using Application.Pagination;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,11 +23,26 @@ namespace Infrastructure.Repository
             await Task.Run(() => _context.Leagues.Remove(u));
         }
 
-        public async Task<List<League>> GetAllLeagues()
+        public async Task<Pager<League>> GetAllLeagues(int pg)
         {
-            return await _context.Leagues
+            var page = new Pager<League>(await _context.Leagues.CountAsync(), pg);
+
+            if (pg == 0)
+            {
+                page.PageResults = await _context.Leagues
+               .Include(l => l.CurrentSeason)
+               .ToListAsync();
+
+                return page;
+            }
+
+            page.PageResults = await _context.Leagues
                 .Include(l => l.CurrentSeason)
+                .Skip((pg - 1) * 10)
+                .Take(10)
                 .ToListAsync();
+
+            return page;
         }
 
         public async Task<League> GetLeagueById(long id)

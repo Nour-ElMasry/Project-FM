@@ -1,10 +1,10 @@
 ﻿using Application.Commands;
+using Application.Pagination;
 using Application.Queries;
 using AutoMapper;
 using FootballManagerAPI.Dto;
-using FootballManagerAPI.Pagination;
-using FootballManagerAPI.Services;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FootballManagerAPI.Controllers
@@ -32,33 +32,19 @@ namespace FootballManagerAPI.Controllers
         {
             _logger.LogInformation("Preparing to get all Fixtures...");
 
-            var result = await _mediator.Send(new GetAllFixtures());
+            var result = await _mediator.Send(new GetAllFixtures { Page = pg });
 
-            var numOfTeams = await _mediator.Send(new GetNumberOfTeams());
-
-            if (result.Count <= 0)
+            if (result.PageResults == null)
             {
                 _logger.LogError($"No Fixtures found!!!");
                 return NotFound();
             }
 
-            var mappedResult = _mapper.Map<List<FixtureGetDto>>(result.OrderBy(f => f.Date));
+            var mappedResult = _mapper.Map<List<FixtureGetDto>>(result.PageResults);
+
+            var page = new Pager<FixtureGetDto>(result.TotalResults, result.CurrentPage) { PageResults = mappedResult };
 
             _logger.LogInformation("All Fixtures have been recieved successfully!!");
-
-            if (pg == 0)
-            {
-                return Ok(mappedResult);
-            }
-
-            var page = new Pager<FixtureGetDto>(mappedResult.Count, pg, ((numOfTeams) / 2));
-
-            var pageResults = mappedResult
-                .Skip((page.CurrentPage - 1) * page.PageNumOfResults)
-                .Take(page.PageNumOfResults)
-                .ToList();
-
-            page.PageResults = pageResults;
 
             return Ok(page);
         }

@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.Pagination;
+using Domain.Entities;
 
 namespace Application.Abstract
 {
@@ -10,7 +11,7 @@ namespace Application.Abstract
         Task UpdateTeam(Team u);
         Task DeleteTeam(Team u);
         Task<Team> GetTeamById(long id);
-        Task<List<Team>> GetTeamsByLeagueId(long leagueId);
-        Task<List<Team>> GetAllTeams();
+        Task<Pager<Team>> GetTeamsByLeagueId(long leagueId, int pg);
+        Task<Pager<Team>> GetAllTeams(int pg);
     }
 }

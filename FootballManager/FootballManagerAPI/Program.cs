@@ -5,7 +5,6 @@ using FootballManagerAPI;
 using FootballManagerAPI.Middleware;
 using Infrastructure;
 using Infrastructure.Repository;
-using JWTAuth_Validation.Middleware;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -82,9 +81,9 @@ app.UseHttpsRedirection();
 
 app.UseCustomMiddleware();
 
-app.UseJwtMiddleware();
-
 app.UseCors();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

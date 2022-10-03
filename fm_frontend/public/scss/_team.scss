@@ -69,29 +69,5 @@
         .loading{
             margin-top: 5rem;
         }
-        .teamPlayersTable{
-            .playerImg{
-                height: 2rem;
-                width: 2rem;
-
-                @include breakpoint-up(medium){
-                    height: 2.5rem;
-                    width: 2.5rem;
-                }
-
-                border: solid 2px $veryDarkBlue;
-                border-radius: 100%;
-                margin-right: .5rem;
-            }
-            &PlayerName{
-                font-size: 1rem;
-                @include breakpoint-up(medium){
-                    font-size: 1.125rem;
-                }
-            }
-            &PlayerPosition{
-                font-size: $font-sm;
-            }
-        }
     }
 }

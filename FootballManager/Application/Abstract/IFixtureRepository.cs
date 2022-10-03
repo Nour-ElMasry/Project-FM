@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.Pagination;
+using Domain.Entities;
 
 namespace Application.Abstract
 {
@@ -10,8 +11,9 @@ namespace Application.Abstract
         Task UpdateFixture(Fixture u);
         Task DeleteFixture(Fixture u);
         Task<Fixture> GetFixtureById(long id);
-        Task<List<Fixture>> GetAllFixtures();
+        Task<Pager<Fixture>> GetAllFixtures(int pg);
         Task<List<Fixture>> GetAllFixturesForSimulation();
-        Task<List<Fixture>> GetAllFixturesByLeague(long leagueId);
+        Task<Pager<Fixture>> GetAllFixturesByLeague(long leagueId, int pg);
+        Task<Pager<Fixture>> GetAllFixturesByTeam(long teamId, int pg);
     }
 }

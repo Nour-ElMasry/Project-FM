@@ -1,4 +1,4 @@
-import RatingProgress from "./RatingProgress";
+import RatingProgress from "../RatingProgress";
 
 const TeamHeader = (props) => {
     return <div className="teamHeaderTeamInfo">

@@ -1,6 +1,5 @@
 ﻿using Application.Abstract;
 using Application.Commands;
-using Application.Queries;
 using Domain.Entities;
 using Infrastructure;
 using Infrastructure.Repository;

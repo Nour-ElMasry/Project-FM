@@ -1,10 +1,12 @@
-﻿using Domain.Entities;
+﻿using Application.Pagination;
+using Domain.Entities;
 using MediatR;
 
 namespace Application.Queries
 {
-    public class GetPlayersByTeam : IRequest<List<Player>>
+    public class GetPlayersByTeam : IRequest<Pager<Player>>
     {
+        public int Page { get; set; }
         public long TeamId { get; set; }
     }
 }

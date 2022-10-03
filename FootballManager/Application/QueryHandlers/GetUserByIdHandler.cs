@@ -1,5 +1,4 @@
-﻿using Application.Abstract;
-using Application.Queries;
+﻿using Application.Queries;
 using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
