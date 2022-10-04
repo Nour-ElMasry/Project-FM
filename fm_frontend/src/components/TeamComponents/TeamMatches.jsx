@@ -17,7 +17,7 @@ const TeamMatches = (props) => {
             setAwayMatches(matches.filter(m => m.awayTeam.teamId === team && m.isPlayed === props.played));
         })
         .then(() => setLoading(false))
-    }, [])
+    }, [props.played, team])
     
      return <div className='matchSection'>
         {!loading && <div className='gameweekTables'>

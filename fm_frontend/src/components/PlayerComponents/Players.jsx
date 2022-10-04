@@ -23,6 +23,12 @@ const Players = () => {
         sessionStorage.setItem("PlayersPage_Key", pageNumber)
     }
 
+    const handleFilterSubmit = (data) => {
+        GeneralAxiosService.getMethodWithParams('https://localhost:7067/api/v1/Players/All/' + page, data)
+            .then((response) => setPlayers(response.data))
+            .then(() => setLoading(false));
+    }
+
     useEffect(() => {
         if(user == null){
             navigate("/login");
@@ -36,7 +42,7 @@ const Players = () => {
     return <section className='playersSection container container--pa'>
         <h1 className="title">Players Page</h1>
         {loading && <Loading/>}
-        {!loading && <PlayersTable playersPage={true} loading={loading} players={players} handlePageChange={handlePageChange}/>}
+        {!loading && <PlayersTable handleFilterSubmit={handleFilterSubmit} playersPage={true} loading={loading} players={players} handlePageChange={handlePageChange}/>}
     </section>
 }
 

@@ -112,6 +112,12 @@ p{
 .dialogContainer{
     max-width: 28rem;
     margin: 0 auto;
+    .MuiDialogContent-root{
+        padding: 5px 20px;
+    }
+    .MuiDialogActions-root{
+        margin-top: 5px;
+    }
 }
 
 .tablesContainer{
@@ -150,8 +156,8 @@ p{
             }
         }
         .countryImg{
-            height: 1.25rem;
-            width: 2rem;
+            max-width: 15%;  
+            height: auto;  
         }
         .playerRating{
             padding: 0.5rem;
