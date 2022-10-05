@@ -14,7 +14,7 @@ const TeamTabs = (props) => {
     
     return <Box>
     <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-      <Tabs value={props.value} onChange={props.handleChange}>
+      <Tabs centered value={props.value} onChange={props.handleChange}>
         <Tab label="Matches" {...a11yProps(0)} />
         <Tab label="Results" {...a11yProps(1)} />
         <Tab label="Players" {...a11yProps(2)} />

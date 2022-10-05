@@ -33,7 +33,7 @@ const PlayersTable = (props) => {
     }
 
     return <div className='container--styledDarker'>
-    <FilterToolBar team={true} handleFilterSubmit={props.handleFilterSubmit}/>
+    <FilterToolBar team={props.team} handleFilterSubmit={props.handleFilterSubmit}/>
     <TableContainer className="tablesContainer">
       <Table className="teamPlayersTable" sx={{ minWidth: 500 }} aria-label="simple table">
         <TableHead>

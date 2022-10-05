@@ -23,9 +23,12 @@ const NormalHeader = () => {
 
 
                 <div className="navbar__links">
-                    <Link to="/">Home</Link>
+                    <Link to="/home">Home</Link>
                     <Link to="/leagues">Leagues</Link>
-                    <Link to="/players" onClick={() => sessionStorage.setItem("PlayersPage_Key", 1)}>Players</Link>
+                    <Link to="/players" onClick={() => {
+                      sessionStorage.setItem("PlayersPage_Key", 1)
+                      sessionStorage.removeItem("PlayersFilter_Key")
+                    }}>Players</Link>
                     <Link to="/matches" onClick={() => sessionStorage.setItem("Page_Key", 1)}>Matches</Link>
                 </div>
 
@@ -49,7 +52,7 @@ const NormalHeader = () => {
                       <BottomNavigationAction 
                         className="nav-item"
                         component={Link}
-                        to="/"
+                        to="/home"
                         label="Home" icon={<HomeIcon sx={{ fontSize: 25 }}/>}
                         />
                       <BottomNavigationAction 
@@ -62,7 +65,17 @@ const NormalHeader = () => {
                         className="nav-item"
                         to="/players"
                         label="Players" icon={<GroupsIcon sx={{ fontSize: 30 }}
-                        onClick={() => sessionStorage.setItem("PlayersPage_Key", 1)}
+                        onClick={() => {
+                          sessionStorage.setItem("PlayersPage_Key", 1)
+                          sessionStorage.setItem("PlayersFilter_Key", JSON.stringify({
+                            name: " ",
+                            country: " ",
+                            minDateOfBirth: 0,
+                            maxDateOfBirth: 0,
+                            position: " ",
+                            team: 0
+                          }))
+                        }}
                         />}/>
                       <BottomNavigationAction 
                         component={Link}

@@ -43,7 +43,7 @@ const Players = () => {
     return <section className='playersSection container container--pa'>
         <h1 className="title">Players Page</h1>
         {loading && <Loading/>}
-        {!loading && <PlayersTable handleFilterSubmit={handleFilterSubmit} playersPage={true} loading={loading} players={players} handlePageChange={handlePageChange}/>}
+        {!loading && <PlayersTable team={true} handleFilterSubmit={handleFilterSubmit} playersPage={true} loading={loading} players={players} handlePageChange={handlePageChange}/>}
     </section>
 }
 

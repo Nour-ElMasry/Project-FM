@@ -16,7 +16,7 @@ class GeneralAxiosService {
         if(user != null)
             token = user.token
 
-        return await axios.get(url, { params: parameters }, { headers: { "Authorization" : "Bearer " + token }});
+        return await axios.get(url, { params: parameters, headers: { "Authorization" : "Bearer " + token }});
     }
 
     async postMethod(url, obj){
