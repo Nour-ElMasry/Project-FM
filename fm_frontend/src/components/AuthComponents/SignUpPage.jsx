@@ -239,7 +239,7 @@ export default function SignUp() {
                 Sign Up
               </Button>
               <Grid container>
-                <Link className="formLink" to="/login">
+                <Link className="formLink" to="/">
                     Already have an account? Sign in
                 </Link>
               </Grid>

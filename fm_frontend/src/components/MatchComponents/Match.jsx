@@ -17,7 +17,7 @@ const Match = () => {
 
     useEffect(() => {
         if(user == null){
-            navigate("/login");
+            navigate("/");
         }else{
             GeneralAxiosService.getMethod("https://localhost:7067/api/v1/Fixtures/"+params.id)
             .then((response) => setMatch(response.data))

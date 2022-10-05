@@ -37,7 +37,7 @@ const Matches = () => {
 
     useEffect(() => {
         if(user == null){
-            navigate("/login");
+            navigate("/");
         }else{
             GeneralAxiosService.getMethod("https://localhost:7067/api/v1/Fixtures/All/" + pageApi)
             .then(res => {

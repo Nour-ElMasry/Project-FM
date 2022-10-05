@@ -31,9 +31,10 @@ const Players = () => {
 
     useEffect(() => {
         if(user == null){
-            navigate("/login");
+            navigate("/");
         }else{
-            GeneralAxiosService.getMethod('https://localhost:7067/api/v1/Players/All/' + page)
+            var param = JSON.parse(sessionStorage.getItem("PlayersFilter_Key"));
+            GeneralAxiosService.getMethodWithParams('https://localhost:7067/api/v1/Players/All/' + page, param)
             .then((response) => setPlayers(response.data))
             .then(() => setLoading(false));
         }

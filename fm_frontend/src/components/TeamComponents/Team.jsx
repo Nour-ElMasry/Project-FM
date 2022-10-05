@@ -24,7 +24,7 @@ const Team = (props) => {
 
     useEffect(() => {
         if(user == null){
-            navigate("/login");
+            navigate("/");
         }else{
             GeneralAxiosService.getMethod("https://localhost:7067/api/v1/Teams/" + params.id)
             .then((response) => setTeam(response.data))

@@ -30,7 +30,7 @@ export default function LogIn() {
         setSuccessfulLogIn(true);
       })
       .then(() => setTimeout(() => {
-        navigate("/");
+        navigate("/home");
       }, 1500))
       .catch((err) => {
         setWrongCredentials(true);

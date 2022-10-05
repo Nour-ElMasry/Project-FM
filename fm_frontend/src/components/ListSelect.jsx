@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 const ListSelect = (props) => {
 
-    const [itemSelected, setItemSelected] = useState(0);
+    const [itemSelected, setItemSelected] = useState(" ");
 
     const itemSelectedChangeHandler = value => {
         setItemSelected(value.target.value);
@@ -20,7 +20,7 @@ const ListSelect = (props) => {
       {...props.register(props.label.toLowerCase())}
       onChange={itemSelectedChangeHandler}
     >
-      <MenuItem value={0}>
+      <MenuItem value={" "}>
         <em>None</em>
       </MenuItem>
       {props.list !== [] && props.list.map((c,i) => {

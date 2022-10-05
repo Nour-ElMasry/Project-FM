@@ -12,7 +12,18 @@ import GeneralAxiosService from "../services/GeneralAxiosService";
 import ListSelect from './ListSelect';
 
 const PlayreFilterDialog = (props) => {
-    const { register, handleSubmit, formState: { errors }, reset } = useForm();
+    const { register, handleSubmit, formState: { errors }, reset } = useForm(
+      {
+        defaultValues: {
+          name: " ",
+          minYearOfBirth: 0,
+          maxYearOfBirth: 0,
+          team: 0,
+          country: " ",
+          position: " "
+        }
+      }
+    );
 
     const countries = useMemo(() => countryList().getData().map(c => { 
       return {
@@ -39,6 +50,7 @@ const PlayreFilterDialog = (props) => {
     
     const onSubmitHandle = async (data) => {
         await props.handleFilterSubmit(data);
+        sessionStorage.setItem("PlayersFilter_Key", JSON.stringify(data))
         reset();
         dialogHandleClose();
     }
@@ -98,6 +110,7 @@ const PlayreFilterDialog = (props) => {
               <Grid item xs={6} sm={6}>  
                   <TextField
                       label="Min age"
+                      value={0}
                       type="number"
                       error={!!errors['minYearOfBirth']}
                       helperText={errors['minYearOfBirth']?.message}
@@ -109,6 +122,7 @@ const PlayreFilterDialog = (props) => {
                   <TextField
                       label="Max age"
                       type="number"
+                      value={0}
                       error={!!errors['maxYearOfBirth']}
                       helperText={errors['maxYearOfBirth']?.message}
                       {...register('maxYearOfBirth')}

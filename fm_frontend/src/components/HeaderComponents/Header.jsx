@@ -6,7 +6,7 @@ import NormalHeader from "./NormalHeader";
 const Header = () => {
   const location = useLocation();
 
-  if (location.pathname.includes("/login") || location.pathname.includes("/signup"))
+  if (location.pathname === "/" || location.pathname.includes("/signup"))
     return <AuthHeader />
 
   return <NormalHeader /> 

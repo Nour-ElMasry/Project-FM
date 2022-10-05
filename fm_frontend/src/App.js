@@ -17,7 +17,7 @@ const App = () => {
       <Router>
         <Header />
         <Routes>
-            <Route path="/" element={<Home />}/>
+            <Route path="/home" element={<Home />}/>
             <Route path="/leagues" element={<Leagues />}/>
             <Route path="/players" element={<Players />}/>
             <Route path="/players/:id" element={<Player />}/>
@@ -25,7 +25,7 @@ const App = () => {
             <Route path="/matches/:id" element={<Match />}/>
             <Route path="/teams/:id" element={<Team />}/>
             <Route path="/profile" element={<Profile />}/>
-            <Route path="/login" element={<Login />}/>
+            <Route path="/" element={<Login />}/>
             <Route path="/signup" element={<SignUp />}/>
         </Routes>
       </Router>
