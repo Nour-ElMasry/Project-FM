@@ -1,4 +1,5 @@
-﻿using Application.Pagination;
+﻿using Application.Filters;
+using Application.Pagination;
 using Domain.Entities;
 
 namespace Application.Abstract
@@ -7,11 +8,11 @@ namespace Application.Abstract
     {
         Task Save();
         Task AddTeam(Team u);
-        Task<int> GetNumberOfTeams();
         Task UpdateTeam(Team u);
         Task DeleteTeam(Team u);
         Task<Team> GetTeamById(long id);
         Task<Pager<Team>> GetTeamsByLeagueId(long leagueId, int pg);
-        Task<Pager<Team>> GetAllTeams(int pg);
+        Task<Pager<Team>> GetAllTeams(int pg, TeamFilter filter);
+        Task<List<Team>> GetTeamsList();
     }
 }

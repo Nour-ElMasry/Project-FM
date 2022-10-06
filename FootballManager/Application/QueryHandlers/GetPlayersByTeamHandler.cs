@@ -17,7 +17,7 @@ namespace Application.QueryHandlers
 
         public async Task<Pager<Player>> Handle(GetPlayersByTeam request, CancellationToken cancellationToken)
         {
-            var players = await _unitOfWork.PlayerRepository.GetAllPlayersByTeam(request.TeamId, request.Page);
+            var players = await _unitOfWork.PlayerRepository.GetAllPlayersByTeam(request.TeamId, request.Page, request.Filter);
 
             if(players == null)
                 return null;

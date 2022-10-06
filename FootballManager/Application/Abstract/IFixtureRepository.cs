@@ -14,6 +14,6 @@ namespace Application.Abstract
         Task<Pager<Fixture>> GetAllFixtures(int pg);
         Task<List<Fixture>> GetAllFixturesForSimulation();
         Task<Pager<Fixture>> GetAllFixturesByLeague(long leagueId, int pg);
-        Task<Pager<Fixture>> GetAllFixturesByTeam(long teamId, int pg);
+        Task<List<Fixture>> GetAllFixturesByTeam(long teamId);
     }
 }

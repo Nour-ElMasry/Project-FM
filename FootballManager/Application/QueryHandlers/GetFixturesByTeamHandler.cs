@@ -6,7 +6,7 @@ using MediatR;
 
 namespace Application.QueryHandlers
 {
-    public class GetFixturesByTeamHandler : IRequestHandler<GetFixturesByTeam, Pager<Fixture>>
+    public class GetFixturesByTeamHandler : IRequestHandler<GetFixturesByTeam, List<Fixture>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -15,9 +15,9 @@ namespace Application.QueryHandlers
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Pager<Fixture>> Handle(GetFixturesByTeam request, CancellationToken cancellationToken)
+        public async Task<List<Fixture>> Handle(GetFixturesByTeam request, CancellationToken cancellationToken)
         {
-            var fixtures = await _unitOfWork.FixtureRepository.GetAllFixturesByTeam(request.TeamId, request.Page);
+            var fixtures = await _unitOfWork.FixtureRepository.GetAllFixturesByTeam(request.TeamId);
 
             if (fixtures == null)
                 return null;

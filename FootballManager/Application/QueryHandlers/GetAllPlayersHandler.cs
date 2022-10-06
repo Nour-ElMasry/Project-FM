@@ -17,7 +17,7 @@ namespace Application.QueryHandlers
 
         public async Task<Pager<Player>> Handle(GetAllPlayers request, CancellationToken cancellationToken)
         {
-            return await _unitOfWork.PlayerRepository.GetAllPlayers(request.Page);
+            return await _unitOfWork.PlayerRepository.GetAllPlayers(request.Page, request.Filter);
         }
     }
 }

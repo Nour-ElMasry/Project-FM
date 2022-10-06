@@ -146,18 +146,24 @@ p{
             border-radius: 100%;
             margin-right: .5rem;
         }
+        .ageColumn{
+            min-width: fit-content;
+        }
         .teamLogo{
-            height: 1rem;
-            width: 1rem;
+            height: auto;
+            max-width: 1.75rem;
 
             @include breakpoint-up(medium){
-                height: 2rem;
-                width: 2rem;
+                max-width: 2rem;
             }
         }
         .countryImg{
-            max-width: 2.5rem;  
+            max-width: 1.75rem;
             height: auto;  
+
+            @include breakpoint-up(medium){
+                max-width: 2rem;
+            } 
         }
         .playerRating{
             padding: 0.5rem;

@@ -16,6 +16,7 @@ const Players = () => {
     const [loading, setLoading] = useState(true);
     const [page, setPageApi] = useState(getPageNumber());
     const [user] = useState(JSON.parse(localStorage.getItem("User")));
+    const [filterData, setFilterData] = useState({});
     const navigate = useNavigate();
 
     const handlePageChange = (pageNumber) => {
@@ -24,21 +25,20 @@ const Players = () => {
     }
 
     const handleFilterSubmit = (data) => {
-        GeneralAxiosService.getMethodWithParams('https://localhost:7067/api/v1/Players/All/' + page, data)
-            .then((response) => setPlayers(response.data))
-            .then(() => setLoading(false));
+        setFilterData(data);
+        setPageApi(1);
+        sessionStorage.setItem("PlayersPage_Key", 1)
     }
 
     useEffect(() => {
         if(user == null){
             navigate("/");
         }else{
-            var param = JSON.parse(sessionStorage.getItem("PlayersFilter_Key"));
-            GeneralAxiosService.getMethodWithParams('https://localhost:7067/api/v1/Players/All/' + page, param)
+            GeneralAxiosService.getMethodWithParams('https://localhost:7067/api/v1/Players/All/' + page, filterData)
             .then((response) => setPlayers(response.data))
             .then(() => setLoading(false));
         }
-    }, [user, navigate, page]);
+    }, [user, navigate, page, filterData]);
 
     return <section className='playersSection container container--pa'>
         <h1 className="title">Players Page</h1>

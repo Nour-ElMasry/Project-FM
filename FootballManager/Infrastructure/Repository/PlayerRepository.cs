@@ -1,6 +1,7 @@
 ﻿using Application.Abstract;
 using Application.Pagination;
 using Domain.Entities;
+using FootballManagerAPI.Filters;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repository
@@ -24,27 +25,54 @@ namespace Infrastructure.Repository
             await Task.Run(() => _context.Players.Remove(u));
         }
 
-        public async Task<Pager<Player>> GetAllPlayers(int pg)
+        public async Task<Pager<Player>> GetAllPlayers(int pg, PlayerFilter filter)
         {
-            var page = new Pager<Player>(await _context.Players.CountAsync(), pg);
+            var players = from p in _context.Players
+                          select p;
+
+            if (filter.Team != 0)
+                players = players.Where(p => p.CurrentTeam.TeamId == filter.Team);
+
+            if (!String.IsNullOrWhiteSpace(filter.Name))
+                players = players.Where(p => p.PlayerPerson.Name.Contains(filter.Name));
+
+            if (!String.IsNullOrWhiteSpace(filter.Country))
+                players = players.Where(p => p.PlayerPerson.Country == filter.Country);
+
+            if (!String.IsNullOrWhiteSpace(filter.Position))
+                players = players.Where(p => p.Position == filter.Position);
+
+            if (filter.MinYearOfBirth != 0 && filter.MaxYearOfBirth != 0)
+                players = players.Where(p => p.PlayerPerson.BirthDate.Value.Year >= filter.MinYearOfBirth &&
+                    p.PlayerPerson.BirthDate.Value.Year <= filter.MaxYearOfBirth);
+
+            if (filter.MinYearOfBirth != 0)
+                players = players.Where(p => p.PlayerPerson.BirthDate.Value.Year >= filter.MinYearOfBirth);
+
+            if (filter.MaxYearOfBirth != 0)
+                players = players.Where(p => p.PlayerPerson.BirthDate.Value.Year <= filter.MaxYearOfBirth);
+
+            var page = new Pager<Player>(await players.CountAsync(), pg);
 
             if (pg == 0)
             {
-                page.PageResults =  await _context.Players
+                page.PageResults = await players
                 .Include(p => p.PlayerPerson)
                 .Include(p => p.PlayerRecord)
                 .Include(p => p.CurrentTeam)
                 .Include(p => p.CurrentPlayerStats)
+                .OrderBy(p => p.PlayerPerson.Name)
                 .ToListAsync();
 
                 return page;
             }
 
-            page.PageResults = await _context.Players
+            page.PageResults = await players
                 .Include(p => p.PlayerPerson)
                 .Include(p => p.PlayerRecord)
                 .Include(p => p.CurrentTeam)
                 .Include(p => p.CurrentPlayerStats)
+                .OrderBy(p => p.PlayerPerson.Name)
                 .Skip((pg - 1) * 10)
                 .Take(10)
                 .ToListAsync();
@@ -78,14 +106,39 @@ namespace Infrastructure.Repository
             return page;
         }
 
-        public async Task<Pager<Player>> GetAllPlayersByTeam(long teamId, int pg)
+        public async Task<Pager<Player>> GetAllPlayersByTeam(long teamId, int pg, PlayerFilter filter)
         {
-            var page = new Pager<Player>(await _context.Players.Where(p => p.CurrentTeam.TeamId == teamId).CountAsync(), pg);
+            var players = from p in _context.Players
+                          where p.CurrentTeam.TeamId == teamId
+                          select p;
+
+            if (filter.Team != 0)
+                players = players.Where(p => p.CurrentTeam.TeamId == filter.Team);
+
+            if (!String.IsNullOrWhiteSpace(filter.Name))
+                players = players.Where(p => p.PlayerPerson.Name.Contains(filter.Name));
+
+            if (!String.IsNullOrWhiteSpace(filter.Country))
+                players = players.Where(p => p.PlayerPerson.Country == filter.Country);
+
+            if (!String.IsNullOrWhiteSpace(filter.Position))
+                players = players.Where(p => p.Position == filter.Position);
+
+            if (filter.MinYearOfBirth != 0 && filter.MaxYearOfBirth != 0)
+                players = players.Where(p => p.PlayerPerson.BirthDate.Value.Year >= filter.MinYearOfBirth &&
+                    p.PlayerPerson.BirthDate.Value.Year <= filter.MaxYearOfBirth);
+
+            if (filter.MinYearOfBirth != 0)
+                players = players.Where(p => p.PlayerPerson.BirthDate.Value.Year >= filter.MinYearOfBirth);
+
+            if (filter.MaxYearOfBirth != 0)
+                players = players.Where(p => p.PlayerPerson.BirthDate.Value.Year <= filter.MaxYearOfBirth);
+
+            var page = new Pager<Player>(await players.CountAsync(), pg);
 
             if (pg == 0)
             {
-                page.PageResults = await _context.Players
-                .Where(p => p.CurrentTeam.TeamId == teamId)
+                page.PageResults = await players
                 .Include(p => p.PlayerPerson)
                 .Include(p => p.CurrentTeam)
                 .ToListAsync();
@@ -93,8 +146,7 @@ namespace Infrastructure.Repository
                 return page;
             }
 
-            page.PageResults = await _context.Players
-                .Where(p => p.CurrentTeam.TeamId == teamId)
+            page.PageResults = await players
                 .Include(p => p.PlayerPerson)
                 .Include(p => p.CurrentTeam)
                 .Skip((pg - 1) * 10)

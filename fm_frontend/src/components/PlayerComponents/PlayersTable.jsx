@@ -32,7 +32,9 @@ const PlayersTable = (props) => {
       return today.toLocaleDateString("en-US", options);
     }
 
-    return <div className='container--styledDarker'>
+    return <> 
+    { !(players.pageResults.length > 0) && <h2 className='errorMsg'>No Players Found!</h2>}
+    <div className='container--styledDarker'>
     <FilterToolBar team={props.team} handleFilterSubmit={props.handleFilterSubmit}/>
     <TableContainer className="tablesContainer">
       <Table className="teamPlayersTable" sx={{ minWidth: 500 }} aria-label="simple table">
@@ -41,7 +43,7 @@ const PlayersTable = (props) => {
             <TableCell><h4>Player Info</h4></TableCell>
             
             {isPlayersPage && <>
-              <TableCell className='tableColumnHide' align="center"><h4>Team</h4></TableCell>
+              <TableCell align="center"><h4>Team</h4></TableCell>
               <TableCell className='tableColumnHide' align="center"><h4>Attacking</h4></TableCell>
               <TableCell className='tableColumnHide' align="center"><h4>PlayMaking</h4></TableCell>
               <TableCell className='tableColumnHide' align="center"><h4>Defending</h4></TableCell>
@@ -49,7 +51,7 @@ const PlayersTable = (props) => {
             </>}
 
             <TableCell align="center"><h4>Country</h4></TableCell>
-            <TableCell align="center"><h4>Birth Date (Age)</h4></TableCell> 
+            <TableCell className="ageColumn" align="center"><h4>Birthday (Age)</h4></TableCell> 
 
           </TableRow>
         </TableHead>
@@ -70,14 +72,17 @@ const PlayersTable = (props) => {
               </TableCell>
 
               {isPlayersPage && <>
-                <TableCell className='tableColumnHide' align="center">
-                <img className="teamLogo" src={p.currentTeam?.teamLogo} alt="person"/></TableCell>
+                <TableCell align="center">
+                  <img className="teamLogo" src={p.currentTeam?.teamLogo} alt="person"/>
+                </TableCell>
                 <RatingTableCell rating={p.playerStats?.attacking}/>
                 <RatingTableCell rating={p.playerStats?.playMaking}/>
                 <RatingTableCell rating={p.playerStats?.defending}/>
                 <RatingTableCell rating={p.playerStats?.goalkeeping}/>
               </>}
 
+              
+              
               <CountryTableItem country={p.playerPerson?.country}/>
               
               <TableCell align="center">{dateLongFormat(p.playerPerson?.birthDate)} ({getAge(p.playerPerson.birthDate)})</TableCell>
@@ -94,7 +99,7 @@ const PlayersTable = (props) => {
         </TableBody>
       </Table>
     </TableContainer>
-  </div>
+  </div></>
 }
 
 export default PlayersTable;

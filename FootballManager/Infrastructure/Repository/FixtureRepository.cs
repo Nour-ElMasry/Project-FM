@@ -29,7 +29,9 @@ namespace Infrastructure.Repository
         }
         public async Task<Pager<Fixture>> GetAllFixtures(int pg)
         {
-            var page = new Pager<Fixture>(await _context.Fixtures.CountAsync(), pg);
+            var totalResults = await _context.Fixtures.CountAsync();
+            var totalResultsPerPage = await _context.Teams.CountAsync() / 2;
+            var page = new Pager<Fixture>(totalResults, pg, totalResultsPerPage);
 
             if (pg == 0)
             {
@@ -38,20 +40,20 @@ namespace Infrastructure.Repository
                 .Include(f => f.AwayTeam)
                 .Include(f => f.FixtureLeague)
                 .Include(f => f.FixtureScore)
-                .OrderBy(f => f.Date)
+                .OrderBy(f => f.Date).ThenBy(f => f.FixtureLeague.LeagueId)
                 .ToListAsync();
 
                 return page;
             }
 
             page.PageResults = await _context.Fixtures
-                .OrderBy(f => f.Date)
                 .Include(f => f.HomeTeam)
                 .Include(f => f.AwayTeam)
                 .Include(f => f.FixtureLeague)
                 .Include(f => f.FixtureScore)
-                .Skip((pg - 1) * ((await _context.Teams.CountAsync() / 2)))
-                .Take((await _context.Teams.CountAsync() / 2))
+                .OrderBy(f => f.Date).ThenBy(f => f.FixtureLeague.LeagueId)
+                .Skip((pg - 1) * totalResultsPerPage)
+                .Take(totalResultsPerPage)
                 .ToListAsync();
 
             return page;
@@ -87,34 +89,15 @@ namespace Infrastructure.Repository
             return page;
         }
 
-        public async Task<Pager<Fixture>> GetAllFixturesByTeam(long teamId, int pg)
+        public async Task<List<Fixture>> GetAllFixturesByTeam(long teamId)
         {
-            var page = new Pager<Fixture>(await _context.Fixtures.Where(f => f.HomeTeam.TeamId == teamId || f.AwayTeam.TeamId == teamId).CountAsync(), pg);
-
-            if (pg == 0)
-            {
-                page.PageResults = await _context.Fixtures.Where(f => f.HomeTeam.TeamId == teamId || f.AwayTeam.TeamId == teamId)
+            return await _context.Fixtures.Where(f => f.HomeTeam.TeamId == teamId || f.AwayTeam.TeamId == teamId)
                  .Include(f => f.HomeTeam)
                  .Include(f => f.AwayTeam)
                  .Include(f => f.FixtureLeague)
                  .Include(f => f.FixtureScore)
                  .OrderBy(f => f.Date)
-                 .ToListAsync();
-
-                return page;
-            }
-
-            page.PageResults = await _context.Fixtures.Where(f => f.HomeTeam.TeamId == teamId || f.AwayTeam.TeamId == teamId)
-                 .Include(f => f.HomeTeam)
-                 .Include(f => f.AwayTeam)
-                 .Include(f => f.FixtureLeague)
-                 .Include(f => f.FixtureScore)
-                 .Skip((pg - 1) * 10)
-                 .Take(10)
-                 .OrderBy(f => f.Date)
-                 .ToListAsync();
-
-            return page;
+                 .ToListAsync(); ;
         }
 
         public async Task<List<Fixture>> GetAllFixturesForSimulation()

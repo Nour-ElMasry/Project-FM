@@ -110,7 +110,6 @@ const PlayreFilterDialog = (props) => {
               <Grid item xs={6} sm={6}>  
                   <TextField
                       label="Min age"
-                      value={0}
                       type="number"
                       error={!!errors['minYearOfBirth']}
                       helperText={errors['minYearOfBirth']?.message}
@@ -122,7 +121,6 @@ const PlayreFilterDialog = (props) => {
                   <TextField
                       label="Max age"
                       type="number"
-                      value={0}
                       error={!!errors['maxYearOfBirth']}
                       helperText={errors['maxYearOfBirth']?.message}
                       {...register('maxYearOfBirth')}

@@ -7,15 +7,13 @@
             margin-right: 2.5%;
         }
 
-        max-width: 35rem;
-
         &TeamInfo{
             padding: 2rem;
             display: flex;
             align-items: center;
             justify-content: space-between;
 
-            max-width: 30rem;
+            max-width: 40rem;
             @include breakpoint-up(medium){
                 margin: 0 auto;
             }

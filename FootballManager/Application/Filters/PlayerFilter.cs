@@ -6,7 +6,7 @@
         public string Name { get; set; }
         public int MinYearOfBirth { get; set; }
         public int MaxYearOfBirth { get; set; }
-        public long TeamId { get; set; }
+        public long Team { get; set; }
         public string Position { get; set; }
 
         public bool IsValidYearRange()

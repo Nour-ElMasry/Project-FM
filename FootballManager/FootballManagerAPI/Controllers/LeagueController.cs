@@ -164,7 +164,7 @@ namespace FootballManagerAPI.Controllers
 
             var mappedResult = _mapper.Map<List<ShortPlayerGetDto>>(result.PageResults);
 
-            var page = new Pager<ShortPlayerGetDto>(result.TotalResults, result.CurrentPage) { PageResults = mappedResult };
+            var page = new Pager<ShortPlayerGetDto>(result.TotalResults, result.CurrentPage, result.PageNumOfResults) { PageResults = mappedResult };
 
             _logger.LogInformation($"Players from league with id {id} have been received successfully!!!");
 

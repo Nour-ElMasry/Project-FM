@@ -1,4 +1,4 @@
-﻿namespace FootballManagerAPI.Filters
+﻿namespace Application.Filters
 {
     public class TeamFilter
     {

@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using Application.Pagination;
+using FootballManagerAPI.Filters;
 
 namespace UnitTests
 {
@@ -122,7 +123,7 @@ namespace UnitTests
                 .Verifiable();
 
             var controller = new TeamController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
-            await controller.GetTeamPlayersById(1);
+            await controller.GetTeamPlayersById(1, new PlayerFilter());
 
             _mockMediator.Verify(x => x.Send(It.IsAny<GetPlayersByTeam>(), It.IsAny<CancellationToken>()), Times.Once());
         }
@@ -155,7 +156,7 @@ namespace UnitTests
             });
 
             var controller = new TeamController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
-            await controller.GetTeamPlayersById(1);
+            await controller.GetTeamPlayersById(1, new PlayerFilter());
 
             Assert.AreEqual(teamId, 1);
         }
@@ -182,7 +183,7 @@ namespace UnitTests
             });
 
             var controller = new TeamController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
-            var result = await controller.GetTeamPlayersById(1);
+            var result = await controller.GetTeamPlayersById(1, new PlayerFilter());
 
             var okResult = result as OkObjectResult;
 
@@ -224,7 +225,7 @@ namespace UnitTests
 
             var controller = new TeamController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
 
-            var result = await controller.GetTeamPlayersById(1);
+            var result = await controller.GetTeamPlayersById(1, new PlayerFilter());
             var okResult = result as OkObjectResult;
 
             Assert.AreEqual(team.Players.Count, ((Pager<ShortPlayerGetDto>)okResult.Value).PageResults.Count);
@@ -254,7 +255,7 @@ namespace UnitTests
                 {
                     teamId = q.TeamId;
                     return await Task.FromResult(
-                       new Pager<Fixture>(1, 1));
+                       new List<Fixture>());
                 });
 
             _mockMapper.Setup(x => x.Map<List<FixtureGetDto>>(It.IsAny<List<Fixture>>()))
@@ -282,7 +283,7 @@ namespace UnitTests
             _mockMediator
                 .Setup(m => m.Send(It.IsAny<GetFixturesByTeam>(), It.IsAny<CancellationToken>()))
                 .ReturnsAsync(
-                       new Pager<Fixture>(1,1));
+                       new List<Fixture>());
 
             _mockMapper.Setup(x => x.Map<List<FixtureGetDto>>(It.IsAny<List<Fixture>>()))
             .Returns((List<Fixture> fs) =>
@@ -332,7 +333,7 @@ namespace UnitTests
                     team.HomeFixtures.ForEach(f => ret.Add(f));
                     team.AwayFixtures.ForEach(f => ret.Add(f));
 
-                    return new Pager<Fixture>(5, 1) { PageResults = ret };
+                    return ret;
                 });
 
             _mockMapper.Setup(x => x.Map<List<FixtureGetDto>>(It.IsAny<List<Fixture>>()))

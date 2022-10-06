@@ -51,12 +51,20 @@ namespace FootballManagerAPI.Controllers
 
         [HttpGet]
         [Route("All/{pg?}")]
+        [Authorize]
         public async Task<IActionResult> GetAllPlayers([FromQuery] PlayerFilter filter = null, int pg = 1)
         {
             _logger.LogInformation("Preparing to get all players...");
 
+            if (!filter.IsValidYearRange())
+            {
+                _logger.LogError("Date range invalid!!!");
+                return BadRequest("Date range invalid!!!");
+            }
+
             var result = await _mediator.Send(new GetAllPlayers { 
                 Page = pg,
+                Filter = filter
             });
 
             if (result == null)
@@ -65,16 +73,9 @@ namespace FootballManagerAPI.Controllers
                 return NotFound();
             }
 
-
-            if (!filter.IsValidYearRange())
-            {
-                _logger.LogError("Date range invalid!!!");
-                return BadRequest("Date range invalid!!!");
-            }
-
             var mappedResult = _mapper.Map<List<PlayerGetDto>>(result.PageResults);
 
-            var page = new Pager<PlayerGetDto>(result.TotalResults, result.CurrentPage) { PageResults = mappedResult };
+            var page = new Pager<PlayerGetDto>(result.TotalResults, result.CurrentPage, result.PageNumOfResults) { PageResults = mappedResult };
 
             _logger.LogInformation("All players received successfully!!!");
 
@@ -153,60 +154,6 @@ namespace FootballManagerAPI.Controllers
             _logger.LogInformation($"Player with id {playerId} updated successfully!!!");
 
             return NoContent();
-        }
-
-        private async Task<List<Player>> ApplyPlayerFilter(PlayerFilter filter, List<Player> result)
-        {
-
-            if (filter.TeamId == 0 &&
-                String.IsNullOrWhiteSpace(filter.Name) &&
-                String.IsNullOrWhiteSpace(filter.Country) &&
-                String.IsNullOrWhiteSpace(filter.Position) &&
-                filter.MinYearOfBirth == 0 &&
-                filter.MaxYearOfBirth == 0)
-                return result;
-
-            if (filter.TeamId != 0)
-                result = await Task.Run(() => result.Where(p =>
-                    p.CurrentTeam.TeamId == filter.TeamId
-                ).ToList());
-
-            if (!String.IsNullOrWhiteSpace(filter.Name))
-                result = await Task.Run(() => result.Where(p =>
-                    p.PlayerPerson.Name.Contains(filter.Name, StringComparison.CurrentCultureIgnoreCase)
-                ).ToList());
-
-            if (!String.IsNullOrWhiteSpace(filter.Country))
-                result = await Task.Run(() => result.Where(p =>
-                    p.PlayerPerson.Country == filter.Country
-                ).ToList());
-
-            if (!String.IsNullOrWhiteSpace(filter.Position))
-                result = await Task.Run(() => result.Where(p =>
-                    p.Position == filter.Position
-                ).ToList());
-
-            if (filter.MinYearOfBirth != 0 && filter.MaxYearOfBirth != 0)
-                result = await Task.Run(() => result.Where(p =>
-                    p.PlayerPerson.BirthDate.Value.Year >= filter.MinYearOfBirth &&
-                    p.PlayerPerson.BirthDate.Value.Year <= filter.MaxYearOfBirth
-                ).ToList());
-
-            if (filter.MinYearOfBirth != 0)
-            {
-                result = await Task.Run(() => result.Where(p =>
-                    p.PlayerPerson.BirthDate.Value.Year >= filter.MinYearOfBirth
-                ).ToList());
-            }
-
-            if (filter.MaxYearOfBirth != 0)
-            {
-                result = await Task.Run(() => result.Where(p =>
-                       p.PlayerPerson.BirthDate.Value.Year <= filter.MaxYearOfBirth
-                   ).ToList());
-            }
-
-            return result;
         }
     }
 }

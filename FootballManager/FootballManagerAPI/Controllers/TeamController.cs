@@ -1,4 +1,5 @@
 ﻿using Application.Commands;
+using Application.Filters;
 using Application.Pagination;
 using Application.Queries;
 using AutoMapper;
@@ -58,7 +59,11 @@ namespace FootballManagerAPI.Controllers
         {
             _logger.LogInformation("Preparing to get all teams...");
 
-            var result = await _mediator.Send(new GetAllTeams() { Page = pg });
+            var result = await _mediator.Send(new GetAllTeams() 
+            { 
+                Page = pg,
+                Filter = filter
+            });
 
             if (result == null)
             {
@@ -69,6 +74,28 @@ namespace FootballManagerAPI.Controllers
             var mappedResult = _mapper.Map<List<TeamGetDto>>(result);
 
             _logger.LogInformation("All teams received successfully!!!");
+
+            return Ok(mappedResult);
+        }
+
+        [HttpGet]
+        [Route("List")]
+        [Authorize]
+        public async Task<IActionResult> GetAllTeamsList()
+        {
+            _logger.LogInformation("Preparing to get all teams list...");
+
+            var result = await _mediator.Send(new GetAllTeamsList());
+
+            if (result == null)
+            {
+                _logger.LogError("Couldn't get all teams list!!");
+                return NotFound();
+            }
+
+            var mappedResult = _mapper.Map<List<TeamGetDto>>(result);
+
+            _logger.LogInformation("All teams list received successfully!!!");
 
             return Ok(mappedResult);
         }
@@ -99,13 +126,14 @@ namespace FootballManagerAPI.Controllers
         [HttpGet]
         [Route("{id}/Players/{pg?}")]
         [Authorize]
-        public async Task<IActionResult> GetTeamPlayersById(int id, int pg = 1)
+        public async Task<IActionResult> GetTeamPlayersById(int id, [FromQuery] PlayerFilter filter = null, int pg = 1)
         {
             _logger.LogInformation($"Preparing to get players of team with id {id}...");
 
             var query = new GetPlayersByTeam { 
                 TeamId = id,
-                Page = pg
+                Page = pg,
+                Filter = filter
             };
             var result = await _mediator.Send(query);
 
@@ -117,7 +145,7 @@ namespace FootballManagerAPI.Controllers
 
             var mappedResult = _mapper.Map<List<ShortPlayerGetDto>>(result.PageResults);
 
-            var page = new Pager<ShortPlayerGetDto>(result.TotalResults, result.CurrentPage) { PageResults = mappedResult };
+            var page = new Pager<ShortPlayerGetDto>(result.TotalResults, result.CurrentPage, result.PageNumOfResults) { PageResults = mappedResult };
 
             _logger.LogInformation($"Players of team with id {id} received successfully!!!");
 
@@ -133,7 +161,6 @@ namespace FootballManagerAPI.Controllers
 
             var query = new GetFixturesByTeam { 
                 TeamId = id,
-                Page = pg
             };
             var result = await _mediator.Send(query);
 
@@ -143,13 +170,11 @@ namespace FootballManagerAPI.Controllers
                 return NotFound();
             }
 
-            var mappedResult = _mapper.Map<List<FixtureGetDto>>(result.PageResults);
-
-            var page = new Pager<FixtureGetDto>(result.TotalResults, result.CurrentPage) { PageResults = mappedResult };
+            var mappedResult = _mapper.Map<List<FixtureGetDto>>(result);
 
             _logger.LogInformation($"Fixtures of team with id {id} received successfully!!!");
 
-            return Ok(page);
+            return Ok(mappedResult);
         }
 
 
@@ -268,31 +293,6 @@ namespace FootballManagerAPI.Controllers
             _logger.LogInformation($"Manager with id {managerId} added to team with id {id} successfully!!!");
 
             return Ok(mappedResult);
-        }
-        private async Task<List<Team>> ApplyTeamFilter(TeamFilter filter, List<Team> result)
-        {
-
-            if (filter.LeagueId == 0 &&
-                String.IsNullOrWhiteSpace(filter.Name) &&
-                String.IsNullOrWhiteSpace(filter.Country))
-                return result;
-
-            if (filter.LeagueId != 0)
-                result = await Task.Run(() => result.Where(t =>
-                    t.CurrentLeague.LeagueId == filter.LeagueId
-                ).ToList());
-
-            if (!String.IsNullOrWhiteSpace(filter.Name))
-                result = await Task.Run(() => result.Where(t =>
-                    t.Name.Contains(filter.Name, StringComparison.CurrentCultureIgnoreCase)
-                ).ToList());
-
-            if (!String.IsNullOrWhiteSpace(filter.Country))
-                result = await Task.Run(() => result.Where(t =>
-                    t.Country == filter.Country
-                ).ToList());
-
-            return result;
         }
     }
 }

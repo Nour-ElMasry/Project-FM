@@ -1,4 +1,5 @@
 ﻿using Application.Abstract;
+using Application.Filters;
 using Application.Pagination;
 using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
@@ -24,13 +25,14 @@ namespace Infrastructure.Repository
             await Task.Run(() => _context.Teams.Remove(u));
         }
 
-        public async Task<Pager<Team>> GetAllTeams(int pg = 1)
+        public async Task<Pager<Team>> GetAllTeams(int pg, TeamFilter filter)
         {
             var page = new Pager<Team>(await _context.Teams.CountAsync(), pg);
 
             if (pg == 0)
             {
                 page.PageResults = await _context.Teams
+                .Where(t => ApplyTeamFilter(filter, t))
                 .Include(t => t.TeamManager).ThenInclude(tm => tm.ManagerPerson)
                 .Include(t => t.CurrentLeague)
                 .Include(t => t.CurrentSeasonStats)
@@ -41,6 +43,7 @@ namespace Infrastructure.Repository
             }
 
             page.PageResults = await _context.Teams
+                .Where(t => ApplyTeamFilter(filter, t))
                 .Include(t => t.TeamManager).ThenInclude(tm => tm.ManagerPerson)
                 .Include(t => t.CurrentLeague)
                 .Include(t => t.CurrentSeasonStats)
@@ -52,9 +55,9 @@ namespace Infrastructure.Repository
             return page;
         }
 
-        public async Task<int> GetNumberOfTeams()
+        public async Task<List<Team>> GetTeamsList()
         {
-            return await Task.Run(() => _context.Teams.Count());
+            return await _context.Teams.OrderBy(t => t.Name).ToListAsync();
         }
 
         public async Task<Team> GetTeamById(long id)
@@ -103,6 +106,29 @@ namespace Infrastructure.Repository
         public Task UpdateTeam(Team u)
         {
             return Task.Run(() => _context.Teams.Attach(u));
+        }
+
+        private static bool ApplyTeamFilter(TeamFilter filter, Team t)
+        {
+
+            if (filter.LeagueId == 0 &&
+                String.IsNullOrWhiteSpace(filter.Name) &&
+                String.IsNullOrWhiteSpace(filter.Country))
+                return true;
+
+            if (filter.LeagueId != 0)
+                if(!(t.CurrentLeague.LeagueId == filter.LeagueId))
+                    return false;
+
+            if (!String.IsNullOrWhiteSpace(filter.Name))
+              if(!t.Name.Contains(filter.Name, StringComparison.CurrentCultureIgnoreCase))
+                return false;
+
+            if (!String.IsNullOrWhiteSpace(filter.Country))
+                if (!(t.Country.ToLower() == filter.Country.ToLower()))
+                    return false;
+
+            return true;
         }
     }
 }

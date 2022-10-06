@@ -12,7 +12,7 @@ const TeamMatches = (props) => {
     useEffect(() => {
         GeneralAxiosService.getMethod("https://localhost:7067/api/v1/Teams/" + team + "/Fixtures/0")
         .then((response) => {
-            var matches = response.data.pageResults;
+            var matches = response.data;
             setHomeMatches(matches.filter(m => m.homeTeam.teamId === team && m.isPlayed === props.played));
             setAwayMatches(matches.filter(m => m.awayTeam.teamId === team && m.isPlayed === props.played));
         })

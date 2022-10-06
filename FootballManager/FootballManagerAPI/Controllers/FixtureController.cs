@@ -42,7 +42,7 @@ namespace FootballManagerAPI.Controllers
 
             var mappedResult = _mapper.Map<List<FixtureGetDto>>(result.PageResults);
 
-            var page = new Pager<FixtureGetDto>(result.TotalResults, result.CurrentPage) { PageResults = mappedResult };
+            var page = new Pager<FixtureGetDto>(result.TotalResults, result.CurrentPage, result.PageNumOfResults) { PageResults = mappedResult };
 
             _logger.LogInformation("All Fixtures have been recieved successfully!!");
 

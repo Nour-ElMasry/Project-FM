@@ -4,9 +4,8 @@ using MediatR;
 
 namespace Application.Queries
 {
-    public class GetFixturesByTeam : IRequest<Pager<Fixture>>
+    public class GetFixturesByTeam : IRequest<List<Fixture>>
     {
-        public int Page { get; set; }
         public long TeamId { get; set; }
     }
 }
