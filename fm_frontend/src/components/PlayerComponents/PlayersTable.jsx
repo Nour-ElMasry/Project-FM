@@ -35,13 +35,21 @@ const PlayersTable = (props) => {
     return <> 
     { !(players.pageResults.length > 0) && <h2 className='errorMsg'>No Players Found!</h2>}
     <div className='container--styledDarker'>
-    <FilterToolBar team={props.team} handleFilterSubmit={props.handleFilterSubmit}/>
+
+    <FilterToolBar 
+      resetFilterData={props.resetFilterData} 
+      team={props.team} 
+      handleFilterSubmit={props.handleFilterSubmit}
+    />
+
     <TableContainer className="tablesContainer">
       <Table className="teamPlayersTable" sx={{ minWidth: 500 }} aria-label="simple table">
         <TableHead>
           <TableRow sx={{cursor: "default"}}>
             <TableCell><h4>Player Info</h4></TableCell>
-            
+
+            <TableCell align="center"><h4>Rating</h4></TableCell>
+
             {isPlayersPage && <>
               <TableCell align="center"><h4>Team</h4></TableCell>
               <TableCell className='tableColumnHide' align="center"><h4>Attacking</h4></TableCell>
@@ -71,14 +79,16 @@ const PlayersTable = (props) => {
                 </div>
               </TableCell>
 
+              <RatingTableCell overall rating={p.playerStats?.overallRating}/>
+
               {isPlayersPage && <>
                 <TableCell align="center">
                   <img className="teamLogo" src={p.currentTeam?.teamLogo} alt="person"/>
                 </TableCell>
-                <RatingTableCell rating={p.playerStats?.attacking}/>
-                <RatingTableCell rating={p.playerStats?.playMaking}/>
-                <RatingTableCell rating={p.playerStats?.defending}/>
-                <RatingTableCell rating={p.playerStats?.goalkeeping}/>
+                <RatingTableCell hide rating={p.playerStats?.attacking}/>
+                <RatingTableCell hide rating={p.playerStats?.playMaking}/>
+                <RatingTableCell hide rating={p.playerStats?.defending}/>
+                <RatingTableCell hide rating={p.playerStats?.goalkeeping}/>
               </>}
 
               

@@ -10,18 +10,20 @@ import { useForm } from 'react-hook-form';
 import countryList from 'react-select-country-list';
 import GeneralAxiosService from "../services/GeneralAxiosService";
 import ListSelect from './ListSelect';
+import _ from 'lodash';
 
 const PlayreFilterDialog = (props) => {
+  const defaults = {
+    name: "",
+    minYearOfBirth: 0,
+    maxYearOfBirth: 0,
+    team: 0,
+    country: "",
+    position: ""
+  }
     const { register, handleSubmit, formState: { errors }, reset } = useForm(
       {
-        defaultValues: {
-          name: " ",
-          minYearOfBirth: 0,
-          maxYearOfBirth: 0,
-          team: 0,
-          country: " ",
-          position: " "
-        }
+        defaultValues: defaults
       }
     );
 
@@ -49,8 +51,11 @@ const PlayreFilterDialog = (props) => {
     }
     
     const onSubmitHandle = async (data) => {
-        await props.handleFilterSubmit(data);
-        sessionStorage.setItem("PlayersFilter_Key", JSON.stringify(data))
+        if(!_.isEqual(data, defaults)){
+          await props.handleFilterSubmit(data);
+          props.handleFilterResetVisible();
+        }
+
         reset();
         dialogHandleClose();
     }

@@ -14,6 +14,7 @@ const getPageNumber = () => {
 const Players = () => {
     const [players, setPlayers] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [hasError, setHasError] = useState(false);
     const [page, setPageApi] = useState(getPageNumber());
     const [user] = useState(JSON.parse(localStorage.getItem("User")));
     const [filterData, setFilterData] = useState({});
@@ -30,20 +31,32 @@ const Players = () => {
         sessionStorage.setItem("PlayersPage_Key", 1)
     }
 
+    const resetFilterData = () => {
+        setFilterData({});
+        setPageApi(1);
+    }
+
     useEffect(() => {
         if(user == null){
             navigate("/");
         }else{
             GeneralAxiosService.getMethodWithParams('https://localhost:7067/api/v1/Players/All/' + page, filterData)
             .then((response) => setPlayers(response.data))
-            .then(() => setLoading(false));
+            .then(() => {
+                setLoading(false);
+            })
+            .catch((e) => {
+                setLoading(false);
+                setHasError(true);
+            });
         }
     }, [user, navigate, page, filterData]);
 
     return <section className='playersSection container container--pa'>
         <h1 className="title">Players Page</h1>
         {loading && <Loading/>}
-        {!loading && <PlayersTable team={true} handleFilterSubmit={handleFilterSubmit} playersPage={true} loading={loading} players={players} handlePageChange={handlePageChange}/>}
+        {(hasError && !loading) && <h2 className='errorMsg'>Oops! Something went wrong!</h2>}
+        {(!loading && !hasError) && <PlayersTable resetFilterData={resetFilterData} team={true} handleFilterSubmit={handleFilterSubmit} playersPage={true} loading={loading} players={players} handlePageChange={handlePageChange}/>}
     </section>
 }
 

@@ -6,7 +6,6 @@ import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import SportsSoccerIcon from '@mui/icons-material/SportsSoccer';
 import HomeIcon from '@mui/icons-material/Home';
 import GroupsIcon from '@mui/icons-material/Groups';
-import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import UserProfileButton from '../ProfileComponents/UserProfileButton';
 
 const NormalHeader = () => {
@@ -24,10 +23,8 @@ const NormalHeader = () => {
 
                 <div className="navbar__links">
                     <Link to="/home">Home</Link>
-                    <Link to="/leagues">Leagues</Link>
                     <Link to="/players" onClick={() => {
                       sessionStorage.setItem("PlayersPage_Key", 1)
-                      sessionStorage.removeItem("PlayersFilter_Key")
                     }}>Players</Link>
                     <Link to="/matches" onClick={() => sessionStorage.setItem("Page_Key", 1)}>Matches</Link>
                 </div>
@@ -55,11 +52,6 @@ const NormalHeader = () => {
                         to="/home"
                         label="Home" icon={<HomeIcon sx={{ fontSize: 25 }}/>}
                         />
-                      <BottomNavigationAction 
-                        component={Link}
-                        className="nav-item"
-                        to="/leagues"
-                        label="Leagues" icon={<EmojiEventsIcon sx={{ fontSize: 25 }} />}/>
                       <BottomNavigationAction 
                         component={Link}
                         className="nav-item"

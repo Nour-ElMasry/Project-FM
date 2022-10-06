@@ -19,6 +19,11 @@ const TeamPlayers = (props) => {
         setPageApi(1);
     }
 
+    const resetFilterData = () => {
+        setFilterData({});
+        setPageApi(1);
+    }
+
     useEffect(() => {
         GeneralAxiosService.getMethodWithParams('https://localhost:7067/api/v1/Teams/'+ team +'/Players/' + page, filterData)
         .then((response) => setPlayers(response.data))
@@ -27,7 +32,13 @@ const TeamPlayers = (props) => {
 
     return <div>
         {loading && <Loading/>}
-        {!loading && <PlayersTable playersPage={false} players={players} handlePageChange={handlePageChange} handleFilterSubmit={handleFilterSubmit}/>}
+        {!loading && <PlayersTable 
+            playersPage={false}
+            resetFilterData={resetFilterData}
+            players={players}
+            handlePageChange={handlePageChange} 
+            handleFilterSubmit={handleFilterSubmit}
+        />}
     </div>
 }
 
