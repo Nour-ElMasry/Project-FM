@@ -136,17 +136,46 @@
         }  
         .playerRecord{
             .recordContainer{
-                margin: 0 auto;
-                &Top{
-                    &Left{
-                        text-align: center;
-                        .teamLogo{
-                            width: 4rem;
-                            height: 4rem;
+                text-align: center;
+                .statValue{
+                    width: 2rem;
+                    height: 2rem;
+                    margin: 0 auto;
+                    padding-top: 0.5rem;
+                    &Team{
+                        width: 2rem;
+                        height: 2rem;
+                        margin: 0 auto;
+                    }
+                }
+                .statTxt{
+                    margin-top: 0.25rem;
+                }
+                &Row{
+                    &:not(:last-child){
+                        .recordContainerRowLeft{
+                            border-bottom: 2px solid silver;
+                        }
+                        .recordContainerRowRight{
+                            border-bottom: 2px solid silver;
                         }
                     }
+                    &Left{
+                        width: 60%;
+                        max-width: 12rem;
+                        display: grid;
+                        grid-template-rows: 3fr 1fr;
+                        padding: 1rem;
+                        height: 6.0625rem;
+                        border-right: 2px solid silver;
+                    }
                     &Right{
-                        
+                        width: 60%;
+                        max-width: 12rem;
+                        display: grid;
+                        grid-template-rows: 3fr 1fr;
+                        padding: 1rem;
+                        height: 6.0625rem;
                     }
                 }
             }

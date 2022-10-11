@@ -1,19 +1,26 @@
 const PlayerRecord = (props) => {
     return <div className="playerRecord container--pa container--styled">
         <h2>Player Record</h2>
-        {console.log(props.player)}
         <div className="recordContainer">
-            <div className="recordContainerTop flex flex-ai-center">
-                <div className="recordContainerTopLeft">
-                    <img className="teamLogo" src={props.player?.currentTeam?.teamLogo} alt="Team"/>
-                    <h4>{props.player?.currentTeam?.teamName}</h4>
+            <div className="recordContainerRow flex flex-ai-c flex-jc-c">
+                <div className="recordContainerRowLeft">
+                    <img className="statValueTeam" src={props.player?.currentTeam?.teamLogo} alt="Team"/>
+                    <p className="statTxt">{props.player?.currentTeam?.teamName}</p>
                 </div>
-                <div className="recordContainerTopRight">
-
+                <div className="recordContainerRowRight">
+                    <h4 className="statValue">{props.player?.playerRecord?.gamesPlayed}</h4>
+                    <p className="statTxt">Games Played</p> 
                 </div>
             </div>
-            <div className="recordContainerBottom">
-
+            <div className="recordContainerRow flex flex-ai-c flex-jc-c">
+                <div className="recordContainerRowLeft">
+                    <h4 className="statValue">{props.player?.playerRecord?.goals}</h4>
+                    <p className="statTxt">Goals</p> 
+                </div>
+                <div className="recordContainerRowRight">
+                    <h4 className="statValue">{props.player?.playerRecord?.assists}</h4>
+                    <p className="statTxt">Assists</p> 
+                </div>
             </div>
         </div>
     </div>

@@ -10,7 +10,8 @@ import UserProfileButton from '../ProfileComponents/UserProfileButton';
 
 const NormalHeader = () => {
     const [value, setValue] = useState(0);
-  
+    const [user] = useState(JSON.parse(localStorage.getItem("User")));
+
     return <>
         <header>
             <nav className="navbar container DesktopNav flex flex-ai-c flex-jc-sb">
@@ -23,11 +24,13 @@ const NormalHeader = () => {
 
                 <div className="navbar__links">
                     <Link to="/home">Home</Link>
-                    <Link to="/players" onClick={() => {
-                      sessionStorage.setItem("PlayersPage_Key", 1)
-                    }}>Players</Link>
-                    <Link to="/matches" onClick={() => sessionStorage.setItem("Page_Key", 1)}>Matches</Link>
-                </div>
+                      {!user.customer.hasTeam && <>
+                        <Link to="/players" onClick={() => {
+                        sessionStorage.setItem("PlayersPage_Key", 1)
+                      }}>Players</Link>
+                      <Link to="/matches" onClick={() => sessionStorage.setItem("Page_Key", 1)}>Matches</Link>
+                      </>}
+                    </div>
 
                 <div className="navbar__userProfile">
                   <UserProfileButton/>
@@ -51,7 +54,8 @@ const NormalHeader = () => {
                         to="/home"
                         label="Home" icon={<HomeIcon sx={{ fontSize: 25 }}/>}
                         />
-                      <BottomNavigationAction 
+                      {!user.customer.hasTeam && 
+                        <BottomNavigationAction 
                         component={Link}
                         className="nav-item"
                         to="/players"
@@ -68,13 +72,15 @@ const NormalHeader = () => {
                           }))
                         }}
                         />}/>
-                      <BottomNavigationAction 
+                      }
+                      {!user.customer.hasTeam && <BottomNavigationAction 
                         component={Link}
                         className="nav-item"
                         to="/matches"
                         label="Matches" icon={<SportsSoccerIcon sx={{ fontSize: 25 }}
                         onClick={() => sessionStorage.setItem("Page_Key", 1)}
                         />} />
+                      }
                     </BottomNavigation>
                 </Box>
             </nav>

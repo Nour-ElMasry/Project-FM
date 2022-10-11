@@ -6,7 +6,7 @@ import Avatar from '@mui/material/Avatar';
 import IconButton from '@mui/material/IconButton';
 import { Link } from 'react-router-dom';
 
-const UserProfileButton = () => {
+const UserProfileButton = (props) => {
     const [anchorEl, setAnchorEl] = useState(null);
 
     const handleOpenUserMenu = (event) => {
@@ -19,7 +19,7 @@ const UserProfileButton = () => {
 
     return <Box>
     <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-        <Avatar alt="Remy Sharp" src="https://pbs.twimg.com/profile_images/1484245584978616324/PyqroykF_400x400.png" />
+        <Avatar sx={{ width: 32, height: 32 }} alt="user" src={props.userImg} />
     </IconButton>
 
     <Menu
