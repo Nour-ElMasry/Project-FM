@@ -6,7 +6,7 @@ const CreateTeamLanding = () => {
         <div className="createTeamLandingInfo">
             <h3>Start your managing journey!</h3>
             <p>Create your dream team and compete against opponents from the top leagues!</p>
-            <Button disableElevation className='createBtn' variant="contained">Create Team</Button>
+            <Button disableElevation className='createBtn' color="success" variant="contained">Create Team</Button>
         </div>  
     </div>
 }

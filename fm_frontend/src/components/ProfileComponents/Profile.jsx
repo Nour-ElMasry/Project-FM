@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ProfileCreateTeam from "./ProfileCreateTeam";
+import ProfileHeader from "./ProfileHeader";
 
 const Profile = () => {
     const [user] = useState(JSON.parse(localStorage.getItem("User")));
@@ -11,8 +13,10 @@ const Profile = () => {
         }
     }, [user, navigate]);
 
-    return <section className="profileSection container container--pa">
-        <h1 className="title">Profile Page</h1>
+    return <section className="profileSection container--pa">
+        <h1 className="title">Profile</h1>
+        <ProfileHeader user={user.customer}/>
+        {!user.hasTeam && <ProfileCreateTeam />}
     </section>
 }
 export default Profile;

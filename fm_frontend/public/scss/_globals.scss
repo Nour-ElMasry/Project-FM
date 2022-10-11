@@ -152,3 +152,29 @@ p{
         }
     }
 }
+
+.personHeaderInfo{
+    max-width: 35rem;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+
+    .personImg{
+        width: 20%;
+        height: 20%;
+        max-width: 7rem;
+        margin-right: 4%;
+        border-radius: 100%;
+        border: 2px solid black;
+        @include breakpoint-up(medium){
+            border-width: 3px;
+        }
+    }
+
+    .personName{
+        font-size: $font-sm;
+        @include breakpoint-up(medium){
+            font-size: $font-md;
+        }
+    }
+}

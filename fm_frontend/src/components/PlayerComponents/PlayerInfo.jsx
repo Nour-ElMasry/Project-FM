@@ -20,9 +20,9 @@ const PlayerInfo = (props) => {
                     </Link>
                     <br/>
                     <div>
-                        <h3>
+                        <h4>
                             {DateService.dateLongFormat(props.player?.playerPerson?.birthDate)}
-                        </h3>
+                        </h4>
                         <p>Date Of Birth</p>
                     </div>
                 </div>
@@ -39,9 +39,9 @@ const PlayerInfo = (props) => {
                     </div>
                     <br/>
                     <div>
-                        <h3>
+                        <h4>
                             {DateService.getAge(props.player?.playerPerson?.birthDate)}
-                        </h3>
+                        </h4>
                         <p>Age</p>
                     </div>
                 </div>

@@ -33,7 +33,7 @@ const NormalHeader = () => {
                     </div>
 
                 <div className="navbar__userProfile">
-                  <UserProfileButton/>
+                  <UserProfileButton userImg={user.customer.userPerson.image}/>
                 </div>
 
             </nav>
