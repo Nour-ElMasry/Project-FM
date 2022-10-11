@@ -48,18 +48,4 @@
             }
         }
     }
-
-    .tabContent{
-        margin: 1.5rem 0 2.5rem;
-        @include breakpoint-up(medium){
-            margin-top: 2.5rem;
-        }
-        .gameweekTables{
-            margin: 0;
-        }
-
-        .loading{
-            margin-top: 5rem;
-        }
-    }
 }

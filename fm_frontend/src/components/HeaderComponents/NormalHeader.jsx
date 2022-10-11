@@ -29,7 +29,6 @@ const NormalHeader = () => {
                     <Link to="/matches" onClick={() => sessionStorage.setItem("Page_Key", 1)}>Matches</Link>
                 </div>
 
-
                 <div className="navbar__userProfile">
                   <UserProfileButton/>
                 </div>

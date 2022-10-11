@@ -38,17 +38,16 @@ const UserProfileButton = () => {
       open={Boolean(anchorEl)}
       onClose={handleClose}
     >
-        <MenuItem onClick={handleClose}>
-            <Link to="/profile" style={{color: "black"}}>
+        <Link to="/profile" style={{color: "black"}}>
+          <MenuItem onClick={handleClose}> 
               Profile
-            </Link>
-        </MenuItem>
-
-        <MenuItem onClick={handleClose}>
-            <Link to="/" style={{color: "black"}} onClick={() => window.localStorage.clear()}>
+          </MenuItem>
+        </Link>
+        <Link to="/" style={{color: "black"}} onClick={() => window.localStorage.clear()}>
+          <MenuItem onClick={handleClose}>
               Log Out
-            </Link>
-        </MenuItem>
+          </MenuItem>
+        </Link>
     </Menu>
   </Box>
 }

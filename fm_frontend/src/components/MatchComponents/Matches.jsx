@@ -5,6 +5,7 @@ import MatchesTable from './MatchesTable';
 import _ from 'lodash';
 import Loading from '../Loading';
 import { useNavigate } from 'react-router-dom';
+import ErrorMsg from '../ErrorMsg';
 
 const getPageNumber = () => {
   if(sessionStorage && parseInt(sessionStorage.getItem("Page_Key")) > 0) {
@@ -56,7 +57,7 @@ const Matches = () => {
         
         if(loading === false){
             if (hasError) {
-                return <h2 className='errorMsg'>Oops! Something went wrong!</h2>;
+                return <ErrorMsg />
             }
             return <>
                 <div className='gameweekTables'>

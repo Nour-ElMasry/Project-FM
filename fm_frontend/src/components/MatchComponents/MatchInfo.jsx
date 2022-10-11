@@ -14,7 +14,7 @@ const MatchInfo = (props) => {
         </h4>
         <div className='flex flex-ai-c hoverableIcon infoContainer'>
             <div className='infoIcon'>
-                <Link to={"/league/"+league.leagueId}>
+                <Link to={"/leagues/"+league.leagueId}>
                     <EmojiEventsIcon/>
                 </Link>
             </div>

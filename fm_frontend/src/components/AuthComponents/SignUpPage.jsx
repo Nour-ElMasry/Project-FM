@@ -165,7 +165,7 @@ export default function SignUp() {
                           disableHoverListener
                           disableTouchListener
                           title="Username must not contain any special characters">
-                          <InfoIcon style={{color: "#1976d2", cursor: "pointer"}}/>
+                          <InfoIcon style={{color: "#1976d2", cursor: "default"}}/>
                         </Tooltip>  
                       </InputAdornment>,
                     }}
@@ -208,7 +208,7 @@ export default function SignUp() {
                           disableHoverListener
                           disableTouchListener
                           title="Password must be at least 8 characters long and must contain at least 1 capital letter, 1 number and 1 special character.">
-                          <InfoIcon style={{color: "#1976d2", cursor: "pointer"}}/>
+                          <InfoIcon style={{color: "#1976d2", cursor: "default"}}/>
                         </Tooltip>  
                       </InputAdornment>,
                     }}

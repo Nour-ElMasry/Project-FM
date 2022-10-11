@@ -6,6 +6,7 @@ import MatchEvents from './MatchEvents';
 import MatchInfo from './MatchInfo';
 import MatchTeamsLeagueTable from './MatchTeamsLeagueTable';
 import Loading from '../Loading';
+import ErrorMsg from '../ErrorMsg';
 
 const Match = () => {
     const params = useParams();
@@ -33,7 +34,7 @@ const Match = () => {
         <h1 className='title'>Match Details</h1>
 
             {loading && <Loading />}
-            {hasError && <h2 className='errorMsg'>Oops! Something went wrong!</h2>}
+            {hasError && <ErrorMsg />}
             {(!hasError && !loading) && <>
                 <div className='matchesContainer container--styled matchHeader flex flex-ai-c flex-jc-sa '>
                     <MatchItem tableView={false} match={match}/>

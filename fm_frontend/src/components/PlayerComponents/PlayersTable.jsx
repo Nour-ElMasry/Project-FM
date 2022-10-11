@@ -5,31 +5,20 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import RatingTableCell from '../RatingTableCell';
-import CountryTableItem from '../CountryTableItem';
+import CountryItem from '../CountryItem';
 import Pagination from '../Pagination';
 import FilterToolBar from '../FilterTooBar';
+import { useNavigate } from 'react-router-dom';
+import DateService from '../../services/DateService';
 
 const PlayersTable = (props) => {
     const players = props.players;
     const isPlayersPage = props.playersPage;
+    const navigate = useNavigate();
 
-    const getAge = (dateString) => {
-        var today = new Date();
-        var birthDate = new Date(dateString);
-        var age = today.getFullYear() - birthDate.getFullYear();
-        var m = today.getMonth() - birthDate.getMonth();
-        if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) 
-        {
-            age--;
-        }
-        return age;
-    }
-    
-    const dateLongFormat = (date) => {
-      var options = { year: 'numeric', month: 'short', day: 'numeric' };
-      var today  = new Date(date);
-
-      return today.toLocaleDateString("en-US", options);
+    const getDate = (date) => {
+      var dateAge = DateService.getDateAndAge(date);
+      return dateAge.date + " (" + dateAge.age + ")";
     }
 
     return <> 
@@ -66,8 +55,10 @@ const PlayersTable = (props) => {
         <TableBody>
           {players?.pageResults?.sort((a, b) => a.playerPerson.name.localeCompare(b.playerPerson.name)).map((p) => (
             <TableRow
+              hover
+              onClick={() => navigate("/Players/" + p.id)}
               key={p.id}
-              sx={{ '&:last-child td, &:last-child th': { border: 0 }, cursor: "default"}}>
+              sx={{ '&:last-child td, &:last-child th': { border: 0 }, cursor: "pointer"}}>
 
               <TableCell component="th" scope="row">
                 <div className="flex flex-ai-c">
@@ -92,10 +83,11 @@ const PlayersTable = (props) => {
               </>}
 
               
+              <TableCell className="countryTableImg" align="center">
+                <CountryItem country={p.playerPerson?.country}/>
+              </TableCell>
               
-              <CountryTableItem country={p.playerPerson?.country}/>
-              
-              <TableCell align="center">{dateLongFormat(p.playerPerson?.birthDate)} ({getAge(p.playerPerson.birthDate)})</TableCell>
+              <TableCell align="center">{getDate(p.playerPerson?.birthDate)}</TableCell>
             
             </TableRow>
           ))}

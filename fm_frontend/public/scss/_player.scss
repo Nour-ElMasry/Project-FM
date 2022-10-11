@@ -1,0 +1,155 @@
+.playerSection{
+    max-width: 50rem;
+    .divider{
+        margin: 0 2rem;
+    }
+    .playerHeader{
+        &Info{
+            padding: 2rem;
+            max-width: 35rem;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            @include breakpoint-up(medium){
+                flex-direction: column;
+                text-align: center;
+            }
+            .playerImg{
+                width: 20%;
+                height: 20%;
+                max-width: 7rem;
+                margin-right: 4%;
+                border-radius: 100%;
+                border: 2px solid black;
+                @include breakpoint-up(medium){
+                    margin-right: 0;
+                    margin-bottom: 4%;
+                }
+            }
+            .playerName{
+                font-size: $font-mb-lg;
+                @include breakpoint-down(small){
+                    font-size: 0.9375rem;
+                }
+            }
+        }
+        .css-1gsv261{ //Reset styles applied by mui to the tabs
+            all: unset;
+        }
+    }
+    .tabContent{
+        h2{
+            font-family: 'Orbitron', sans-serif;
+            font-size: $font-mb-md-title;
+            margin-bottom: 1.75rem;
+            text-align: center;
+        }
+        h3{
+            font-size: $font-md;
+        }
+        p{
+            font-size: $font-sm;
+        }
+        .tabsGridContainer{
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            @include breakpoint-up(medium){
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .playerMainInfo{
+            .playerInfoContainer{
+                max-width: 18rem;
+                margin: 0 auto;
+            }
+
+            &Team{
+                .teamContainer{
+                    margin: 1rem 0;
+                    padding: 0.5rem;
+                    border-radius: 0.25rem;
+                    min-width: 7rem;
+                    min-height: 5.25rem;
+                    color: black;
+                    border: 2px solid hsl(0, 0%, 75%);
+                    transition: all ease-in-out 200ms;
+                    cursor: pointer;
+                    flex-direction: column;
+
+                    &:hover{
+                        opacity: 0.85;
+                        box-shadow: 0px 0px 10px 4px hsl(0, 0%, 75%);
+                    }
+                    .teamLogo{
+                        padding: 0.25rem;
+                        border-radius: 100%;
+                        border: 1px solid black;
+                        width: 2.5rem;
+                        height: 2.5rem;
+                        background-color: $veryLightGray;
+                        margin-bottom: 0.25rem;
+                       img{
+                        width: 100%;
+                        height: 100%;
+                       } 
+                    }
+                }
+            }
+            &Country{
+                .countryContainer{
+                    margin: 1rem 0;
+                    padding: 0.5rem;
+                    min-width: 7rem;
+                    min-height: 5.25rem;
+                    border-radius: 0.25rem;
+                    color: black;
+                    border: 2px solid hsl(0, 0%, 75%);
+                    transition: all ease-in-out 200ms;
+                    cursor: default;
+                    flex-direction: column;
+                    .countryLogo{
+                        padding: 0.3rem;
+                        padding-bottom: 0;
+                        border-radius: 0.5rem;
+                        border: 1px solid hsl(0, 0%, 75%);
+                        background-color: $lightGrey;
+                        margin-bottom: 0.5rem;
+                        img{
+                            height: 1.5rem;
+                            width: auto;
+                        }
+                    }
+                }
+            }
+        }
+        .playerStats{
+            .ratingProgressContainer{
+                max-width: 20rem;
+                margin: 0 auto;
+                margin-bottom: 1rem;
+                &Txt{
+                    margin-bottom: 0.25rem;
+                }
+            }
+        }  
+        .playerRecord{
+            .recordContainer{
+                margin: 0 auto;
+                &Top{
+                    &Left{
+                        text-align: center;
+                        .teamLogo{
+                            width: 4rem;
+                            height: 4rem;
+                        }
+                    }
+                    &Right{
+                        
+                    }
+                }
+            }
+        }
+    }
+}

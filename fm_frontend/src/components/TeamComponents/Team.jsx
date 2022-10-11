@@ -2,11 +2,12 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import GeneralAxiosService from "../../services/GeneralAxiosService";
 import TeamHeader from "./TeamHeader";
-import TeamTabs from "./TeamTabs";
+import HeaderTabs from "../TabComponents/HeaderTabs";
 import TeamMatches from "./TeamMatches";
-import TeamTabPanel from "./TeamTabPanel";
+import TabPanel from "../TabComponents/TabPanel";
 import Loading from "../Loading";
 import TeamPlayers from "./TeamPlayers";
+import ErrorMsg from "../ErrorMsg";
 
 const Team = (props) => {
     const params = useParams();
@@ -38,24 +39,28 @@ const Team = (props) => {
 
     return <section className="teamSection container container--pa">
         <h1 className='title'>Team Details</h1>
-        {hasError && <h2 className='errorMsg'>Oops! Something went wrong!</h2>}
+        {hasError && <ErrorMsg />}
         {loading && <Loading/>}
 
         {(!loading && !hasError) && <div className="teamHeader container container--styled">
             <TeamHeader teamName={team.name} ratings={team.currentTeamSheet} teamLogo={team.logo}/>
-            <TeamTabs value={value} handleChange={handleChange}/>
+            <HeaderTabs 
+                tabs={["Matches", "Results", "Players"]} 
+                value={value} 
+                handleChange={handleChange}
+            />
         </div>
         }
         {(!loading && !hasError)  && <div className="tabContent">
-            <TeamTabPanel value={value} index={0}>
+            <TabPanel value={value} index={0}>
                 <TeamMatches teamId={team.id} played={false}/>
-            </TeamTabPanel>
-            <TeamTabPanel value={value} index={1}>
+            </TabPanel>
+            <TabPanel value={value} index={1}>
                 <TeamMatches teamId={team.id} played={true}/>
-            </TeamTabPanel>
-            <TeamTabPanel value={value} index={2}>
+            </TabPanel>
+            <TabPanel value={value} index={2}>
                 <TeamPlayers teamId={team.id}/>
-            </TeamTabPanel>     
+            </TabPanel>     
         </div>}
     </section>
 }

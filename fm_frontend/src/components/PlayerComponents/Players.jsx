@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import GeneralAxiosService from "../../services/GeneralAxiosService";
+import ErrorMsg from "../ErrorMsg";
 import Loading from "../Loading";
 import PlayersTable from "./PlayersTable";
 
@@ -53,9 +54,9 @@ const Players = () => {
     }, [user, navigate, page, filterData]);
 
     return <section className='playersSection container container--pa'>
-        <h1 className="title">Players Page</h1>
+        <h1 className="title">List Of Players</h1>
         {loading && <Loading/>}
-        {(hasError && !loading) && <h2 className='errorMsg'>Oops! Something went wrong!</h2>}
+        {(hasError && !loading) && <ErrorMsg />}
         {(!loading && !hasError) && <PlayersTable resetFilterData={resetFilterData} team={true} handleFilterSubmit={handleFilterSubmit} playersPage={true} loading={loading} players={players} handlePageChange={handlePageChange}/>}
     </section>
 }

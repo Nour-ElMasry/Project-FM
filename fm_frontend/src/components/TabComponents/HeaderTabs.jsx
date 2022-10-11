@@ -4,23 +4,20 @@ import Box from '@mui/material/Box';
 
 function a11yProps(index) {
     return {
-      id: `simple-tab-${index}`,
       'aria-controls': `simple-tabpanel-${index}`,
     };
-  }
+}
 
-
-const TeamTabs = (props) => {
-    
+const HeaderTabs = (props) => {
     return <Box>
     <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
       <Tabs centered value={props.value} onChange={props.handleChange}>
-        <Tab label="Matches" {...a11yProps(0)} />
-        <Tab label="Results" {...a11yProps(1)} />
-        <Tab label="Players" {...a11yProps(2)} />
+        {props.tabs.map((t, i) => 
+          <Tab key={i} label={t} {...a11yProps(i)} />
+        )}
       </Tabs>
     </Box>
   </Box>
 }
 
-export default TeamTabs;
+export default HeaderTabs;

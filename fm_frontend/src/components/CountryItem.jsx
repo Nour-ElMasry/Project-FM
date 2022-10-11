@@ -1,6 +1,4 @@
-import TableCell from '@mui/material/TableCell';
-
-const CountryTableItem = (props) => {
+const CountryItem = (props) => {
     const displayFlag = () => {
         var country = props.country.toLowerCase();
         if(country.includes("republic")){
@@ -34,20 +32,16 @@ const CountryTableItem = (props) => {
         }
 
         if(country.includes("yugoslavia")){
-            return <TableCell  align="center">
-            <img 
-                className="countryImg" 
+            return <img 
                 src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/61/Flag_of_Yugoslavia_%281946-1992%29.svg/800px-Flag_of_Yugoslavia_%281946-1992%29.svg.png?20220813004708"
                 alt={props.country}
             />
-        </TableCell>
         }
 
-        return <TableCell  align="center">
-            <img className="countryImg" src={'https://countryflagsapi.com/png/'+ country} alt={props.country}/>
-        </TableCell>
+        return <img src={'https://countryflagsapi.com/png/'+ country} alt={props.country}/>
+        
     }
     return <>{displayFlag()}</>
 }
 
-export default CountryTableItem;
+export default CountryItem;

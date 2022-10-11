@@ -1,13 +1,13 @@
 import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 
-TeamTabPanel.propTypes = {
+TabPanel.propTypes = {
     children: PropTypes.node,
     index: PropTypes.number.isRequired,
     value: PropTypes.number.isRequired,
 };
 
-function TeamTabPanel(props) {
+function TabPanel(props) {
     const { children, value, index, ...other } = props;
     
     return (
@@ -27,4 +27,4 @@ function TeamTabPanel(props) {
     );
 }
 
-export default TeamTabPanel;
+export default TabPanel;
