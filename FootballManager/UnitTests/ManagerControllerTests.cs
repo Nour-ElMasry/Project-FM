@@ -2,8 +2,8 @@
 using Application.Queries;
 using AutoMapper;
 using Domain.Entities;
-using FootballManagerAPI.Controllers;
-using FootballManagerAPI.Dto;
+using Application.Controllers;
+using Application.Dto;
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Mvc;

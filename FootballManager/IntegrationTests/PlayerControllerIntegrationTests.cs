@@ -1,4 +1,4 @@
-﻿using FootballManagerAPI.Dto;
+﻿using Application.Dto;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Newtonsoft.Json;
 using System.Net;

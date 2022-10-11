@@ -1,7 +1,6 @@
-﻿using Application.Filters;
-using Application.Pagination;
+﻿using Application.Pagination;
 using Domain.Entities;
-using FootballManagerAPI.Filters;
+using Application.Filters;
 using MediatR;
 
 namespace Application.Queries

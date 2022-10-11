@@ -1,8 +1,7 @@
 using Application;
 using Application.Abstract;
 using Domain.Entities;
-using FootballManagerAPI;
-using FootballManagerAPI.Middleware;
+using Application.Middleware;
 using Infrastructure;
 using Infrastructure.Repository;
 using MediatR;

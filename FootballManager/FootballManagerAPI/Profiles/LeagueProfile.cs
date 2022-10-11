@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Domain.Entities;
-using FootballManagerAPI.Dto;
+using Application.Dto;
 
-namespace FootballManagerAPI.Profiles
+namespace Application.Profiles
 {
     public class LeagueProfile : Profile
     {

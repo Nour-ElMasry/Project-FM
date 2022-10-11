@@ -1,16 +1,15 @@
 ﻿using Application.Commands;
-using Application.Filters;
 using Application.Pagination;
 using Application.Queries;
 using AutoMapper;
 using Domain.Entities;
-using FootballManagerAPI.Dto;
-using FootballManagerAPI.Filters;
+using Application.Dto;
+using Application.Filters;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FootballManagerAPI.Controllers
+namespace Application.Controllers
 {
     [Route("api/v1/Teams")]
     [ApiController]
@@ -55,14 +54,13 @@ namespace FootballManagerAPI.Controllers
         [HttpGet]
         [Route("All/{pg?}")]
         [Authorize]
-        public async Task<IActionResult> GetAllTeams([FromQuery] TeamFilter filter = null, int pg = 1)
+        public async Task<IActionResult> GetAllTeams(int pg = 1)
         {
             _logger.LogInformation("Preparing to get all teams...");
 
             var result = await _mediator.Send(new GetAllTeams() 
             { 
                 Page = pg,
-                Filter = filter
             });
 
             if (result == null)
@@ -155,7 +153,7 @@ namespace FootballManagerAPI.Controllers
         [HttpGet]
         [Route("{id}/Fixtures/{pg?}")]
         [Authorize]
-        public async Task<IActionResult> GetTeamFixturesById(int id, int pg = 1)
+        public async Task<IActionResult> GetTeamFixturesById(int id)
         {
             _logger.LogInformation($"Preparing to get fixtures of team with id {id}...");
 

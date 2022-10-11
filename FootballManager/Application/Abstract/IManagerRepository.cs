@@ -9,5 +9,6 @@ namespace Application.Abstract
         Task DeleteManager(Manager u);
         Task<Manager> GetManagerById(long id);
         Task<List<Manager>> GetAllManagers();
+        Task<bool> UserHasTeam(User u);
     }
 }

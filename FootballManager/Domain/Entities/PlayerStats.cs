@@ -8,6 +8,7 @@ public abstract class PlayerStats
     public int PlayMaking { get; set; }
     public int Defending { get; set; }
     public int Goalkeeping { get; set; }
+    public int OverallRating { get; set; }
 
     public PlayerStats() { }
     public PlayerStats(int attacking, int playMaking, int defending, int goalkeeping)

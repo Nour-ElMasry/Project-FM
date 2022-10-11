@@ -1,6 +1,6 @@
 ﻿using Domain.Entities;
 
-namespace FootballManagerAPI.Dto
+namespace Application.Dto
 {
     public class UserGetDto
     {

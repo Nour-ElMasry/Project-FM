@@ -1,9 +1,9 @@
 ﻿using Application.Commands;
 using AutoMapper;
 using Domain.Entities;
-using FootballManagerAPI.Dto;
+using Application.Dto;
 
-namespace FootballManagerAPI.Profiles
+namespace Application.Profiles
 {
     public class UserProfile : Profile
     {

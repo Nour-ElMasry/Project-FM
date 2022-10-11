@@ -38,6 +38,16 @@ namespace Infrastructure.Repository
                 .SingleOrDefaultAsync(m => m.ManagerId == id);
         }
 
+        public async Task<bool> UserHasTeam(User u)
+        {
+            var userManager = await _context.Managers.SingleOrDefaultAsync(m => m.ManagerPerson.PersonId == u.UserPerson.PersonId);
+
+            if (userManager == null)
+                return false;
+
+            return userManager.CurrentTeam == null;
+        }
+
         public async Task Save()
         {
             await _context.SaveChangesAsync();

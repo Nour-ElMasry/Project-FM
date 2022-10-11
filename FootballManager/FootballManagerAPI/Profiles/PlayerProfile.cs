@@ -1,9 +1,9 @@
 ﻿using Application.Commands;
 using AutoMapper;
 using Domain.Entities;
-using FootballManagerAPI.Dto;
+using Application.Dto;
 
-namespace FootballManagerAPI.Profiles
+namespace Application.Profiles
 {
     public class PlayerProfile : Profile
     {
@@ -36,6 +36,7 @@ namespace FootballManagerAPI.Profiles
                 .ForMember(pd => pd.Position, opt => opt.MapFrom(p => p.Position));
 
             CreateMap<Player, ShortPlayerGetDto>()
+                .ForMember(pd => pd.PlayerStats, opt => opt.MapFrom(p => p.CurrentPlayerStats))
                 .ForMember(pd => pd.Id, opt => opt.MapFrom(p => p.PlayerId))
                 .ForMember(pd => pd.PlayerPerson, opt => opt.MapFrom(p => p.PlayerPerson))
                 .ForMember(pd => pd.CurrentTeam, opt => opt.MapFrom(p => new ShortTeamGetDto

@@ -3,13 +3,13 @@ using Application.Pagination;
 using Application.Queries;
 using AutoMapper;
 using Domain.Entities;
-using FootballManagerAPI.Dto;
-using FootballManagerAPI.Filters;
+using Application.Dto;
+using Application.Filters;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FootballManagerAPI.Controllers
+namespace Application.Controllers
 {
     [Route("api/v1/Players")]
     [ApiController]

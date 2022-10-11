@@ -17,7 +17,7 @@ namespace Application.QueryHandlers
 
         public async Task<Pager<Team>> Handle(GetAllTeams request, CancellationToken cancellationToken)
         {
-            return await _unitOfWork.TeamRepository.GetAllTeams(request.Page, request.Filter);
+            return await _unitOfWork.TeamRepository.GetAllTeams(request.Page);
         }
     }
 }

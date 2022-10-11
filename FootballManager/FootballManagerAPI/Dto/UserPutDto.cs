@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace FootballManagerAPI.Dto
+namespace Application.Dto
 {
     public class UserPutDto
     {

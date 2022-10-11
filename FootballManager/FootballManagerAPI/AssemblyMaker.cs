@@ -1,4 +1,4 @@
-﻿namespace FootballManagerAPI
+﻿namespace Application
 {
     public class AssemblyMaker
     {

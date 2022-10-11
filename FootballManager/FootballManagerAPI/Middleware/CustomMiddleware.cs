@@ -1,7 +1,7 @@
 ﻿using Domain.Exceptions;
 using System.Net;
 
-namespace FootballManagerAPI.Middleware
+namespace Application.Middleware
 {
     // You may need to install the Microsoft.AspNetCore.Http.Abstractions package into your project
     public class CustomMiddleware

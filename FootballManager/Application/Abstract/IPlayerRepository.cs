@@ -1,6 +1,6 @@
 ﻿using Application.Pagination;
 using Domain.Entities;
-using FootballManagerAPI.Filters;
+using Application.Filters;
 
 namespace Application.Abstract
 {

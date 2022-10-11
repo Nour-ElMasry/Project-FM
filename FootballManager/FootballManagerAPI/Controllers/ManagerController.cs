@@ -1,12 +1,12 @@
 ﻿using Application.Commands;
 using Application.Queries;
 using AutoMapper;
-using FootballManagerAPI.Dto;
+using Application.Dto;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace FootballManagerAPI.Controllers
+namespace Application.Controllers
 {
     [Route("api/v1/Managers")]
     [ApiController]

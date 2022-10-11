@@ -1,4 +1,5 @@
-﻿using Application.Commands;
+﻿using Application.Abstract;
+using Application.Commands;
 using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
@@ -14,12 +15,14 @@ namespace Application.CommandHandlers
     public class LogInUserHandler : IRequestHandler<LoginUser, Object>
     {
         private readonly UserManager<User> _userManager;
+        private readonly IUnitOfWork _unitOfWork;
         private readonly IConfiguration _configuration;
 
-        public LogInUserHandler(UserManager<User> userManager, IConfiguration configuration)
+        public LogInUserHandler(UserManager<User> userManager, IConfiguration configuration, IUnitOfWork unitOfWork)
         {
             _userManager = userManager;
             _configuration = configuration;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<Object> Handle(LoginUser request, CancellationToken cancellationToken)
@@ -29,6 +32,8 @@ namespace Application.CommandHandlers
             if(user != null && await _userManager.CheckPasswordAsync(user, request.Password))
             {
                 var userRoles = await _userManager.GetRolesAsync(user);
+
+                var userHasTeam = await _unitOfWork.ManagerRepository.UserHasTeam(user);
 
                 var authClaims = new List<Claim>
                 {
@@ -54,7 +59,8 @@ namespace Application.CommandHandlers
                     customer = new { 
                         userId = user.Id,
                         userUserName = user.UserName,
-                        userPerson = user.UserPerson
+                        userPerson = user.UserPerson,
+                        hasTeam = userHasTeam,
                     },
                     token = new JwtSecurityTokenHandler().WriteToken(token),
                     expiration = token.ValidTo

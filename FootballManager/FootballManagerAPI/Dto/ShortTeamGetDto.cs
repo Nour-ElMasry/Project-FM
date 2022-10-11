@@ -1,4 +1,4 @@
-﻿namespace FootballManagerAPI.Dto
+﻿namespace Application.Dto
 {
     public class ShortTeamGetDto
     {

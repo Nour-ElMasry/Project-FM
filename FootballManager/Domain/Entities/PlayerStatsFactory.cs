@@ -23,14 +23,14 @@ public static class PlayerStatsFactory
         else if (PlayerPositions.IsMidfielder(pos))
             return new MidfieldStats(
                     rnd.Next(60, 85),
-                    rnd.Next(75, 100),
-                    rnd.Next(30, 60),
+                    rnd.Next(60, 100),
+                    rnd.Next(40, 85),
                     rnd.Next(10, 20)
                 );
 
         else
             return new AttackingStats(
-                    rnd.Next(75, 100),
+                    rnd.Next(70, 100),
                     rnd.Next(60, 100),
                     rnd.Next(20, 50),
                     rnd.Next(10, 20)
