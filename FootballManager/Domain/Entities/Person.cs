@@ -10,7 +10,7 @@ public class Person
     public string Name { get; set; }
     public DateTime? BirthDate { get; set; }
     public string Country { get; set; }
-    public string Image { get; set; } = "https://pbs.twimg.com/profile_images/1484245584978616324/PyqroykF_400x400.png";
+    public string Image { get; set; } = "https://www.thestreet.com/.image/t_share/MTgzNTYwNDE0NDE0NTEzMTkw/screen-shot-2021-09-01-at-85022-am.png";
 
     public Person() { }
     public Person(string name, string birthDate, string country)

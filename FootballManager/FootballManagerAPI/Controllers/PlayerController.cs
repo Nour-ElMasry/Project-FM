@@ -2,7 +2,6 @@
 using Application.Pagination;
 using Application.Queries;
 using AutoMapper;
-using Domain.Entities;
 using Application.Dto;
 using Application.Filters;
 using MediatR;
@@ -56,7 +55,7 @@ namespace Application.Controllers
         {
             _logger.LogInformation("Preparing to get all players...");
 
-            if (!filter.IsValidYearRange())
+            if (filter != null && !filter.IsValidYearRange())
             {
                 _logger.LogError("Date range invalid!!!");
                 return BadRequest("Date range invalid!!!");

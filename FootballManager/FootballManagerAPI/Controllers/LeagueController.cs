@@ -99,13 +99,13 @@ namespace Application.Controllers
         }
 
         [HttpGet]
-        [Route("{id}/Teams/{pg?}")]
+        [Route("{id}/Teams")]
         [Authorize]
-        public async Task<IActionResult> GetLeagueTeamsById(int id, int pg = 1)
+        public async Task<IActionResult> GetLeagueTeamsById(int id)
         {
             _logger.LogInformation($"Preparing to get teams of league with id {id}...");
 
-            var query = new GetTeamsByLeague { LeagueId = id, Page = pg };
+            var query = new GetTeamsByLeague { LeagueId = id };
             var result = await _mediator.Send(query);
 
             if (result == null)
@@ -114,13 +114,11 @@ namespace Application.Controllers
                 return NotFound();
             }
 
-            var mappedResult = _mapper.Map<List<TeamGetDto>>(result.PageResults);
-
-            var page = new Pager<TeamGetDto>(result.TotalResults, pg) { PageResults = mappedResult };
+            var mappedResult = _mapper.Map<List<TeamGetDto>>(result);
 
             _logger.LogInformation($"Teams of league with id {id} have been received successfully!!!");
 
-            return Ok(page);
+            return Ok(mappedResult);
         }
 
 
@@ -147,13 +145,13 @@ namespace Application.Controllers
         }
 
         [HttpGet]
-        [Route("{id}/Players/{pg?}")]
+        [Route("{id}/Players/Scorers")]
         [Authorize]
-        public async Task<IActionResult> GetLeaguePlayersById(int id, int pg = 1)
+        public async Task<IActionResult> GetTopScorersByLeagueId(int id)
         {
-            _logger.LogInformation($"Preparing to get players from league with id {id}...");
+            _logger.LogInformation($"Preparing to get top scorers from league with id {id}...");
 
-            var query = new GetPlayersByLeague { LeagueId = id, Page = pg };
+            var query = new GetTopScorersByLeague { LeagueId = id };
             var result = await _mediator.Send(query);
 
             if (result == null)
@@ -162,13 +160,57 @@ namespace Application.Controllers
                 return NotFound();
             }
 
-            var mappedResult = _mapper.Map<List<ShortPlayerGetDto>>(result.PageResults);
+            var mappedResult = _mapper.Map<List<PlayerGetDto>>(result);
 
-            var page = new Pager<ShortPlayerGetDto>(result.TotalResults, result.CurrentPage, result.PageNumOfResults) { PageResults = mappedResult };
+            _logger.LogInformation($"Top Scorers from league with id {id} have been received successfully!!!");
 
-            _logger.LogInformation($"Players from league with id {id} have been received successfully!!!");
+            return Ok(mappedResult);
+        }
 
-            return Ok(page);
+        [HttpGet]
+        [Route("{id}/Players/Assisters")]
+        [Authorize]
+        public async Task<IActionResult> GetTopAssistersByLeagueId(int id)
+        {
+            _logger.LogInformation($"Preparing to get top assisters from league with id {id}...");
+
+            var query = new GetTopAssistersByLeague { LeagueId = id };
+            var result = await _mediator.Send(query);
+
+            if (result == null)
+            {
+                _logger.LogError($"League with id {id} was not found!!!");
+                return NotFound();
+            }
+
+            var mappedResult = _mapper.Map<List<PlayerGetDto>>(result);
+
+            _logger.LogInformation($"Top Assisters from league with id {id} have been received successfully!!!");
+
+            return Ok(mappedResult);
+        }
+
+        [HttpGet]
+        [Route("{id}/Players/CleanSheets")]
+        [Authorize]
+        public async Task<IActionResult> GetTopCleanSheetsByLeagueId(int id)
+        {
+            _logger.LogInformation($"Preparing to get top clean sheets from league with id {id}...");
+
+            var query = new GetTopCleanSheetsByLeague { LeagueId = id };
+            var result = await _mediator.Send(query);
+
+            if (result == null)
+            {
+                _logger.LogError($"League with id {id} was not found!!!");
+                return NotFound();
+            }
+
+            var mappedResult = _mapper.Map<List<PlayerGetDto>>(result);
+
+            _logger.LogInformation($"Top Clean Sheets from league with id {id} have been received successfully!!!");
+
+            return Ok(mappedResult);
         }
 
         [HttpGet]

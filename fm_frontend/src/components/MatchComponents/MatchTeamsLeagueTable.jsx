@@ -7,6 +7,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import LeagueTableTeam from '../LeagueComponents/LeagueTableTeam';
 import Loading from '../Loading';
+import { Link } from 'react-router-dom';
 
 const MatchTeamsLeagueTable = (props) => {
     const [leagueTeams, setLeagueTeams] = useState({})
@@ -17,20 +18,9 @@ const MatchTeamsLeagueTable = (props) => {
     const awayTeam = props.awayTeam
 
     useEffect(() => {
-        GeneralAxiosService.getMethod('https://localhost:7067/api/v1/Leagues/'+league.leagueId+'/Teams/0')
+        GeneralAxiosService.getMethod('https://localhost:7067/api/v1/Leagues/'+league.leagueId+'/Teams')
         .then((response) => 
-        setLeagueTeams(
-            response.data.pageResults.sort((a, b) => a.name.localeCompare(b.name))
-            
-            .sort((a, b) => 
-            (b.currentSeasonStats.goalsFor - b.currentSeasonStats.goalsAgainst)
-            -
-            (a.currentSeasonStats.goalsFor - a.currentSeasonStats.goalsAgainst)
-            )
-
-            .sort((a, b) => 
-                b.currentSeasonStats.points - a.currentSeasonStats.points
-            )))
+        setLeagueTeams(response.data))
         .then(() => setLoading(false))
     },[league])
 
@@ -40,24 +30,24 @@ const MatchTeamsLeagueTable = (props) => {
                 <TableHead>
                     <TableRow>
                         <TableCell colSpan={4}>
-                            <h4>{league.leagueName} standings</h4>
+                            <Link style={{color: "black", textDecoration:"underline", fontSize: "0.9rem"}} to={"/leagues/"+league.leagueId}>{league.leagueName} standings</Link>
                         </TableCell>
-                        <TableCell align="right">
+                        <TableCell align="center">
                             <h5>PL</h5>
                         </TableCell>
-                        <TableCell className='tableColumnHide' align="right">
+                        <TableCell className='tableColumnHide' align="center">
                             <h5>W</h5>
                         </TableCell>
-                        <TableCell className='tableColumnHide' align="right">
+                        <TableCell className='tableColumnHide' align="center">
                             <h5>D</h5>
                         </TableCell>
-                        <TableCell className='tableColumnHide' align="right">
+                        <TableCell className='tableColumnHide' align="center">
                             <h5>L</h5>
                         </TableCell>
-                        <TableCell align="right">
+                        <TableCell align="center">
                             <h5>GD</h5>
                         </TableCell>
-                        <TableCell align="right">
+                        <TableCell align="center">
                             <h5>PTS</h5>
                         </TableCell>
                     </TableRow>

@@ -31,20 +31,14 @@ namespace Infrastructure.Repository
             if (pg == 0)
             {
                 page.PageResults = await _context.Teams
-                .Include(t => t.TeamManager).ThenInclude(tm => tm.ManagerPerson)
-                .Include(t => t.CurrentLeague)
                 .Include(t => t.CurrentSeasonStats)
-                .Include(t => t.CurrentTeamSheet)
                 .ToListAsync();
 
                 return page;
             }
 
             page.PageResults = await _context.Teams
-                .Include(t => t.TeamManager).ThenInclude(tm => tm.ManagerPerson)
-                .Include(t => t.CurrentLeague)
                 .Include(t => t.CurrentSeasonStats)
-                .Include(t => t.CurrentTeamSheet)
                 .Skip((pg - 1) * 10)
                 .Take(10)
                 .ToListAsync();
@@ -64,32 +58,12 @@ namespace Infrastructure.Repository
                 .SingleOrDefaultAsync(t => t.TeamId == id);
         }
 
-        public async Task<Pager<Team>> GetTeamsByLeagueId(long leagueId, int pg)
+        public async Task<List<Team>> GetTeamsByLeagueId(long leagueId)
         {
-            var page = new Pager<Team>(await _context.Teams.Where(t => t.CurrentLeague.LeagueId == leagueId).CountAsync(), pg);
-
-            if (pg == 0)
-            {
-                page.PageResults = await _context.Teams.Where(t => t.CurrentLeague.LeagueId == leagueId)
-                .Include(t => t.TeamManager).ThenInclude(tm => tm.ManagerPerson)
-                .Include(t => t.CurrentLeague)
-                .Include(t => t.CurrentSeasonStats)
-                .Include(t => t.CurrentTeamSheet)
-                .ToListAsync();
-
-                return page;
-            }
-
-            page.PageResults = await _context.Teams.Where(t => t.CurrentLeague.LeagueId == leagueId)
-                .Include(t => t.TeamManager).ThenInclude(tm => tm.ManagerPerson)
-                .Include(t => t.CurrentLeague)
-                .Include(t => t.CurrentSeasonStats)
-                .Include(t => t.CurrentTeamSheet)
-                .Skip((pg - 1) * 10)
-                .Take(10)
-                .ToListAsync();
-
-            return page;
+            return await _context.Teams.Where(t => t.CurrentLeague.LeagueId == leagueId)
+            .Include(t => t.CurrentSeasonStats)
+            .OrderBy(t => t.Name).ThenByDescending(t => t.CurrentSeasonStats.GoalsFor - t.CurrentSeasonStats.GoalsAgainst).ThenByDescending(t => t.CurrentSeasonStats.Points)
+            .ToListAsync();
         }
 
         public async Task Save()

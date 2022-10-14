@@ -4,12 +4,12 @@
         margin: 0 2rem;
     }
     .playerHeader{
-        .personHeaderInfo{
+        .globalHeaderInfo{
             padding: 2rem;
             @include breakpoint-up(medium){
                 flex-direction: column;
                 text-align: center;
-                .personImg{
+                .globalImg{
                     margin-right: 0;
                     margin-bottom: 4%;
                 }

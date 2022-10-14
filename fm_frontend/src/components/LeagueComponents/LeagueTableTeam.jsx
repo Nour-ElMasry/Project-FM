@@ -17,22 +17,22 @@ const LeagueTableTeam = (props) => {
                 {team.name}
             </h4>
         </TableCell>
-        <TableCell align="right">
+        <TableCell align="center">
             <h5>{team.currentSeasonStats.gamesPlayed}</h5>
         </TableCell>
-        <TableCell className='tableColumnHide' align="right">
+        <TableCell className='tableColumnHide' align="center">
             <h5>{team.currentSeasonStats.gamesWon}</h5>
         </TableCell>
-        <TableCell className='tableColumnHide' align="right">
+        <TableCell className='tableColumnHide' align="center">
             <h5>{team.currentSeasonStats.gamesDrawn}</h5>
         </TableCell>
-        <TableCell className='tableColumnHide' align="right">
+        <TableCell className='tableColumnHide' align="center">
             <h5>{team.currentSeasonStats.gamesLost}</h5>
         </TableCell>
-        <TableCell align="right">
+        <TableCell align="center">
             <h5>{team.currentSeasonStats.goalsFor - team.currentSeasonStats.goalsAgainst}</h5>
         </TableCell>
-        <TableCell align="right">
+        <TableCell align="center">
             <h5>{team.currentSeasonStats.points}</h5>
         </TableCell>
     </TableRow>

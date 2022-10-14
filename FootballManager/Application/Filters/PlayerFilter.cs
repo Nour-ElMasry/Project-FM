@@ -1,6 +1,4 @@
-﻿using Domain.Entities;
-
-namespace Application.Filters
+﻿namespace Application.Filters
 {
     public class PlayerFilter
     {

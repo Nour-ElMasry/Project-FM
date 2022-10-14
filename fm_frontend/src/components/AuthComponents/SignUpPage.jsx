@@ -15,7 +15,7 @@ import Tooltip from '@mui/material/Tooltip';
 import InputAdornment from '@mui/material/InputAdornment';
 import InfoIcon from '@mui/icons-material/Info';
 import countryList from 'react-select-country-list';
-import MenuItem from '@mui/material/MenuItem';
+import ListSelect from '../ListSelect';
 
 export default function SignUp() {
   const { register, handleSubmit, formState: { errors }} = useForm();
@@ -28,14 +28,8 @@ export default function SignUp() {
 
   const navigate = useNavigate();
 
+  const countries = useMemo(() => countryList().getData(), []);
 
-  const [country, setCountries] = useState("None");
-  const options = useMemo(() => countryList().getData(), []);
-
-  const countryChangeHandler = value => {
-    setCountries(value.target.value);
-  }
-  
   const handleUniqueCheck = (event) => {
       const username = event.target.value;
       if(username !== ""){
@@ -110,24 +104,13 @@ export default function SignUp() {
                 </Grid>
 
                 <Grid item xs={12} sm={6}>  
-                  <TextField
-                    id="demo-simple-select-autowidth"
-                    select
-                    fullWidth
-                    value={country}
-                    label="Countries"
-                    error={!!errors['country']}
-                    helperText={errors['country']?.message}
-                    {...register('country', { required: '*Field is required' })}
-                    onChange={countryChangeHandler}
-                  >
-                    <MenuItem disabled value="None">
-                      <em>None</em>
-                    </MenuItem>
-                    {options.map((c,i) => {
-                      return <MenuItem value={c.label} key={i}>{c.label}</MenuItem>
-                    })}
-                  </TextField>
+                  <ListSelect 
+                    NoneSelect
+                    list={countries} 
+                    label="Country"
+                    errors={errors} 
+                    register={register}
+                  />
                 </Grid>
 
                 <Grid item xs={12} sm={6}>

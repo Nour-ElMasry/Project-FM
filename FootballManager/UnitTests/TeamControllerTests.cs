@@ -354,7 +354,7 @@ namespace UnitTests
             var result = await controller.GetTeamFixturesById(1);
             var okResult = result as OkObjectResult;
 
-            Assert.AreEqual((team.HomeFixtures.Count + team.AwayFixtures.Count), ((Pager<FixtureGetDto>)okResult.Value).PageResults.Count());
+            Assert.AreEqual((team.HomeFixtures.Count + team.AwayFixtures.Count), ((List<FixtureGetDto>)okResult.Value).Count());
         }
 
         [TestMethod]

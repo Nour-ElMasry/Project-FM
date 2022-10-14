@@ -48,12 +48,6 @@ namespace Infrastructure.Repository
         public async Task<League> GetLeagueById(long id)
         {
             return await _context.Leagues
-                .Include(l => l.Teams).ThenInclude(t => t.CurrentTeamSheet)
-                .Include(l => l.Teams).ThenInclude(t => t.CurrentSeasonStats)
-                .Include(l => l.Teams).ThenInclude(t => t.Players).ThenInclude(p => p.PlayerPerson)
-                .Include(l => l.Teams).ThenInclude(t => t.Players).ThenInclude(p => p.PlayerRecord)
-                .Include(l => l.Teams).ThenInclude(t => t.Players).ThenInclude(p => p.CurrentPlayerStats)
-                .Include(l => l.Fixtures)
                 .Include(l => l.CurrentSeason)
                 .SingleOrDefaultAsync(l => l.LeagueId == id);
         }

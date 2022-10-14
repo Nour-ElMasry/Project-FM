@@ -57,7 +57,14 @@ const Players = () => {
         <h1 className="title">List Of Players</h1>
         {loading && <Loading/>}
         {(hasError && !loading) && <ErrorMsg />}
-        {(!loading && !hasError) && <PlayersTable resetFilterData={resetFilterData} team={true} handleFilterSubmit={handleFilterSubmit} playersPage={true} loading={loading} players={players} handlePageChange={handlePageChange}/>}
+        {(!loading && !hasError) && <PlayersTable 
+            resetFilterData={resetFilterData} 
+            team={true} 
+            handleFilterSubmit={handleFilterSubmit} 
+            playersPage={true} 
+            players={players} 
+            handlePageChange={handlePageChange}
+        />}
     </section>
 }
 

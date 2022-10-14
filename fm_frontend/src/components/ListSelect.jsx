@@ -3,8 +3,8 @@ import MenuItem from '@mui/material/MenuItem';
 import { useState } from 'react';
 
 const ListSelect = (props) => {
-
-    const [itemSelected, setItemSelected] = useState(" ");
+    var selectOption = props.NoneSelect ? " " : props.list[0].value
+    const [itemSelected, setItemSelected] = useState(selectOption);
 
     const itemSelectedChangeHandler = value => {
         setItemSelected(value.target.value);
@@ -20,9 +20,9 @@ const ListSelect = (props) => {
       {...props.register(props.label.toLowerCase())}
       onChange={itemSelectedChangeHandler}
     >
-      <MenuItem value={" "}>
+      {props.NoneSelect && <MenuItem value={" "}>
         <em>None</em>
-      </MenuItem>
+      </MenuItem>}
       {props.list !== [] && props.list.map((c,i) => {
         return <MenuItem value={c.value} key={i}>{c.label}</MenuItem>
       })}

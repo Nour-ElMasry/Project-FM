@@ -14,7 +14,7 @@ const Home = () => {
     }, [user, navigate]);
 
     return <section className="homepage container container--pa">
-        <h1 className="title">Home Page</h1>
+        <h1 className="title">Home</h1>
         {!user.customer.hasTeam && <CreateTeamLanding />}
         {user.customer.hasTeam && <HomeComponents />}
     </section>

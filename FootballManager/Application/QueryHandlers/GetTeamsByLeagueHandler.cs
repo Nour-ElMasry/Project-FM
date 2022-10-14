@@ -1,12 +1,11 @@
 ﻿using Application.Abstract;
-using Application.Pagination;
 using Application.Queries;
 using Domain.Entities;
 using MediatR;
 
 namespace Application.QueryHandlers
 {
-    public class GetTeamsByLeagueHandler : IRequestHandler<GetTeamsByLeague, Pager<Team>>
+    public class GetTeamsByLeagueHandler : IRequestHandler<GetTeamsByLeague, List<Team>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -15,9 +14,9 @@ namespace Application.QueryHandlers
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Pager<Team>> Handle(GetTeamsByLeague request, CancellationToken cancellationToken)
+        public async Task<List<Team>> Handle(GetTeamsByLeague request, CancellationToken cancellationToken)
         {
-            var teams = await _unitOfWork.TeamRepository.GetTeamsByLeagueId(request.LeagueId, request.Page);
+            var teams = await _unitOfWork.TeamRepository.GetTeamsByLeagueId(request.LeagueId);
 
             return teams;
         }

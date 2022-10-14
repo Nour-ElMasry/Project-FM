@@ -53,7 +53,7 @@ const PlayersTable = (props) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {players?.pageResults?.sort((a, b) => a.playerPerson.name.localeCompare(b.playerPerson.name)).map((p) => (
+          {players?.pageResults.map((p) => (
             <TableRow
               hover
               onClick={() => navigate("/Players/" + p.id)}

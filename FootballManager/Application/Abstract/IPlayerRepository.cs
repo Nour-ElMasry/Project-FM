@@ -12,7 +12,9 @@ namespace Application.Abstract
         Task DeletePlayer(Player u);
         Task<Player> GetPlayerById(long id);
         Task<Pager<Player>> GetAllPlayers(int pg, PlayerFilter filter);
-        Task<Pager<Player>> GetAllPlayersByLeague(long leagueId, int pg);
+        Task<List<Player>> GetTopScorersByLeague(long leagueId);
+        Task<List<Player>> GetTopAssistersByLeague(long leagueId);
+        Task<List<Player>> GetTopCleanSheetsByLeague(long leagueId);
         Task<Pager<Player>> GetAllPlayersByTeam(long teamId, int pg, PlayerFilter filter);
     }
 }

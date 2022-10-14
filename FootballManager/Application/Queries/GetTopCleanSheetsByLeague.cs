@@ -3,9 +3,8 @@ using MediatR;
 
 namespace Application.Queries
 {
-    public class GetTeamsByLeague : IRequest<List<Team>>
+    public class GetTopCleanSheetsByLeague : IRequest<List<Player>>
     {
         public long LeagueId { get; set; }
-        public int Page { get; set; }
     }
 }

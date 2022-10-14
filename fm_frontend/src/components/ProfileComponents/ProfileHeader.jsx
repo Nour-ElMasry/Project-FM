@@ -3,14 +3,14 @@ import CountryItem from "../CountryItem";
 
 const ProfileHeader = (props) => {
     return <div className="profileHeader container--styled">
-        <div className="personHeaderInfo">
-            <img className="personImg" src={props.user.userPerson.image} alt="user"></img>
-            <div className="personName">
+        <div className="globalHeaderInfo">
+            <img className="globalImg" src={props.user.userPerson.image} alt="user"></img>
+            <div className="globalName">
                 <h2>{props.user?.userPerson?.name}</h2>
                 <em>{props.user?.userUserName}</em>
             </div>
         </div>
-        <div className="personHeaderInfo flex-jc-sa">
+        <div className="globalHeaderInfo flex-jc-sa">
             <div>
                 <h4>
                     {DateService.dateLongFormat(props.user?.userPerson?.birthDate)}

@@ -10,7 +10,7 @@ namespace Application.Abstract
         Task UpdateTeam(Team u);
         Task DeleteTeam(Team u);
         Task<Team> GetTeamById(long id);
-        Task<Pager<Team>> GetTeamsByLeagueId(long leagueId, int pg);
+        Task<List<Team>> GetTeamsByLeagueId(long leagueId);
         Task<Pager<Team>> GetAllTeams(int pg);
         Task<List<Team>> GetTeamsList();
     }

@@ -1,11 +1,11 @@
 const PlayerHeader = (props) => {
-    return <div className="personHeaderInfo">
+    return <div className="globalHeaderInfo">
         <img 
-            className="personImg" 
+            className="globalImg" 
             src={props.player?.playerPerson?.image} 
             alt="Player"
         />
-        <div className="personName">
+        <div className="globalName">
             <h2>{props.player?.playerPerson?.name}</h2>
             <p>{props.player?.position}</p>
         </div>

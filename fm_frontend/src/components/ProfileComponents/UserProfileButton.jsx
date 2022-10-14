@@ -19,7 +19,7 @@ const UserProfileButton = (props) => {
 
     return <Box>
     <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-        <Avatar sx={{ width: 32, height: 32 }} alt="user" src={props.userImg} />
+        <Avatar sx={{ width: 35, height: 35 }} alt="user" src={props.userImg} />
     </IconButton>
 
     <Menu

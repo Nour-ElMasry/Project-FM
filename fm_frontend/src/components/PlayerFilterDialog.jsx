@@ -82,6 +82,7 @@ const PlayreFilterDialog = (props) => {
 
               {props.team && <Grid item xs={12}>
                 <ListSelect 
+                NoneSelect
                 list={teams} 
                 label="Team"
                 errors={errors} 
@@ -91,6 +92,7 @@ const PlayreFilterDialog = (props) => {
 
               <Grid item xs={12} sm={6}>  
                 <ListSelect 
+                  NoneSelect
                   list={countries} 
                   label="Country"
                   errors={errors} 
@@ -100,6 +102,7 @@ const PlayreFilterDialog = (props) => {
 
               <Grid item xs={12} sm={6}>  
                 <ListSelect 
+                  NoneSelect
                   list={[
                     { value: "Attacker", label: "Attacker" },
                     { value: "Midfielder", label: "Midfielder" },

@@ -2,7 +2,6 @@
 using Application.Pagination;
 using Application.Queries;
 using AutoMapper;
-using Domain.Entities;
 using Application.Dto;
 using Application.Filters;
 using MediatR;
