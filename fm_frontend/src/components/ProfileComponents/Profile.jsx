@@ -16,7 +16,7 @@ const Profile = () => {
     return <section className="profileSection container--pa">
         <h1 className="title">Profile</h1>
         <ProfileHeader user={user.customer}/>
-        {!user.hasTeam && <ProfileCreateTeam />}
+        {!user.customer.hasTeam && <ProfileCreateTeam />}
     </section>
 }
 export default Profile;

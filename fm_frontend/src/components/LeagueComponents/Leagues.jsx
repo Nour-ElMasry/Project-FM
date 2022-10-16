@@ -45,7 +45,7 @@ const Leagues = () => {
          {(!loading)  && <div className="tabContent">
             <TabPanel value={value} index={0}>
                 <div className="tabsGridContainer">
-                    <LeaugeStandings league={league}/>
+                    <LeaugeStandings leagueId={league.id}/>
                 </div>
             </TabPanel>
             <TabPanel value={value} index={1}>

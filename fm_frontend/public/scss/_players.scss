@@ -2,15 +2,15 @@
     @include breakpoint-down(medium){
         margin-bottom: 2rem;
     }
-}
-.dialogContainer{
-    max-width: 28rem;
-    margin: 0 auto;
-    .MuiDialogContent-root{
-        padding: 5px 20px;
+    
+    .dialogContainer{
+        max-width: 28rem;
+        margin: 0 auto;
+        .MuiDialogContent-root{
+            padding: 5px 20px;
+        }
+        .MuiDialogActions-root{
+            margin-top: 5px;
+        }
     }
-    .MuiDialogActions-root{
-        margin-top: 5px;
-    }
 }
-

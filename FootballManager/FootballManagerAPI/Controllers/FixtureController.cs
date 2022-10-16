@@ -50,6 +50,30 @@ namespace Application.Controllers
         }
 
         [HttpGet]
+        [Route("/Team/{id}/NextFixture")]
+        [Authorize]
+        public async Task<IActionResult> GetTeamNextFixture(int id)
+        {
+            _logger.LogInformation($"Preparing to get next fixture for team with id {id}...");
+
+            var result = await _mediator.Send(new GetTeamNextFixture { TeamId = id });
+
+            if (result == null)
+            {
+                _logger.LogError($"No upcoming Fixture found!!!");
+                return NotFound();
+            }
+
+            var mappedResult = _mapper.Map<FixtureGetDto>(result);
+
+            _logger.LogInformation($"Next fixture for team wit id {id} has been recieved successfully!!");
+
+            return Ok(mappedResult);
+        }
+
+
+
+        [HttpGet]
         [Route("{id}")]
         [Authorize]
         public async Task<IActionResult> GetFixtureById(int id)

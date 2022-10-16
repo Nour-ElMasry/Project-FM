@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 
 const MatchItem = (props) => {
-    return <>
+    return <div className='matchRowStyling flex flex-ai-c flex-jc-sa'>
         <div>
             {props.tableView ? <>
                 <img src={props.match.homeTeam.teamLogo} alt='teamLogo'></img>
@@ -32,7 +32,7 @@ const MatchItem = (props) => {
                 </Link>
             }
         </div>
-    </>
+    </div>
 }
 
 export default MatchItem;

@@ -1,12 +1,9 @@
 import Button from '@mui/material/Button';
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import GeneralAxiosService from '../../services/GeneralAxiosService';
 import CreateTeamForm from './CreateTeamForm';
 
-const CreateTeamLanding = () => {
-    const [user] = useState(JSON.parse(localStorage.getItem("User")));
-    const navigate = useNavigate();
+const CreateTeamLanding = (props) => {
     const [openForm, setOpenForm] = useState(false);
     
     const handleClickOpen = () => {
@@ -18,19 +15,13 @@ const CreateTeamLanding = () => {
     };
 
     const handleTeamCreate = (data) => {
-        GeneralAxiosService.postMethod("https://localhost:7067/api/v1/Users/"+ user.customer.userId +"/CreateTeam", data)
+        GeneralAxiosService.postMethod("https://localhost:7067/api/v1/Users/"+ props.user.customer.userId +"/CreateTeam", data)
         .then((res) => {
-            user.customer.hasTeam = true;
-            localStorage.setItem("User", JSON.stringify(user));
+            props.user.customer.hasTeam = true;
+            localStorage.setItem("User", JSON.stringify(props.user));
             window.location.reload();
         });
     };
-
-    useEffect(() => {
-        if(user == null){
-            navigate("/");
-        }
-    }, [user, navigate]);
 
     return <>
         <CreateTeamForm 

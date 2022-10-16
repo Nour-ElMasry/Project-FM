@@ -3,21 +3,12 @@
         padding: 1.5rem 1.5rem;
         max-width: 42rem;
         border-radius: .25rem;
+        margin: 0 auto;
     }
     .matchHeader{
-        margin: 0 auto;
-
+        min-width: 17rem;
+        width: 70%;
         div{
-            width: 40%;
-            text-align: center;
-            img{
-                width: 35%;
-                height: 35%;
-                @include breakpoint-up(medium){
-                    width: 40%;
-                    height: 40%;
-                }
-            }
             h4{
                 color: black;
             }

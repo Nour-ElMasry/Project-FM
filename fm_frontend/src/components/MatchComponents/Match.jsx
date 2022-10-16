@@ -36,8 +36,10 @@ const Match = () => {
             {loading && <Loading />}
             {hasError && <ErrorMsg />}
             {(!hasError && !loading) && <>
-                <div className='matchesContainer container--styled matchHeader flex flex-ai-c flex-jc-sa '>
-                    <MatchItem tableView={false} match={match}/>
+                <div className='matchesContainer container--styled flex flex-ai-c flex-jc-sa '>
+                    <div className='matchHeader'>
+                        <MatchItem tableView={false} match={match}/>
+                    </div>   
                 </div>
                 {match.isPlayed && <div className='matchesContainer container--styled eventContainer'>
                     <MatchEvents match={match}/>

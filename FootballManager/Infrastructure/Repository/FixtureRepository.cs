@@ -126,6 +126,19 @@ namespace Infrastructure.Repository
                 .SingleOrDefaultAsync(f => f.FixtureId == id);
         }
 
+        public async Task<Fixture> GetNextFixtureByTeam(long teamId)
+        {
+            return await _context.Fixtures
+                .OrderBy(f => f.Date)
+                .Include(f => f.HomeTeam).ThenInclude(t => t.CurrentTeamSheet)
+                .Include(f => f.AwayTeam).ThenInclude(t => t.CurrentTeamSheet)
+                .Include(f => f.FixtureEvents).ThenInclude(f => f.GoalScorer.PlayerPerson)
+                .Include(f => f.FixtureEvents).ThenInclude(f => f.GoalAssister.PlayerPerson)
+                .Include(f => f.FixtureLeague)
+                .Include(f => f.FixtureScore)
+                .FirstOrDefaultAsync(f => f.HomeTeam.TeamId == teamId || f.AwayTeam.TeamId == teamId);
+        }
+
         public async Task Save()
         {
             await _context.SaveChangesAsync();

@@ -23,7 +23,7 @@ const PlayersTable = (props) => {
 
     return <> 
     { !(players.pageResults.length > 0) && <h2 className='errorMsg'>No Players Found!</h2>}
-    <div className='container--styledDarker'>
+    <div className='container--styled'>
 
     <FilterToolBar 
       resetFilterData={props.resetFilterData} 

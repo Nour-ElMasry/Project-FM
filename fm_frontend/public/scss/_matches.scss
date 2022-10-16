@@ -42,38 +42,6 @@
                     font-family: 'Nunito', sans-serif;
                 }
             }
-
-            &Info{
-                text-align: center;
-                .matchLink{
-                    text-decoration: none;
-                    color: black;
-                    div{
-                        width: 40%;
-                        @include breakpoint-down(medium){
-                            width: 30%;
-                        }
-                        text-align: center;
-                    }
-
-                    img{
-                        height: 2.5rem;
-                        width: 2.5rem;
-    
-                        @include breakpoint-up(medium){
-                            height: 3.25rem;
-                            width: 3.25rem;
-                        }
-                    }
-                }
-            }
-            .expandMoreRow{
-                padding: .25rem 1.5rem;
-                @include breakpoint-up(medium){
-                    padding: .5rem 1.5rem;
-                }
-                text-align: right;
-            }
         }
     }
 }

@@ -13,10 +13,10 @@ const Home = () => {
         }
     }, [user, navigate]);
 
-    return <section className="homepage container container--pa">
+    return <section className="homeSection container container--pa">
         <h1 className="title">Home</h1>
-        {!user.customer.hasTeam && <CreateTeamLanding />}
-        {user.customer.hasTeam && <HomeComponents />}
+        {!user.customer.hasTeam && <CreateTeamLanding user={user} />}
+        {user.customer.hasTeam && <HomeComponents user={user}/>}
     </section>
 }
 

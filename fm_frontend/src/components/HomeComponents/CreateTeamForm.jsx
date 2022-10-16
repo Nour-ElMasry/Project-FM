@@ -10,7 +10,6 @@ import { useForm } from 'react-hook-form';
 import countryList from 'react-select-country-list';
 import GeneralAxiosService from "../../services/GeneralAxiosService";
 import ListSelect from '../ListSelect';
-import _ from 'lodash';
 
 const CreateTeamForm = (props) => {
     const defaults = {

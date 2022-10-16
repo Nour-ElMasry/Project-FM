@@ -55,6 +55,7 @@ namespace Infrastructure.Repository
         {
             return await _context.Teams
                 .Include(t => t.CurrentTeamSheet)
+                .Include(t => t.CurrentLeague)
                 .SingleOrDefaultAsync(t => t.TeamId == id);
         }
 
