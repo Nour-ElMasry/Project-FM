@@ -29,7 +29,7 @@ const MatchTeamsLeagueTable = (props) => {
         {!loading && <Table className='leagueTable tablesContainer container--styled'>
                 <TableHead>
                     <TableRow>
-                        <TableCell colSpan={4}>
+                        <TableCell>
                             <Link style={{color: "black", textDecoration:"underline", fontSize: "0.9rem"}} to={"/leagues/"+league.leagueId}>{league.leagueName} standings</Link>
                         </TableCell>
                         <TableCell align="center">

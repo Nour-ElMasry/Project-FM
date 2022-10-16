@@ -3,6 +3,7 @@ using Application.Commands;
 using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Application.CommandHandlers
 {
@@ -20,7 +21,7 @@ namespace Application.CommandHandlers
         public async Task<RealManager> Handle(CreateRealManager request, CancellationToken cancellationToken)
         {
             var managers = await _unitOfWork.ManagerRepository.GetAllManagers();
-            var user = await _userManager.FindByIdAsync(request.UserManagerId);
+            var user = await _userManager.Users.Include(u => u.UserPerson).FirstOrDefaultAsync(u => u.Id == request.UserManagerId);
 
             if (user == null)
                 return null;

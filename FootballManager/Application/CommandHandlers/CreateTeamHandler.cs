@@ -21,6 +21,14 @@ namespace Application.CommandHandlers
             if (request.Logo != "" && request.Logo != null)
                 team.Logo = request.Logo;
 
+            var league = await _unitOfWork.LeagueRepository.GetLeagueById(request.LeagueId);
+
+            if (league == null)
+                return null;
+
+            league.Teams.Add(team);
+            team.CurrentLeague = league;
+
             await _unitOfWork.TeamRepository.AddTeam(team);
             await _unitOfWork.Save();
 

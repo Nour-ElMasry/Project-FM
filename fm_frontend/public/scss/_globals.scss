@@ -196,6 +196,12 @@ p{
             display: none;
         }
     }
+    .tableHeaderTxt{
+        font-size: $font-sm;
+        @include breakpoint-up(medium){
+            font-size: 1rem;
+        }
+    }
     .MuiTable-root{
         border-top: 1px solid $grayishBlue;
     }

@@ -130,9 +130,15 @@ namespace Application.Controllers
                 return Conflict();
             }
 
-            var command = _mapper.Map<CreateTeam>(team);
+            var command = _mapper.Map<CreateTeam>(team);    
 
             var createdTeam = await _mediator.Send(command);
+
+            if(createdTeam == null)
+            {
+                _logger.LogError($"League with id {id} not found!!");
+                return NotFound();
+            }
 
             var userAssignedToTeam = await _mediator.Send(new AddManagerToTeam 
             {

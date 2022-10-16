@@ -7,7 +7,7 @@ const LeagueTableTeam = (props) => {
     const team = props.team;
     
     return <TableRow hover onClick={() => navigate("/Teams/" + team.id)}>
-        <TableCell colSpan={4}>
+        <TableCell>
             <h4 className='flex flex-ai-c'>
                 <span className='position'>
                     {props.position}

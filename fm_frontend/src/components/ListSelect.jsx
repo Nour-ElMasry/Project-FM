@@ -3,7 +3,8 @@ import MenuItem from '@mui/material/MenuItem';
 import { useState } from 'react';
 
 const ListSelect = (props) => {
-    var selectOption = props.NoneSelect ? " " : props.list[0].value
+    var selectOption = props.NoneSelect ? " " : ""
+    var formId = props.formId ? props.formId : props.label.toLowerCase()
     const [itemSelected, setItemSelected] = useState(selectOption);
 
     const itemSelectedChangeHandler = value => {
@@ -11,17 +12,19 @@ const ListSelect = (props) => {
     }
 
     return <TextField
+      required={props.required}
       select
       fullWidth
+      autoComplete='off'
       value={itemSelected}
       label={props.label}
-      error={!!props.errors[props.label.toLowerCase()]}
-      helperText={props.errors[props.label.toLowerCase()]?.message}
-      {...props.register(props.label.toLowerCase())}
+      error={!!props.errors[formId]}
+      helperText={props.errors[formId]?.message}
+      {...props.register(formId)}
       onChange={itemSelectedChangeHandler}
     >
-      {props.NoneSelect && <MenuItem value={" "}>
-        <em>None</em>
+      {props.NoneSelect && <MenuItem disabled value={" "}>
+        None
       </MenuItem>}
       {props.list !== [] && props.list.map((c,i) => {
         return <MenuItem value={c.value} key={i}>{c.label}</MenuItem>

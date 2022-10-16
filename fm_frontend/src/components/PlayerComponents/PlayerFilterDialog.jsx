@@ -8,19 +8,20 @@ import { Button, TextField } from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import countryList from 'react-select-country-list';
-import GeneralAxiosService from "../services/GeneralAxiosService";
-import ListSelect from './ListSelect';
+import GeneralAxiosService from "../../services/GeneralAxiosService";
+import ListSelect from '../ListSelect';
 import _ from 'lodash';
 
 const PlayreFilterDialog = (props) => {
-  const defaults = {
-    name: "",
-    minYearOfBirth: 0,
-    maxYearOfBirth: 0,
-    team: 0,
-    country: "",
-    position: ""
-  }
+    const defaults = {
+      name: "",
+      minYearOfBirth: 0,
+      maxYearOfBirth: 0,
+      team: 0,
+      country: "",
+      position: ""
+    }
+    
     const { register, handleSubmit, formState: { errors }, reset } = useForm(
       {
         defaultValues: defaults
@@ -61,7 +62,7 @@ const PlayreFilterDialog = (props) => {
     }
 
     return <>
-        <Dialog className='dialogContainer' open={props.openFilter} onClose={dialogHandleClose} fullWidth>
+      <Dialog className='dialogContainer' open={props.openFilter} onClose={dialogHandleClose} fullWidth>
       <DialogTitle>Filter Players list</DialogTitle>
       <DialogContent>
       <Box component="form" onSubmit={handleSubmit(onSubmitHandle)} sx={{ mt: 3 }}>

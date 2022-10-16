@@ -23,26 +23,26 @@ const LeaugeStandings = (props) => {
         {!loading && <Table className='leagueTable tablesContainer container--styled'>
             <TableHead>
                 <TableRow>
-                    <TableCell colSpan={4}>
-                        <h4>Teams</h4>
+                    <TableCell>
+                        <h4 className="tableHeaderTxt">TEAMS</h4>
                     </TableCell>
                     <TableCell align="center">
-                        <h5>PL</h5>
+                        <h4 className="tableHeaderTxt">PL</h4>
                     </TableCell>
                     <TableCell className='tableColumnHide' align="center">
-                        <h5>W</h5>
+                        <h4 className="tableHeaderTxt">W</h4>
                     </TableCell>
                     <TableCell className='tableColumnHide' align="center">
-                        <h5>D</h5>
+                        <h4 className="tableHeaderTxt">D</h4>
                     </TableCell>
                     <TableCell className='tableColumnHide' align="center">
-                        <h5>L</h5>
+                        <h4 className="tableHeaderTxt">L</h4>
                     </TableCell>
                     <TableCell align="center">
-                        <h5>GD</h5>
+                        <h4 className="tableHeaderTxt">GD</h4>
                     </TableCell>
                     <TableCell align="center">
-                        <h5>PTS</h5>
+                        <h4 className="tableHeaderTxt">PTS</h4>
                     </TableCell>
                 </TableRow>
             </TableHead>

@@ -2,7 +2,7 @@ import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
 import FilterListIcon from '@mui/icons-material/FilterList';
-import PlayreFilterDialog from './PlayerFilterDialog';
+import PlayreFilterDialog from './PlayerComponents/PlayerFilterDialog';
 import { useState } from 'react';
 import CancelIcon from '@mui/icons-material/Cancel';
 import Button from '@mui/material/Button';
@@ -18,7 +18,6 @@ const FilterToolBar = (props) => {
     const handleClose = () => {
         setOpenFilter(false);
     };
-
 
     const handleFilterReset = () => {
         setFilterOn(false);

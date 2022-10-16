@@ -40,12 +40,12 @@ namespace Infrastructure.Repository
 
         public async Task<bool> UserHasTeam(User u)
         {
-            var userManager = await _context.Managers.SingleOrDefaultAsync(m => m.ManagerPerson.PersonId == u.UserPerson.PersonId);
+            var userManager = await _context.Managers.Include(m => m.CurrentTeam).SingleOrDefaultAsync(m => m.ManagerPerson.PersonId == u.UserPerson.PersonId);
 
             if (userManager == null)
                 return false;
 
-            return userManager.CurrentTeam == null;
+            return userManager.CurrentTeam != null;
         }
 
         public async Task Save()

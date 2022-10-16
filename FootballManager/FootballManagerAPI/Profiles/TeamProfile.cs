@@ -26,7 +26,8 @@ namespace Application.Profiles
                 .ForMember(td => td.Name, opt => opt.MapFrom(t => t.Name))
                 .ForMember(td => td.Country, opt => opt.MapFrom(t => t.Country))
                 .ForMember(td => td.Venue, opt => opt.MapFrom(t => t.Venue))
-                .ForMember(td => td.Logo, opt => opt.MapFrom(t => t.Logo));
+                .ForMember(td => td.Logo, opt => opt.MapFrom(t => t.Logo))
+                .ForMember(td => td.LeagueId, opt => opt.MapFrom(t => t.LeagueId));
         }
     }
 }

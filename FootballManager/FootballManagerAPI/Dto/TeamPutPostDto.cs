@@ -21,5 +21,9 @@ namespace Application.Dto
 
         [MaxLength(100)]
         public string Logo { get; set; }
+
+        [Required]
+        [RegularExpression("^[0-9]+$")]
+        public long LeagueId { get; set; }
     }
 }

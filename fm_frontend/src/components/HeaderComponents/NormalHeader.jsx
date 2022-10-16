@@ -24,7 +24,7 @@ const NormalHeader = () => {
 
                 <div className="navbar__links">
                     <Link to="/home">Home</Link>
-                      {!user.customer.hasTeam && <>
+                      {user.customer.hasTeam && <>
                         <Link to="/players" onClick={() => {
                         sessionStorage.setItem("PlayersPage_Key", 1)
                       }}>Players</Link>
@@ -54,7 +54,7 @@ const NormalHeader = () => {
                         to="/home"
                         label="Home" icon={<HomeIcon sx={{ fontSize: 25 }}/>}
                         />
-                      {!user.customer.hasTeam && 
+                      {user.customer.hasTeam && 
                         <BottomNavigationAction 
                         component={Link}
                         className="nav-item"
@@ -73,7 +73,7 @@ const NormalHeader = () => {
                         }}
                         />}/>
                       }
-                      {!user.customer.hasTeam && <BottomNavigationAction 
+                      {user.customer.hasTeam && <BottomNavigationAction 
                         component={Link}
                         className="nav-item"
                         to="/matches"
