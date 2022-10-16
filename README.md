@@ -6,14 +6,6 @@ User as a:
 - Manager can -> 
                       
         1- Create a Team
-        2- Create his own player with his own stats
-        3- Manage his team through a season
-        4- View his teams stats and league standing for that respective season.
-        5- View his achievements in his profile section
-
-- Normal user can ->
-
-        1- View certain league standings
-        2- View information about teams
-        3- View information about players
-        4- View fixtures
+        2- Manage his team through a season
+        3- View his teams stats and league standing for that respective season.
+        4- View his achievements in his profile section
