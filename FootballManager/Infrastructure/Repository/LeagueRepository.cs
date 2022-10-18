@@ -45,11 +45,35 @@ namespace Infrastructure.Repository
             return page;
         }
 
+        public async Task<List<League>> GetAllLeaguesWithTeamsAndPlayers()
+        {
+            return await _context.Leagues
+               .Include(l => l.CurrentSeason)
+               .Include(l => l.Teams).ThenInclude(t => t.Players)
+               .ToListAsync();
+        }
+
         public async Task<League> GetLeagueById(long id)
         {
             return await _context.Leagues
                 .Include(l => l.CurrentSeason)
                 .SingleOrDefaultAsync(l => l.LeagueId == id);
+        }
+
+        public async Task<League> GetLeagueWithTeamsAndPlayersById(long leagueId)
+        {
+            return await _context.Leagues
+               .Include(l => l.CurrentSeason)
+               .Include(l => l.Teams).ThenInclude(t => t.Players)
+               .SingleOrDefaultAsync(l => l.LeagueId == leagueId);
+        }
+
+        public async Task<League> GetLeagueWithTeamsById(long leagueId)
+        {
+            return await _context.Leagues
+               .Include(l => l.CurrentSeason)
+               .Include(l => l.Teams)
+               .SingleOrDefaultAsync(l => l.LeagueId == leagueId);
         }
 
         public async Task Save()

@@ -63,7 +63,7 @@ namespace Infrastructure.Repository
         {
             return await _context.Teams.Where(t => t.CurrentLeague.LeagueId == leagueId)
             .Include(t => t.CurrentSeasonStats)
-            .OrderBy(t => t.Name).ThenByDescending(t => t.CurrentSeasonStats.GoalsFor - t.CurrentSeasonStats.GoalsAgainst).ThenByDescending(t => t.CurrentSeasonStats.Points)
+            .OrderByDescending(t => t.CurrentSeasonStats.Points).ThenByDescending(t => t.CurrentSeasonStats.GoalsFor - t.CurrentSeasonStats.GoalsAgainst).ThenBy(t => t.Name)
             .ToListAsync();
         }
 

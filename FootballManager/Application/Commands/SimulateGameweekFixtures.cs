@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Application.Commands
 {
-    public class NextSeason : IRequest<List<League>>
+    public class SimulateGameweekFixtures : IRequest<List<Fixture>>
     {
     }
 }

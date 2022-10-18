@@ -311,24 +311,39 @@ namespace Application.Controllers
 
 
         [HttpGet]
-        [Route("{id}/NextSeason")]
+        [Route("NextSeason")]
         [Authorize]
-        public async Task<IActionResult> NextLeagueSeason(int id)
+        public async Task<IActionResult> NextLeagueSeason()
         {
-            _logger.LogInformation($"Preparing to update league with id {id} to next season...");
+            _logger.LogInformation($"Preparing to go to next season...");
 
-            var query = new NextSeason { LeagueId = id };
+            var query = new NextSeason();
             var result = await _mediator.Send(query);
 
             if (result == null)
             {
-                _logger.LogError($"League with id {id} was not found!!!");
+                _logger.LogError($"Error Happened!!!");
                 return NotFound();
             }
 
-            _logger.LogInformation($"League with id {id} updated successfully!!!");
+            _logger.LogInformation($"League wnet to next season successfully!!!");
 
             return NoContent();
+        }
+
+        [HttpGet]
+        [Route("CheckEndSeason")]
+        [Authorize]
+        public async Task<IActionResult> CheckEndSeason()
+        {
+            _logger.LogInformation($"Preparing to check season end...");
+
+            var query = new CheckEndSeason();
+            var result = await _mediator.Send(query);
+
+            _logger.LogInformation($"Season end checked successfully!!!");
+
+            return Ok(result);
         }
     }
 }

@@ -16,7 +16,7 @@ namespace Application.CommandHandlers
 
         public async Task<List<Fixture>> Handle(GenerateLeagueFixtures request, CancellationToken cancellationToken)
         {
-            var league = await _unitOfWork.LeagueRepository.GetLeagueById(request.LeagueId);
+            var league = await _unitOfWork.LeagueRepository.GetLeagueWithTeamsById(request.LeagueId);
 
             if (league == null)
                 return null;

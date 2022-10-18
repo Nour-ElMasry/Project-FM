@@ -4,8 +4,8 @@ const PlayerRecord = (props) => {
             return <>
                 <h4 className="statValue">
                     {
-                        props.player?.playerRecord?.gamesPlayed !== 0 ? (props.player?.playerRecord?.goals + props.player?.playerRecord?.assists)
-                        /(props.player?.playerRecord?.gamesPlayed) : 0
+                        props.player?.playerRecord?.gamesPlayed !== 0 ? ((props.player?.playerRecord?.goals + props.player?.playerRecord?.assists)
+                        /(props.player?.playerRecord?.gamesPlayed)).toFixed(2): 0
                     }
                 </h4>
                 <p className="statTxt">(G-A)/Game</p>

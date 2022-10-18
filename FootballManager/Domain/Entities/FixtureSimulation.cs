@@ -131,7 +131,7 @@ public static class FixtureSimulation
 
             ScoreGoal(player);
         }
-        else if (randomNum < 850)
+        else if (randomNum < 950)
         {
             var player = RandomMidfielder();
             FixtureEvent.GoalScorer = player;

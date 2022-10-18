@@ -11,5 +11,8 @@ namespace Application.Abstract
         Task DeleteLeague(League u);
         Task<League> GetLeagueById(long id);
         Task<Pager<League>> GetAllLeagues(int pg);
+        Task<List<League>> GetAllLeaguesWithTeamsAndPlayers();
+        Task<League> GetLeagueWithTeamsById(long leagueId);
+        Task<League> GetLeagueWithTeamsAndPlayersById(long leagueId);
     }
 }

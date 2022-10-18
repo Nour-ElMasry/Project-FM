@@ -114,7 +114,7 @@ namespace Infrastructure.Repository
                 .Include(p => p.PlayerPerson)
                 .Include(p => p.CurrentTeam)
                 .Include(p => p.PlayerRecord)
-                .OrderBy(p => p.PlayerPerson.Name).ThenByDescending(p => p.PlayerRecord.Goals)
+                .OrderByDescending(p => p.PlayerRecord.Goals).ThenBy(p => p.PlayerPerson.Name)
                 .Take(20)
                 .ToListAsync();
         }
@@ -126,7 +126,7 @@ namespace Infrastructure.Repository
                 .Include(p => p.PlayerPerson)
                 .Include(p => p.CurrentTeam)
                 .Include(p => p.PlayerRecord)
-                .OrderBy(p => p.PlayerPerson.Name).ThenByDescending(p => p.PlayerRecord.Assists)
+                .OrderByDescending(p => p.PlayerRecord.Assists).ThenBy(p => p.PlayerPerson.Name)
                 .Take(20)
                 .ToListAsync();
         }
@@ -136,17 +136,18 @@ namespace Infrastructure.Repository
         {
             return await _context.Players
                .Where(p => p.CurrentTeam.CurrentLeague.LeagueId == leagueId)
+               .Where(p => p.Position == "Defender")
                .Include(p => p.PlayerPerson)
                .Include(p => p.CurrentTeam)
                .Include(p => p.PlayerRecord)
-               .OrderBy(p => p.PlayerPerson.Name).ThenByDescending(p => p.PlayerRecord.CleanSheets)
+               .OrderByDescending(p => p.PlayerRecord.CleanSheets).ThenBy(p => p.PlayerPerson.Name)
                .Take(20)
                .ToListAsync();
         }
 
         public async Task<Pager<Player>> GetAllPlayersByTeam(long teamId, int pg, PlayerFilter filter)
         {
-            if (!filter.isEmpty())
+            if (filter != null && !filter.isEmpty())
             {
                 var players = _context.Players.AsQueryable().Where(p => p.CurrentTeam.TeamId == teamId);
 

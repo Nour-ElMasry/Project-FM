@@ -36,7 +36,7 @@ const LeaugeStandings = (props) => {
         GeneralAxiosService.getMethod("https://localhost:7067/api/v1/Leagues/" + props.leagueId + "/Teams")
         .then((res) => setTeams(res.data))
         .then(() => setLoading(false))
-    }, [props.leagueId])
+    }, [props.leagueId , props.refresh])
 
     const tableDisplay = () => {
         if(expanded) {

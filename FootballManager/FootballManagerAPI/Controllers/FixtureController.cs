@@ -96,6 +96,31 @@ namespace Application.Controllers
             return Ok(mappedResult);
         }
 
+
+        [HttpGet]
+        [Route("{id}/Result")]
+        [Authorize]
+        public async Task<IActionResult> GetFixtureResultById(int id)
+        {
+            _logger.LogInformation($"Preparing to get fixture result with id {id}...");
+
+            var query = new GetFixtureResultById { FixtureId = id };
+            var result = await _mediator.Send(query);
+
+            if (result == null)
+            {
+                _logger.LogError($"Fixture with id {id} was not found!!!");
+                return NotFound();
+            }
+
+            var mappedResult = _mapper.Map<FixtureGetDto>(result);
+
+            _logger.LogInformation($"Fixture result with id {id} has been recieved successfully!!!");
+
+            return Ok(mappedResult);
+        }
+
+
         [HttpPut]
         [Route("{fixtureId}")]
         [Authorize]
@@ -120,6 +145,31 @@ namespace Application.Controllers
             _logger.LogInformation($"Fixture with id {fixtureId} updated successfully!!!");
 
             return NoContent();
+        }
+
+
+        [HttpGet]
+        [Route("SimulateGameWeekFixture")]
+        [Authorize]
+        public async Task<IActionResult> SimulateGameWeekFixture()
+        {
+            _logger.LogInformation($"Preparing to simulate a fixture for gameweek...");
+
+            var query = new SimulateGameweekFixtures();
+
+            var result = await _mediator.Send(query);
+
+            if (result == null)
+            {
+                _logger.LogError($"League/Fixture not found!!!");
+                return NotFound();
+            }
+
+            var mappedResult = _mapper.Map<List<FixtureGetDto>>(result);
+
+            _logger.LogInformation($"Fixture for gameweek simulated successfully!!!");
+
+            return Ok(mappedResult);
         }
     }
 }

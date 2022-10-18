@@ -8,6 +8,7 @@ import TeamFixture from "./TeamFixture";
 const HomeComponents = (props) => {
     const [team, setTeam] = useState({});
     const [loading, setLoading] = useState(true);
+    const [gameWeek, setGameWeek] = useState(1);
 
     useEffect(() => {
         GeneralAxiosService.getMethod("https://localhost:7067/api/v1/Users/" + props.user.customer.userId + "/Team")
@@ -15,14 +16,19 @@ const HomeComponents = (props) => {
         .then(() => setLoading(false));
     }, [props.user.customer.userId])
 
+    const gameWeekSimulation = () => {
+        GeneralAxiosService.getMethod("https://localhost:7067/api/v1/Fixtures/SimulateGameWeekFixture")
+        .then(() => setGameWeek(prev => prev + 1))
+    }
+
     return <div className="HomeComponents">
         {loading && <Loading />}
         {!loading && <>
             <div className="teamAndFixtureContainer">
                 <HomeTeam team={team}/>
-                <TeamFixture teamId={team.id} />
+                <TeamFixture refresh={gameWeek} simulate={gameWeekSimulation} teamId={team.id} />
             </div>
-            <LeaugeStandings short title={team.currentLeague.leagueName} leagueId={team.currentLeague.leagueId}/>
+            <LeaugeStandings short refresh={gameWeek} title={team.currentLeague.leagueName} leagueId={team.currentLeague.leagueId}/>
         </>}
     </div>
 }
