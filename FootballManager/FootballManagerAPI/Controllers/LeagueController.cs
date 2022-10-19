@@ -326,7 +326,28 @@ namespace Application.Controllers
                 return NotFound();
             }
 
-            _logger.LogInformation($"League wnet to next season successfully!!!");
+            _logger.LogInformation($"League went to next season successfully!!!");
+
+            return NoContent();
+        }
+
+        [HttpGet]
+        [Route("Reset")]
+        [Authorize]
+        public async Task<IActionResult> ResetLeagues()
+        {
+            _logger.LogInformation($"Preparing to reset leagues...");
+
+            var query = new ResetLeagues();
+            var result = await _mediator.Send(query);
+
+            if (result == null)
+            {
+                _logger.LogError($"Error Happened!!!");
+                return NotFound();
+            }
+
+            _logger.LogInformation($"Leagues resetted successfully!!!");
 
             return NoContent();
         }

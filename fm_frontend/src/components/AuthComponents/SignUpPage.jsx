@@ -28,7 +28,12 @@ export default function SignUp() {
 
   const navigate = useNavigate();
 
-  const countries = useMemo(() => countryList().getData(), []);
+  const countries = useMemo(() => countryList().getData().map((c) => {
+    return { 
+      label: c.label, 
+      value: c.label,
+    }
+  }), []);
 
   const handleUniqueCheck = (event) => {
       const username = event.target.value;

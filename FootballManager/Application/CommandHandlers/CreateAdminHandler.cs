@@ -11,20 +11,20 @@ using System.Text;
 
 namespace Application.CommandHandlers
 {
-    public class CreateUserHandler : IRequestHandler<CreateUser, Object>
+    public class CreateAdminHandler : IRequestHandler<CreateAdmin, Object>
     {
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly IConfiguration _configuration;
 
-        public CreateUserHandler(UserManager<User> userManager, IConfiguration configuration, RoleManager<IdentityRole> roleManager)
+        public CreateAdminHandler(UserManager<User> userManager, IConfiguration configuration, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _configuration = configuration;
             _roleManager = roleManager;
         }
 
-        public async Task<Object> Handle(CreateUser request, CancellationToken cancellationToken)
+        public async Task<Object> Handle(CreateAdmin request, CancellationToken cancellationToken)
         {
             var uniqueCheck = await _userManager.FindByNameAsync(request.Username) == null;
 
@@ -40,12 +40,13 @@ namespace Application.CommandHandlers
 
                 var create = await _userManager.CreateAsync(user, request.Password);
 
-                if (create.Succeeded) {
+                if (create.Succeeded)
+                {
                     var dbUser = await _userManager.Users.Include(u => u.UserPerson).FirstOrDefaultAsync(u => u.UserName == user.UserName);
 
-                    var role = "Customer";
+                    var role = "Admin";
                     var roleCheck = await _roleManager.FindByNameAsync(role);
-                    
+
                     if (roleCheck == null)
                     {
                         await _roleManager.CreateAsync(new IdentityRole
@@ -88,7 +89,7 @@ namespace Application.CommandHandlers
                         token = new JwtSecurityTokenHandler().WriteToken(token),
                         expiration = token.ValidTo
                     };
-                
+
                 }
             }
 

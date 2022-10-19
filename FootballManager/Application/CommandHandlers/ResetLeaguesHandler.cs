@@ -1,21 +1,20 @@
 ﻿using Application.Abstract;
 using Application.Commands;
-using Application.Pagination;
 using Domain.Entities;
 using MediatR;
 
 namespace Application.CommandHandlers
 {
-    public class NextSeasonHandler : IRequestHandler<NextSeason, List<League>>
+    public class ResetLeaguesHandler : IRequestHandler<ResetLeagues, List<League>>
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public NextSeasonHandler(IUnitOfWork unitOfWork)
+        public ResetLeaguesHandler(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<List<League>> Handle(NextSeason request, CancellationToken cancellationToken)
+        public async Task<List<League>> Handle(ResetLeagues request, CancellationToken cancellationToken)
         {
             var leagues = await _unitOfWork.LeagueRepository.GetAllLeaguesWithTeamsAndPlayers();
 
@@ -26,7 +25,7 @@ namespace Application.CommandHandlers
 
             leagues.ForEach(l =>
             {
-                l.NextSeason();
+                l.ResetLeague();
             });
 
             await _unitOfWork.Save();

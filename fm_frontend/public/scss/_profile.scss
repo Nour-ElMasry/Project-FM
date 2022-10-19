@@ -1,6 +1,12 @@
 .profileSection{
     max-width: 50rem;
     margin: 0 auto;
+
+    margin-bottom: 1.5rem;
+    @include breakpoint-up(medium){
+        margin-bottom: 0;
+    }
+
     .globalHeaderInfo{
         padding: 1.5rem 2rem;
     }

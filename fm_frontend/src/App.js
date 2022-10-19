@@ -10,6 +10,7 @@ import Login from "./components/AuthComponents/SignInPage";
 import Header from "./components/HeaderComponents/Header.jsx";
 import SignUp from "./components/AuthComponents/SignUpPage.jsx";
 import Leagues from "./components/LeagueComponents/Leagues.jsx";
+import Users from "./components/UsersComponents/Users.jsx";
 
 const App = () => {
   
@@ -17,6 +18,7 @@ const App = () => {
       <Router>
         <Header />
         <Routes>
+            <Route path="/users" element={<Users />}/>
             <Route path="/home" element={<Home />}/>
             <Route path="/players" element={<Players />}/>
             <Route path="/players/:id" element={<Player />}/>

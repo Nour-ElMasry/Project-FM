@@ -32,11 +32,9 @@ const MatchInfo = (props) => {
                 <p className='infoRow'>{date.getDate()}/{date.getMonth()+1}/{date.getFullYear()}</p>
             </div>
         </div>
-        <div className='flex flex-ai-c  hoverableIcon infoContainer'>
+        <div className='flex flex-ai-c  infoContainer'>
             <div className='infoIcon'>
-                <a href={"http://www.google.com/search?q="+venue+" Stadium"}>
-                    <LocationOnIcon/>
-                </a>
+                <LocationOnIcon/>
             </div>
             <div className='infoText'>
                 <p className='infoRowTitle'>Stadium</p>

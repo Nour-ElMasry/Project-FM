@@ -76,5 +76,10 @@ namespace Infrastructure.Repository
         {
             return Task.Run(() => _context.Teams.Attach(u));
         }
+
+        public async Task<List<Team>> GetTeamsNotAssignedToLeagues()
+        {
+            return await _context.Teams.Include(t => t.CurrentTeamSheet).Where(t => t.CurrentLeague == null).ToListAsync();
+        }
     }
 }

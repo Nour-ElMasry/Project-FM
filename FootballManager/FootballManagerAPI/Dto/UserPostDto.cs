@@ -6,12 +6,10 @@ namespace Application.Dto
     {
         [Required]
         [MaxLength(50)]
-        [MinLength(4)]
         public string Name { get; set; }
 
         [Required]
         [MaxLength(30)]
-        [MinLength(4)]
         public string Country { get; set; }
 
         [Required]

@@ -6,6 +6,7 @@ using Application.Dto;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Domain.Entities;
 
 
 namespace Application.Controllers
@@ -28,7 +29,7 @@ namespace Application.Controllers
 
         [HttpGet]
         [Route("All/{pg?}")]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetAllUsers(int pg = 1)
         {
             _logger.LogInformation("Preparing to get all users...");
@@ -99,6 +100,34 @@ namespace Application.Controllers
         }
 
         [HttpPost]
+        [Route("CreateAdmin")]
+        public async Task<IActionResult> CreateAdmin([FromBody] UserPostDto user)
+        {
+            _logger.LogInformation("Preparing to create an admin user...");
+
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError("Information received was invalid!!");
+                return BadRequest(ModelState);
+            }
+
+            var command = _mapper.Map<CreateAdmin>(user);
+
+            var result = await _mediator.Send(command);
+
+            if (result == null)
+            {
+                _logger.LogError($"Failed to create an admin user!!!");
+                return NotFound();
+            }
+
+            _logger.LogInformation("An Admin User created successfully!!!");
+
+            return Ok(result);
+        }
+
+
+        [HttpPost]
         [Route("{id}/CreateTeam")]
         [Authorize]
         public async Task<IActionResult> CreateUserTeam([FromBody] TeamPutPostDto team, string id)
@@ -145,6 +174,14 @@ namespace Application.Controllers
                 ManagerId = userToManager.ManagerId,
                 TeamId = createdTeam.TeamId
             });
+
+            var leagueReset = await _mediator.Send(new ResetLeagues());
+
+            if (leagueReset == null)
+            {
+                _logger.LogError($"No Leagues found to reset!!");
+                return NotFound();
+            }
 
             var dto = _mapper.Map<TeamGetDto>(userAssignedToTeam);
 
@@ -277,10 +314,29 @@ namespace Application.Controllers
         {
             _logger.LogInformation($"Preparing to delete user with id {id}...");
 
-            var command = new DeleteUser { UserId = id };
+            var command = new GetTeamByUserId
+            {
+                UserId = id
+            };
+
             var result = await _mediator.Send(command);
 
-            if (result == null)
+            if (result != null)
+            {
+                var command1 = new DeleteTeam { TeamId = result.TeamId };
+                var result1 = await _mediator.Send(command1);
+
+                if (result1 == null)
+                {
+                    _logger.LogError($"Team with id {result.TeamId} not found!!");
+                    return NotFound();
+                }
+            }
+
+            var command2 = new DeleteUser { UserId = id };
+            var result2 = await _mediator.Send(command2);
+
+            if (result2 == null)
             {
                 _logger.LogError($"User with id {id} not found!!!");
                 return NotFound();

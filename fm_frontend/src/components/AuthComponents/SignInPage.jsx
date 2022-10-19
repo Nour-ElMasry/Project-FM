@@ -11,6 +11,7 @@ import GeneralAxiosService from '../../services/GeneralAxiosService';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import Alert from '@mui/material/Alert';
+import decodeJwt from 'jwt-decode';
 
 export default function LogIn() {
     const { register, handleSubmit, formState: { errors }} = useForm();
@@ -28,10 +29,14 @@ export default function LogIn() {
         localStorage.setItem("User", JSON.stringify(res.data));
         setWrongCredentials(false);
         setSuccessfulLogIn(true);
+        setTimeout(() => {
+          if(decodeJwt(res.data.token)["http://schemas.microsoft.com/ws/2008/06/identity/claims/role"] === "Admin"){
+            navigate("/users");
+          }else{
+            navigate("/home");
+          }
+        }, 1500)
       })
-      .then(() => setTimeout(() => {
-        navigate("/home");
-      }, 1500))
       .catch((err) => {
         setWrongCredentials(true);
         setSuccessfulLogIn(false);
