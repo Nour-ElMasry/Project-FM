@@ -8,14 +8,14 @@ const LeagueTableTeam = (props) => {
     
     return <TableRow hover onClick={() => navigate("/Teams/" + team.id)}>
         <TableCell>
-            <h4 className='flex flex-ai-c'>
-                <span className='position'>
+            <div className='flex flex-ai-c'>
+                <p className='position'>
                     {props.position}
-                </span>
+                </p>
                 
                 <img className="tableTeamLogo" src={team.logo} alt="teamLogo"/>
-                {team.name}
-            </h4>
+                <h5>{team.name}</h5>
+            </div>
         </TableCell>
         <TableCell align="center">
             <h5>{team.currentSeasonStats.gamesPlayed}</h5>

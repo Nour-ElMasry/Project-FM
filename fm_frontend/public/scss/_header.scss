@@ -8,13 +8,12 @@ header{
     }
     &__brand{
         .brand_logo{
-            width: fit-content;
             .brandImg{
-                width: 3rem;
-                height: 1.5rem;
+                width: 2.5rem;
+                height: auto;
                 @include breakpoint-down(medium){
-                    width: 2.5rem;
-                    height: 1.25rem;
+                    width: 2.25rem;
+                    height: auto;
                 }
             }
         }

@@ -21,6 +21,7 @@ const PlayerStatsTable = (props) => {
                     id="demo-simple-select"
                     value={props.url}
                     onChange={props.handleChange}
+                    size="small"
                 >
                     <MenuItem value={"Scorers"}>Top Scorers</MenuItem>
                     <MenuItem value={"Assisters"}>Top Assisters</MenuItem>
