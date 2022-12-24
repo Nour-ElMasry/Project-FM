@@ -1,6 +1,6 @@
 # Project-FM
 
-This is a Football Mananegr project where the user can be either a football manager or just a user who wants to view the latest league standings, fixtures or stats.
+This is a Football Mananegr project where the user can be a football manager.
 
 User as a: 
 - Manager can -> 
