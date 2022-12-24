@@ -38,7 +38,7 @@ const CountryItem = (props) => {
             />
         }
 
-        return <img src={'https://countryflagsapi.com/png/'+ country} alt={props.country}/>
+        return <img crossOrigin="anonymous" src={'https://countryflagsapi.com/png/'+ country} alt={props.country}/>
         
     }
     return <>{displayFlag()}</>
