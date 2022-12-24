@@ -15,6 +15,25 @@ Welcome to the Football Manager App! This app is a tool for managing and trackin
   - View player statistics
   - View teams stat and league standing for that respective season.
 
+# Pictures of app
+  ## Home Page
+  <div styles="display:flex,gap:1rem">
+    <img src="https://github.com/Nour-ElMasry/Project-FM/blob/master/Images/Desktop-1.png" width="750" height="450">
+    <img src="https://github.com/Nour-ElMasry/Project-FM/blob/master/Images/Mobile-1.png" width="250" height="450">
+  </div>
+  
+  ## Players Page
+  <div styles="display:flex,gap:1rem">
+    <img src="https://github.com/Nour-ElMasry/Project-FM/blob/master/Images/Desktop-3.png" width="750" height="450">
+    <img src="https://github.com/Nour-ElMasry/Project-FM/blob/master/Images/Mobile-3.png" width="250" height="450">
+  </div>
+  
+  ## Matches Page
+  <div styles="display:flex,gap:1rem">
+    <img src="https://github.com/Nour-ElMasry/Project-FM/blob/master/Images/Desktop-2.png" width="750" height="450">
+    <img src="https://github.com/Nour-ElMasry/Project-FM/blob/master/Images/Mobile-2.png" width="250" height="450">
+  </div>
+    
 # Getting Started
 
 To get started with the frontend, follow these steps:
