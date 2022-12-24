@@ -40,6 +40,6 @@ To get started with the backend, follow these steps:
 # Contribution Guidelines
 If you want to contribute to the project, please follow these guidelines:
 
-  1. Create a new branch for your changes.
-  2. Make sure your code is well-documented and follows the coding standards used in the project.
-  3. Submit a pull request with a clear explanation of your changes and the reasoning behind them.
+  - Create a new branch for your changes.
+  - Make sure your code is well-documented and follows the coding standards used in the project.
+  - Submit a pull request with a clear explanation of your changes and the reasoning behind them.
