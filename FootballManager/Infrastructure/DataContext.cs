@@ -10,6 +10,7 @@ namespace Infrastructure
         {
         }
 
+        public DbSet<Career> Careers { get; set; }
         public DbSet<Team> Teams { get; set; }
         public DbSet<Player> Players { get; set; }
         public DbSet<Manager> Managers { get; set; }
@@ -53,11 +54,6 @@ namespace Infrastructure
                 .WithOne()
                 .HasForeignKey<Team>("TeamManagerId")
                 .OnDelete(DeleteBehavior.SetNull);
-
-            modelBuilder.Entity<RealManager>()
-                .HasOne(m => m.UserManager)
-                .WithOne()
-                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Fixture>()
                 .HasMany(f => f.FixtureEvents)

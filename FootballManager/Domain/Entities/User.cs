@@ -16,4 +16,3 @@ public class User : IdentityUser
         UserPerson = userPerson;
     }
 }
-

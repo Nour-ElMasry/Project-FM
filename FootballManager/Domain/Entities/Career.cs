@@ -6,13 +6,17 @@ namespace Domain.Entities
     {
         [Key]
         public int CareerId { get; set; }
+        public String CareerName { get; set; }
         public User CareerUser { get; set; }
         public RealManager CareerManager { get; set; }
         public List<League> Leagues { get; set; } = new();
-
-        public Career(User careerUser)
+        public Career(String careerName, User careerUser)
         {
+            CareerName = careerName;
             CareerUser = careerUser;
+        }
+        public Career()
+        {
         }
     }
 }
