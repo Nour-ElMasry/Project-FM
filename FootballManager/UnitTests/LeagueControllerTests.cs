@@ -582,7 +582,7 @@ namespace UnitTests
                 .Verifiable();
 
             var controller = new LeagueController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
-            await controller.NextLeagueSeason(1);
+            await controller.NextLeagueSeason();
 
             _mockMediator.Verify(x => x.Send(It.IsAny<NextSeason>(), It.IsAny<CancellationToken>()), Times.Once());
         }
