@@ -48,63 +48,63 @@ namespace ConsolePresentation
 
             dynamic leagueTeams = JsonConvert.DeserializeObject<dynamic>(await GetLeagueTeams(140));
 
-            for (int i = 0; i < leagueTeams.response.Count; i++)
-            {
-                var team = await mediator.Send(new CreateTeam
-                {
-                    Name = leagueTeams.response[i].team.name,
-                    Country = leagueTeams.response[i].team.country,
-                    Venue = leagueTeams.response[i].venue.name,
-                    Logo = leagueTeams.response[i].team.logo,
-                });
+            //for (int i = 0; i < leagueTeams.response.Count; i++)
+            //{
+            //    var team = await mediator.Send(new CreateTeam
+            //    {
+            //        Name = leagueTeams.response[i].team.name,
+            //        Country = leagueTeams.response[i].team.country,
+            //        Venue = leagueTeams.response[i].venue.name,
+            //        Logo = leagueTeams.response[i].team.logo,
+            //    });
 
-                var teamId = (int)leagueTeams.response[i].team.id;
+            //    var teamId = (int)leagueTeams.response[i].team.id;
 
-                dynamic teamPlayers1 = JsonConvert.DeserializeObject<dynamic>(await GetTeamPlayers(teamId, 1));
-                dynamic teamPlayers2 = JsonConvert.DeserializeObject<dynamic>(await GetTeamPlayers(teamId, 2));
+            //    dynamic teamPlayers1 = JsonConvert.DeserializeObject<dynamic>(await GetTeamPlayers(teamId, 1));
+            //    dynamic teamPlayers2 = JsonConvert.DeserializeObject<dynamic>(await GetTeamPlayers(teamId, 2));
 
-                await AssignPlayersToTeam(teamPlayers1, team, mediator);
-                await AssignPlayersToTeam(teamPlayers2, team, mediator);
+            //    await AssignPlayersToTeam(teamPlayers1, team, mediator);
+            //    await AssignPlayersToTeam(teamPlayers2, team, mediator);
 
-                dynamic teamManager = JsonConvert.DeserializeObject<dynamic>(await GetTeamManager(teamId));
+            //    dynamic teamManager = JsonConvert.DeserializeObject<dynamic>(await GetTeamManager(teamId));
 
-                var managerCommand = new CreateFakeManager();
+            //    var managerCommand = new CreateFakeManager();
 
-                if (teamManager.response.Count > 0)
-                {
-                    managerCommand = new CreateFakeManager
-                    {
-                        Name = teamManager.response[0].name,
-                        Country = teamManager.response[0].birth.country,
-                        DateOfBirth = teamManager.response[0].birth.date,
-                    };
-                }
-                else
-                {
-                    managerCommand = new CreateFakeManager
-                    {
-                        Name = $"{team.Name}'s Manager",
-                        Country = team.Country,
-                        DateOfBirth = "1977-08-16",
-                    };
-                }
+            //    if (teamManager.response.Count > 0)
+            //    {
+            //        managerCommand = new CreateFakeManager
+            //        {
+            //            Name = teamManager.response[0].name,
+            //            Country = teamManager.response[0].birth.country,
+            //            DateOfBirth = teamManager.response[0].birth.date,
+            //        };
+            //    }
+            //    else
+            //    {
+            //        managerCommand = new CreateFakeManager
+            //        {
+            //            Name = $"{team.Name}'s Manager",
+            //            Country = team.Country,
+            //            DateOfBirth = "1977-08-16",
+            //        };
+            //    }
  
-                var manager = await mediator.Send(managerCommand);
+            //    var manager = await mediator.Send(managerCommand);
 
-                await mediator.Send(new AddManagerToTeam
-                {
-                    ManagerId = manager.ManagerId,
-                    TeamId = team.TeamId
-                });
+            //    await mediator.Send(new AddManagerToTeam
+            //    {
+            //        ManagerId = manager.ManagerId,
+            //        TeamId = team.TeamId
+            //    });
 
-                await mediator.Send(new AddTeamToLeague
-                {
-                    LeagueId = league.LeagueId,
-                    TeamId = team.TeamId
-                });
+            //    await mediator.Send(new AddTeamToLeague
+            //    {
+            //        LeagueId = league.LeagueId,
+            //        TeamId = team.TeamId
+            //    });
 
-                Thread.Sleep(7500);
-            }
+            //    Thread.Sleep(7500);
+            //}
         }
 
 

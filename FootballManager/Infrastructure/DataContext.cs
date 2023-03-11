@@ -9,6 +9,10 @@ namespace Infrastructure
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
         }
+        public DbSet<DefaultTeam> DefaultTeams { get; set; }
+        public DbSet<DefaultPlayer> DefaultPlayers { get; set; }
+        public DbSet<DefaultManager> DefaultManagers { get; set; }
+        public DbSet<DefaultLeague> DefaultLeagues { get; set; }
 
         public DbSet<Career> Careers { get; set; }
         public DbSet<Team> Teams { get; set; }
@@ -21,7 +25,7 @@ namespace Infrastructure
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(@"Data Source=TOPSKI\SQLEXPRESS;Initial Catalog=FootballManager_Database;Integrated Security=True");
+                optionsBuilder.UseSqlServer(@"Data Source=TOPSKI\SQLEXPRESS;Initial Catalog=PitchMasterDB;Integrated Security=True");
             }
         }
 

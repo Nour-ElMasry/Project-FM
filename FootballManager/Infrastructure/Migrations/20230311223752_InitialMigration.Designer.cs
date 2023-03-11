@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20230311205544_restructuring")]
-    partial class restructuring
+    [Migration("20230311223752_InitialMigration")]
+    partial class InitialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -48,6 +48,88 @@ namespace Infrastructure.Migrations
                     b.HasIndex("CareerUserId");
 
                     b.ToTable("Careers");
+                });
+
+            modelBuilder.Entity("Domain.Entities.DefaultLeague", b =>
+                {
+                    b.Property<long>("DefaultLeagueId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("DefaultLeagueId"), 1L, 1);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("DefaultLeagueId");
+
+                    b.ToTable("DefaultLeagues");
+                });
+
+            modelBuilder.Entity("Domain.Entities.DefaultPlayer", b =>
+                {
+                    b.Property<long>("PlayerId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("PlayerId"), 1L, 1);
+
+                    b.Property<long?>("DefaultPlayerStatsId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DefaultPlayerTeamId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("PlayerPersonId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Position")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("PlayerId");
+
+                    b.HasIndex("DefaultPlayerStatsId");
+
+                    b.HasIndex("DefaultPlayerTeamId");
+
+                    b.HasIndex("PlayerPersonId");
+
+                    b.ToTable("DefaultPlayers");
+                });
+
+            modelBuilder.Entity("Domain.Entities.DefaultTeam", b =>
+                {
+                    b.Property<long>("DefaultTeamId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("DefaultTeamId"), 1L, 1);
+
+                    b.Property<string>("Country")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long?>("DefaultTeamLeagueId")
+                        .HasColumnType("bigint");
+
+                    b.Property<long?>("DefaultTeamManagerId")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("Logo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Venue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("DefaultTeamId");
+
+                    b.HasIndex("DefaultTeamLeagueId");
+
+                    b.HasIndex("DefaultTeamManagerId");
+
+                    b.ToTable("DefaultTeams");
                 });
 
             modelBuilder.Entity("Domain.Entities.Event", b =>
@@ -707,6 +789,13 @@ namespace Infrastructure.Migrations
                     b.HasDiscriminator().HasValue("BalancedTactic");
                 });
 
+            modelBuilder.Entity("Domain.Entities.DefaultManager", b =>
+                {
+                    b.HasBaseType("Domain.Entities.Manager");
+
+                    b.HasDiscriminator().HasValue("DefaultManager");
+                });
+
             modelBuilder.Entity("Domain.Entities.Defender", b =>
                 {
                     b.HasBaseType("Domain.Entities.Player");
@@ -783,6 +872,42 @@ namespace Infrastructure.Migrations
                     b.Navigation("CareerManager");
 
                     b.Navigation("CareerUser");
+                });
+
+            modelBuilder.Entity("Domain.Entities.DefaultPlayer", b =>
+                {
+                    b.HasOne("Domain.Entities.PlayerStats", "DefaultPlayerStats")
+                        .WithMany()
+                        .HasForeignKey("DefaultPlayerStatsId");
+
+                    b.HasOne("Domain.Entities.DefaultTeam", "DefaultPlayerTeam")
+                        .WithMany("Players")
+                        .HasForeignKey("DefaultPlayerTeamId");
+
+                    b.HasOne("Domain.Entities.Person", "PlayerPerson")
+                        .WithMany()
+                        .HasForeignKey("PlayerPersonId");
+
+                    b.Navigation("DefaultPlayerStats");
+
+                    b.Navigation("DefaultPlayerTeam");
+
+                    b.Navigation("PlayerPerson");
+                });
+
+            modelBuilder.Entity("Domain.Entities.DefaultTeam", b =>
+                {
+                    b.HasOne("Domain.Entities.DefaultLeague", "DefaultTeamLeague")
+                        .WithMany("Teams")
+                        .HasForeignKey("DefaultTeamLeagueId");
+
+                    b.HasOne("Domain.Entities.DefaultManager", "DefaultTeamManager")
+                        .WithMany()
+                        .HasForeignKey("DefaultTeamManagerId");
+
+                    b.Navigation("DefaultTeamLeague");
+
+                    b.Navigation("DefaultTeamManager");
                 });
 
             modelBuilder.Entity("Domain.Entities.Event", b =>
@@ -990,6 +1115,16 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Domain.Entities.Career", b =>
                 {
                     b.Navigation("Leagues");
+                });
+
+            modelBuilder.Entity("Domain.Entities.DefaultLeague", b =>
+                {
+                    b.Navigation("Teams");
+                });
+
+            modelBuilder.Entity("Domain.Entities.DefaultTeam", b =>
+                {
+                    b.Navigation("Players");
                 });
 
             modelBuilder.Entity("Domain.Entities.Fixture", b =>

@@ -206,19 +206,5 @@ namespace UnitTests
 
             _mockMediator.Verify(x => x.Send(It.IsAny<LoginUser>(), It.IsAny<CancellationToken>()), Times.Once());
         }
-
-        [TestMethod]
-        public async Task Delete_User_DeleteUserIsCalled()
-        {
-            _mockMediator
-                .Setup(m => m.Send(It.IsAny<DeleteUser>(), It.IsAny<CancellationToken>()))
-                .Verifiable();
-
-            var controller = new UserController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
-
-            await controller.DeleteUser("1");
-
-            _mockMediator.Verify(x => x.Send(It.IsAny<DeleteUser>(), It.IsAny<CancellationToken>()), Times.Once());
-        }
     }
 }

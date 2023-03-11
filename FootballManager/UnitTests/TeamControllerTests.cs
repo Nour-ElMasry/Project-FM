@@ -21,19 +21,6 @@ namespace UnitTests
         private readonly Mock<ILogger<object>> _mockLogger = new();
 
         [TestMethod]
-        public async Task Get_All_Teams_GetAllTeamsQueryIsCalled()
-        {
-            _mockMediator
-                .Setup(m => m.Send(It.IsAny<GetAllTeams>(), It.IsAny<CancellationToken>()))
-                .Verifiable();
-
-            var controller = new TeamController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
-            await controller.GetAllTeams();
-
-            _mockMediator.Verify(x => x.Send(It.IsAny<GetAllTeams>(), It.IsAny<CancellationToken>()), Times.Once());
-        }
-
-        [TestMethod]
         public async Task Get_Team_By_Id_GetTeamByIdIsCalled()
         {
             _mockMediator
@@ -355,35 +342,6 @@ namespace UnitTests
             var okResult = result as OkObjectResult;
 
             Assert.AreEqual((team.HomeFixtures.Count + team.AwayFixtures.Count), ((List<FixtureGetDto>)okResult.Value).Count());
-        }
-
-        [TestMethod]
-        public async Task Delete_Team_DeleteTeamIsCalled()
-        {
-            _mockMediator
-                .Setup(m => m.Send(It.IsAny<DeleteTeam>(), It.IsAny<CancellationToken>()))
-                .Verifiable();
-
-            var controller = new TeamController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
-            await controller.DeleteTeam(1);
-
-            _mockMediator.Verify(x => x.Send(It.IsAny<DeleteTeam>(), It.IsAny<CancellationToken>()), Times.Once());
-        }
-
-        [TestMethod]
-        public async Task Update_Team_UpdateTeamIsCalled()
-        {
-
-            var team = new TeamPutPostDto();
-
-            _mockMediator
-                .Setup(m => m.Send(It.IsAny<UpdateTeam>(), It.IsAny<CancellationToken>()))
-                .Verifiable();
-
-            var controller = new TeamController(_mockMapper.Object, _mockMediator.Object, _mockLogger.Object);
-            await controller.UpdateTeam(1, team);
-
-            _mockMediator.Verify(x => x.Send(It.IsAny<UpdateTeam>(), It.IsAny<CancellationToken>()), Times.Once());
         }
 
         [TestMethod]
