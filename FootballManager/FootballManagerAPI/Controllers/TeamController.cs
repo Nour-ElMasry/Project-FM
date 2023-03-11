@@ -27,76 +27,6 @@ namespace Application.Controllers
             _logger.LogInformation("Team controller called...");
         }
 
-        [HttpPost]
-        [Authorize]
-        public async Task<IActionResult> CreateTeam([FromBody] TeamPutPostDto team)
-        {
-            _logger.LogInformation("Preparing to create a Team...");
-
-            if (!ModelState.IsValid)
-            {
-                _logger.LogError("Information received was invalid!!");
-                return BadRequest(ModelState);
-            }
-
-            var command = _mapper.Map<CreateTeam>(team);
-
-            var created = await _mediator.Send(command);
-            var dto = _mapper.Map<TeamGetDto>(created);
-
-            _logger.LogInformation("Team created successfully!!!");
-
-            return CreatedAtAction(nameof(GetTeamById), new { id = created.TeamId }, dto);
-        }
-
-
-        [HttpGet]
-        [Route("All/{pg?}")]
-        [Authorize]
-        public async Task<IActionResult> GetAllTeams(int pg = 1)
-        {
-            _logger.LogInformation("Preparing to get all teams...");
-
-            var result = await _mediator.Send(new GetAllTeams() 
-            { 
-                Page = pg,
-            });
-
-            if (result == null)
-            {
-                _logger.LogError("Couldn't get all teams!!");
-                return NotFound();
-            }
-
-            var mappedResult = _mapper.Map<List<TeamGetDto>>(result);
-
-            _logger.LogInformation("All teams received successfully!!!");
-
-            return Ok(mappedResult);
-        }
-
-        [HttpGet]
-        [Route("List")]
-        [Authorize]
-        public async Task<IActionResult> GetAllTeamsList()
-        {
-            _logger.LogInformation("Preparing to get all teams list...");
-
-            var result = await _mediator.Send(new GetAllTeamsList());
-
-            if (result == null)
-            {
-                _logger.LogError("Couldn't get all teams list!!");
-                return NotFound();
-            }
-
-            var mappedResult = _mapper.Map<List<TeamGetDto>>(result);
-
-            _logger.LogInformation("All teams list received successfully!!!");
-
-            return Ok(mappedResult);
-        }
-
         [HttpGet]
         [Route("{id}")]
         [Authorize]
@@ -172,57 +102,6 @@ namespace Application.Controllers
             _logger.LogInformation($"Fixtures of team with id {id} received successfully!!!");
 
             return Ok(mappedResult);
-        }
-
-
-        [HttpPut]
-        [Route("{teamId}")]
-        [Authorize]
-        public async Task<IActionResult> UpdateTeam(int teamId, [FromBody] TeamPutPostDto updated)
-        {
-            _logger.LogInformation($"Preparing to update team with id {teamId}...");
-
-            var command = new UpdateTeam
-            {
-                TeamId = teamId,
-                Name = updated.Name,
-                Country = updated.Country,
-                Venue = updated.Venue
-            };
-
-            var result = await _mediator.Send(command);
-
-            if (result == null)
-            {
-                _logger.LogError($"Team with id {teamId} not found!!");
-                return NotFound();
-            }
-
-            _logger.LogInformation($"Team with id {teamId} updated successfully!!!");
-
-            return NoContent();
-        }
-
-
-        [HttpDelete]
-        [Route("{teamId}")]
-        [Authorize]
-        public async Task<IActionResult> DeleteTeam(int teamId)
-        {
-            _logger.LogInformation($"Preparing to delete team with id {teamId}...");
-
-            var command = new DeleteTeam { TeamId = teamId };
-            var result = await _mediator.Send(command);
-
-            if (result == null)
-            {
-                _logger.LogError($"Team with id {teamId} not found!!");
-                return NotFound();
-            }
-
-            _logger.LogInformation($"Team with id {teamId} deleted successfully!!!");
-
-            return NoContent();
         }
 
 

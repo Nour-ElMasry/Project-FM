@@ -14,43 +14,6 @@ namespace Infrastructure.Repository
             _context = dataContext;
         }
 
-        public async Task AddTeam(Team u)
-        {
-            await _context.Teams.AddAsync(u);
-        }
-
-        public async Task DeleteTeam(Team u)
-        {
-            await Task.Run(() => _context.Teams.Remove(u));
-        }
-
-        public async Task<Pager<Team>> GetAllTeams(int pg)
-        {
-            var page = new Pager<Team>(await _context.Teams.CountAsync(), pg);
-
-            if (pg == 0)
-            {
-                page.PageResults = await _context.Teams
-                .Include(t => t.CurrentSeasonStats)
-                .ToListAsync();
-
-                return page;
-            }
-
-            page.PageResults = await _context.Teams
-                .Include(t => t.CurrentSeasonStats)
-                .Skip((pg - 1) * 10)
-                .Take(10)
-                .ToListAsync();
-
-            return page;
-        }
-
-        public async Task<List<Team>> GetTeamsList()
-        {
-            return await _context.Teams.OrderBy(t => t.Name).ToListAsync();
-        }
-
         public async Task<Team> GetTeamById(long id)
         {
             return await _context.Teams

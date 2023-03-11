@@ -126,68 +126,68 @@ namespace Application.Controllers
         }
 
 
-        [HttpPost]
-        [Route("{id}/CreateTeam")]
-        [Authorize]
-        public async Task<IActionResult> CreateUserTeam([FromBody] TeamPutPostDto team, string id)
-        {
-            _logger.LogInformation("Preparing to create a User Team...");
+        //[HttpPost]
+        //[Route("{id}/CreateTeam")]
+        //[Authorize]
+        //public async Task<IActionResult> CreateUserTeam([FromBody] TeamPutPostDto team, string id)
+        //{
+        //    _logger.LogInformation("Preparing to create a User Team...");
 
-            if (!ModelState.IsValid)
-            {
-                _logger.LogError("Information received was invalid!!");
-                return BadRequest(ModelState);
-            }
+        //    if (!ModelState.IsValid)
+        //    {
+        //        _logger.LogError("Information received was invalid!!");
+        //        return BadRequest(ModelState);
+        //    }
 
-            var userToManagerCommand = new CreateRealManager
-            {
-                UserManagerId = id
-            };
+        //    var userToManagerCommand = new CreateRealManager
+        //    {
+        //        UserManagerId = id
+        //    };
 
-            var userToManager = await _mediator.Send(userToManagerCommand);
+        //    var userToManager = await _mediator.Send(userToManagerCommand);
 
-            if (userToManager == null)
-            {
-                _logger.LogError($"User with id {id} not found!!");
-                return NotFound();
-            }
+        //    if (userToManager == null)
+        //    {
+        //        _logger.LogError($"User with id {id} not found!!");
+        //        return NotFound();
+        //    }
 
-            if(userToManager.CurrentTeam != null)
-            {
-                _logger.LogError($"User with id {id} already assigned to a team!!");
-                return Conflict();
-            }
+        //    if(userToManager.CurrentTeam != null)
+        //    {
+        //        _logger.LogError($"User with id {id} already assigned to a team!!");
+        //        return Conflict();
+        //    }
 
-            var command = _mapper.Map<CreateTeam>(team);    
+        //    var command = _mapper.Map<CreateTeam>(team);    
 
-            var createdTeam = await _mediator.Send(command);
+        //    var createdTeam = await _mediator.Send(command);
 
-            if(createdTeam == null)
-            {
-                _logger.LogError($"League with id {id} not found!!");
-                return NotFound();
-            }
+        //    if(createdTeam == null)
+        //    {
+        //        _logger.LogError($"League with id {id} not found!!");
+        //        return NotFound();
+        //    }
 
-            var userAssignedToTeam = await _mediator.Send(new AddManagerToTeam 
-            {
-                ManagerId = userToManager.ManagerId,
-                TeamId = createdTeam.TeamId
-            });
+        //    var userAssignedToTeam = await _mediator.Send(new AddManagerToTeam 
+        //    {
+        //        ManagerId = userToManager.ManagerId,
+        //        TeamId = createdTeam.TeamId
+        //    });
 
-            var leagueReset = await _mediator.Send(new ResetLeagues());
+        //    var leagueReset = await _mediator.Send(new ResetLeagues());
 
-            if (leagueReset == null)
-            {
-                _logger.LogError($"No Leagues found to reset!!");
-                return NotFound();
-            }
+        //    if (leagueReset == null)
+        //    {
+        //        _logger.LogError($"No Leagues found to reset!!");
+        //        return NotFound();
+        //    }
 
-            var dto = _mapper.Map<TeamGetDto>(userAssignedToTeam);
+        //    var dto = _mapper.Map<TeamGetDto>(userAssignedToTeam);
 
-            _logger.LogInformation("User Team created successfully!!!");
+        //    _logger.LogInformation("User Team created successfully!!!");
 
-            return CreatedAtAction(nameof(GetUserTeam), new { id = userAssignedToTeam.TeamId }, dto);
-        }
+        //    return CreatedAtAction(nameof(GetUserTeam), new { id = userAssignedToTeam.TeamId }, dto);
+        //}
 
 
         [HttpPut]
@@ -306,44 +306,44 @@ namespace Application.Controllers
         }
 
 
-        [HttpDelete]
-        [Route("{id}")]
-        [Authorize]
-        public async Task<IActionResult> DeleteUser(string id)
-        {
-            _logger.LogInformation($"Preparing to delete user with id {id}...");
+        //[HttpDelete]
+        //[Route("{id}")]
+        //[Authorize]
+        //public async Task<IActionResult> DeleteUser(string id)
+        //{
+        //    _logger.LogInformation($"Preparing to delete user with id {id}...");
 
-            var command = new GetTeamByUserId
-            {
-                UserId = id
-            };
+        //    var command = new GetTeamByUserId
+        //    {
+        //        UserId = id
+        //    };
 
-            var result = await _mediator.Send(command);
+        //    var result = await _mediator.Send(command);
 
-            if (result != null)
-            {
-                var command1 = new DeleteTeam { TeamId = result.TeamId };
-                var result1 = await _mediator.Send(command1);
+        //    if (result != null)
+        //    {
+        //        var command1 = new DeleteTeam { TeamId = result.TeamId };
+        //        var result1 = await _mediator.Send(command1);
 
-                if (result1 == null)
-                {
-                    _logger.LogError($"Team with id {result.TeamId} not found!!");
-                    return NotFound();
-                }
-            }
+        //        if (result1 == null)
+        //        {
+        //            _logger.LogError($"Team with id {result.TeamId} not found!!");
+        //            return NotFound();
+        //        }
+        //    }
 
-            var command2 = new DeleteUser { UserId = id };
-            var result2 = await _mediator.Send(command2);
+        //    var command2 = new DeleteUser { UserId = id };
+        //    var result2 = await _mediator.Send(command2);
 
-            if (result2 == null)
-            {
-                _logger.LogError($"User with id {id} not found!!!");
-                return NotFound();
-            }
+        //    if (result2 == null)
+        //    {
+        //        _logger.LogError($"User with id {id} not found!!!");
+        //        return NotFound();
+        //    }
 
-            _logger.LogInformation($"User with id {id} deleted successfully!!!");
+        //    _logger.LogInformation($"User with id {id} deleted successfully!!!");
 
-            return NoContent();
-        }
+        //    return NoContent();
+        //}
     }
 }
