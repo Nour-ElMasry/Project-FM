@@ -6,7 +6,6 @@ using Application.Dto;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Domain.Entities;
 
 
 namespace Application.Controllers

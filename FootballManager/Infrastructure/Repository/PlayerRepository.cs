@@ -3,7 +3,6 @@ using Application.Pagination;
 using Domain.Entities;
 using Application.Filters;
 using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
 namespace Infrastructure.Repository
 {
