@@ -43,10 +43,10 @@ namespace ConsolePresentation
 
             var league = await mediator.Send(new CreateLeague
             {
-                Name = "La Liga"
+                Name = "Premier League"
             });
 
-            dynamic leagueTeams = JsonConvert.DeserializeObject<dynamic>(await GetLeagueTeams(140));
+            dynamic leagueTeams = JsonConvert.DeserializeObject<dynamic>(await GetLeagueTeams(39));
 
             for (int i = 0; i < leagueTeams.response.Count; i++)
             {
@@ -56,6 +56,7 @@ namespace ConsolePresentation
                     Country = leagueTeams.response[i].team.country,
                     Venue = leagueTeams.response[i].venue.name,
                     Logo = leagueTeams.response[i].team.logo,
+                    LeagueId = league.LeagueId
                 });
 
                 var teamId = (int)leagueTeams.response[i].team.id;
@@ -105,6 +106,11 @@ namespace ConsolePresentation
 
                 Thread.Sleep(7500);
             }
+
+            await mediator.Send(new GenerateLeagueFixtures
+            {
+                LeagueId = league.LeagueId,
+            });
         }
 
 
@@ -114,12 +120,12 @@ namespace ConsolePresentation
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri($"https://api-football-v1.p.rapidapi.com/v3/teams?league={leagueId}&season={DateTime.Now.Year}"),
+                RequestUri = new Uri($"https://api-football-v1.p.rapidapi.com/v3/teams?league={leagueId}&season={DateTime.Now.Year - 1}"),
                 Headers =
-                        {
-                            { "X-RapidAPI-Key", "5d0d6f6fb8msh738de3dc30becb2p117e42jsnc0f12f2c74c2" },
-                            { "X-RapidAPI-Host", "api-football-v1.p.rapidapi.com" },
-                        },
+                {
+                    { "X-RapidAPI-Key", "5d0d6f6fb8msh738de3dc30becb2p117e42jsnc0f12f2c74c2" },
+                    { "X-RapidAPI-Host", "api-football-v1.p.rapidapi.com" },
+                },
             };
 
             using var response = await client.SendAsync(request);
@@ -134,7 +140,7 @@ namespace ConsolePresentation
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri($"https://api-football-v1.p.rapidapi.com/v3/players?team={teamId}&season=2022&page={pg}"),
+                RequestUri = new Uri($"https://api-football-v1.p.rapidapi.com/v3/players?team={teamId}&season={DateTime.Now.Year - 1}&page={pg}"),
                 Headers =
                         {
                             { "X-RapidAPI-Key", "5d0d6f6fb8msh738de3dc30becb2p117e42jsnc0f12f2c74c2" },

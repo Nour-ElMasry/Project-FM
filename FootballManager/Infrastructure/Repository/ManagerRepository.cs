@@ -27,7 +27,7 @@ namespace Infrastructure.Repository
             return await _context.Managers
                 .Include(m => m.ManagerPerson)
                 .Include(m => m.CurrentTeam)
-                .Take(100).ToListAsync();
+                .ToListAsync();
         }
 
         public async Task<Manager> GetManagerById(long id)

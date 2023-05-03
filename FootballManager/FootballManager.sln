@@ -13,9 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FootballManagerAPI", "Footb
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UnitTests", "UnitTests\UnitTests.csproj", "{EB5F8E68-873A-4115-949D-49CF7D1A8D95}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "IntegrationTests", "IntegrationTests\IntegrationTests.csproj", "{6041BD10-2BC9-4703-9C16-2A4B4984A007}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DatabasePopulation", "DatabasePopulation\DatabasePopulation.csproj", "{24D52B4A-F1E1-43CC-8658-C1AF85CF8505}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DatabasePopulation", "DatabasePopulation\DatabasePopulation.csproj", "{24D52B4A-F1E1-43CC-8658-C1AF85CF8505}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,10 +41,6 @@ Global
 		{EB5F8E68-873A-4115-949D-49CF7D1A8D95}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB5F8E68-873A-4115-949D-49CF7D1A8D95}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB5F8E68-873A-4115-949D-49CF7D1A8D95}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6041BD10-2BC9-4703-9C16-2A4B4984A007}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6041BD10-2BC9-4703-9C16-2A4B4984A007}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6041BD10-2BC9-4703-9C16-2A4B4984A007}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6041BD10-2BC9-4703-9C16-2A4B4984A007}.Release|Any CPU.Build.0 = Release|Any CPU
 		{24D52B4A-F1E1-43CC-8658-C1AF85CF8505}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{24D52B4A-F1E1-43CC-8658-C1AF85CF8505}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{24D52B4A-F1E1-43CC-8658-C1AF85CF8505}.Release|Any CPU.ActiveCfg = Release|Any CPU

@@ -33,7 +33,12 @@ namespace Application.CommandHandlers
             {
                 var userRoles = await _userManager.GetRolesAsync(user);
 
-                var userHasTeam = await _unitOfWork.ManagerRepository.UserHasTeam(user);
+                var userHasTeam = false;
+
+                if (!userRoles.Contains("Admin"))
+                {
+                    userHasTeam = await _unitOfWork.ManagerRepository.UserHasTeam(user);
+                } 
 
                 var authClaims = new List<Claim>
                 {
