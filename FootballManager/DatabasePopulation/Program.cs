@@ -1,5 +1,6 @@
 ﻿using Application.Abstract;
 using Application.Commands;
+using Application.Queries;
 using Domain.Entities;
 using Infrastructure;
 using Infrastructure.Repository;
@@ -28,7 +29,8 @@ namespace ConsolePresentation
                 .AddScoped<IUnitOfWork, UnitOfWork>()
                 .BuildServiceProvider();
 
-            using (var scope = diContainer.CreateScope())
+
+            /*using (var scope = diContainer.CreateScope())
             {
                 var scopedServices = scope.ServiceProvider;
 
@@ -37,13 +39,17 @@ namespace ConsolePresentation
                 db.Database.EnsureDeleted();
 
                 db.Database.EnsureCreated();
-            }
+            }*/
 
             var mediator = diContainer.GetRequiredService<IMediator>();
 
+            dynamic leagueApi = JsonConvert.DeserializeObject<dynamic>(await GetLeague(140));
+
+
             var league = await mediator.Send(new CreateLeague
             {
-                Name = "La Liga"
+                Name = leagueApi.response[0].league.name,
+                LeagueLogo = leagueApi.response[0].league.logo
             });
 
             dynamic leagueTeams = JsonConvert.DeserializeObject<dynamic>(await GetLeagueTeams(140));
@@ -56,6 +62,7 @@ namespace ConsolePresentation
                     Country = leagueTeams.response[i].team.country,
                     Venue = leagueTeams.response[i].venue.name,
                     Logo = leagueTeams.response[i].team.logo,
+                    LeagueId = league.LeagueId
                 });
 
                 var teamId = (int)leagueTeams.response[i].team.id;
@@ -88,7 +95,7 @@ namespace ConsolePresentation
                         DateOfBirth = "1977-08-16",
                     };
                 }
- 
+
                 var manager = await mediator.Send(managerCommand);
 
                 await mediator.Send(new AddManagerToTeam
@@ -105,8 +112,32 @@ namespace ConsolePresentation
 
                 Thread.Sleep(7500);
             }
+
+            /*            await mediator.Send(new GenerateLeagueFixtures
+                        {
+                            LeagueId = 2,
+                        });*/
         }
 
+        private static async Task<String> GetLeague(int leagueId)
+        {
+            var client = new HttpClient();
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri($"https://api-football-v1.p.rapidapi.com/v3/leagues?id={leagueId}"),
+                Headers =
+                    {
+                        { "X-RapidAPI-Key", "5d0d6f6fb8msh738de3dc30becb2p117e42jsnc0f12f2c74c2" },
+                        { "X-RapidAPI-Host", "api-football-v1.p.rapidapi.com" },
+                    },
+            };
+
+            using var response = await client.SendAsync(request);
+            response.EnsureSuccessStatusCode();
+            var body = await response.Content.ReadAsStringAsync();
+            return body;
+        }
 
         private static async Task<String> GetLeagueTeams(int leagueId)
         {
@@ -114,7 +145,7 @@ namespace ConsolePresentation
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri($"https://api-football-v1.p.rapidapi.com/v3/teams?league={leagueId}&season={DateTime.Now.Year}"),
+                RequestUri = new Uri($"https://api-football-v1.p.rapidapi.com/v3/teams?league={leagueId}&season={DateTime.Now.Year - 1}"),
                 Headers =
                         {
                             { "X-RapidAPI-Key", "5d0d6f6fb8msh738de3dc30becb2p117e42jsnc0f12f2c74c2" },

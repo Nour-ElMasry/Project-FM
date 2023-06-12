@@ -1,10 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace Infrastructure.Migrations
 {
-    public partial class AddedIdentity : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -48,6 +49,7 @@ namespace Infrastructure.Migrations
                     PlayMaking = table.Column<int>(type: "int", nullable: false),
                     Defending = table.Column<int>(type: "int", nullable: false),
                     Goalkeeping = table.Column<int>(type: "int", nullable: false),
+                    OverallRating = table.Column<int>(type: "int", nullable: false),
                     Discriminator = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -160,7 +162,6 @@ namespace Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    UserId = table.Column<long>(type: "bigint", nullable: false),
                     UserPersonId = table.Column<long>(type: "bigint", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -194,6 +195,7 @@ namespace Infrastructure.Migrations
                     LeagueId = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LeagueLogo = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CurrentSeasonId = table.Column<long>(type: "bigint", nullable: true)
                 },
                 constraints: table =>

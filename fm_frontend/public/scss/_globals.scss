@@ -1,324 +1,329 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-body{
-    background-color: $lightGrey;  
-    min-height: 100vh;
-    font-family: 'Nunito', sans-serif;
+body {
+  background-color: $lightGrey;
+  min-height: 100vh;
+  font-family: "Nunito", sans-serif;
 }
 
 a {
-    font-size: $font-md;
-    text-decoration: none;
-    color: $grayishBlue;
+  font-size: $font-md;
+  text-decoration: none;
+  color: $grayishBlue;
 }
 
-p{
-    font-size: $font-sm;
-    @include breakpoint-up(medium){
-        font-size: $font-md;
-    }
+p {
+  font-size: $font-sm;
+  @include breakpoint-up(medium) {
+    font-size: $font-md;
+  }
 }
 
 .flex {
-    display: flex;
-    &-jc-sb {
-        justify-content: space-between;
-    }
-    &-jc-sa {
-        justify-content: space-around;
-    }
-    &-jc-c {
-        justify-content: center;
-    }
-    &-ai-c {
-        align-items: center;
-    }
+  display: flex;
+  &-jc-sb {
+    justify-content: space-between;
+  }
+  &-jc-sa {
+    justify-content: space-around;
+  }
+  &-jc-c {
+    justify-content: center;
+  }
+  &-ai-c {
+    align-items: center;
+  }
 }
 
 .container {
-    max-width: 69.375rem;
-    margin: 0 auto;
-    &--pa {
-        padding: 2rem 1.25rem;
-        @include breakpoint-up(large) {
-            padding: 4rem 2rem;
-        }
+  max-width: 69.375rem;
+  margin: 0 auto;
+  &--pa {
+    padding: 2rem 1.25rem;
+    @include breakpoint-up(large) {
+      padding: 4rem 2rem;
     }
-    &--py {
-        padding-top: 4.375rem;
-        padding-bottom: 4.375rem;
-        @include breakpoint-up(large) {
-            padding-top: 6rem;
-            padding-bottom: 6rem;
-        }
+  }
+  &--py {
+    padding-top: 4.375rem;
+    padding-bottom: 4.375rem;
+    @include breakpoint-up(large) {
+      padding-top: 6rem;
+      padding-bottom: 6rem;
     }
-    &--px {
-        padding-left: 1.5rem;
-        padding-right: 1.5rem;
-    }
-    &--styled{
-        background-color: $veryLightGray;
-        -webkit-box-shadow: 3px 3px 7px -1px rgba(0,0,0,0.83); 
-        box-shadow: 3px 3px 7px -1px rgba(0,0,0,0.83);
-    }
-    &--styledDarker{
-        background-color: $lightGrey;
-        -webkit-box-shadow: 3px 3px 7px -1px rgba(0,0,0,0.83); 
-        box-shadow: 3px 3px 7px -1px rgba(0,0,0,0.83);
-    }
+  }
+  &--px {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  &--styled {
+    background-color: $veryLightGray;
+    -webkit-box-shadow: 3px 3px 7px -1px rgba(0, 0, 0, 0.83);
+    box-shadow: 3px 3px 7px -1px rgba(0, 0, 0, 0.83);
+  }
+  &--styledDarker {
+    background-color: $lightGrey;
+    -webkit-box-shadow: 3px 3px 7px -1px rgba(0, 0, 0, 0.83);
+    box-shadow: 3px 3px 7px -1px rgba(0, 0, 0, 0.83);
+  }
 }
 
-.emptyMsg{
-    text-align: center;
-    padding: 1rem;
+.emptyMsg {
+  text-align: center;
+  padding: 1rem;
 }
 
-.loading{
-    text-align: center;
-    margin-top: 10rem;
+.loading {
+  text-align: center;
+  margin-top: 10rem;
 }
 
-.table-title{
-    font-family: 'Orbitron', sans-serif;
-    font-size: $font-md;
-    text-align: center;
+.table-title {
+  font-family: "Orbitron", sans-serif;
+  font-size: $font-md;
+  text-align: center;
 }
 
-.title{
-    font-family: 'Orbitron', sans-serif;
-    font-size: $font-mb-lg;
+.title {
+  font-family: "Orbitron", sans-serif;
+  font-size: $font-mb-lg;
+  text-align: center;
+  margin-bottom: 2rem;
+  @include breakpoint-up(medium) {
+    font-size: $font-lg;
+    margin-bottom: 2.5rem;
+  }
+}
+
+.matchRowStyling {
+  text-decoration: none;
+  color: black;
+  div {
+    width: 40%;
+    @include breakpoint-down(medium) {
+      width: 30%;
+    }
     text-align: center;
-    margin-bottom: 2rem;
+  }
+
+  img {
+    height: 2.5rem;
+    width: 2.5rem;
+
     @include breakpoint-up(medium) {
-        font-size: $font-lg;
-        margin-bottom: 2.5rem;
+      height: 3.25rem;
+      width: 3.25rem;
     }
+  }
 }
 
-.matchRowStyling{
-    text-decoration: none;
-    color: black;
-    div{
-        width: 40%;
-        @include breakpoint-down(medium){
-            width: 30%;
-        }
-        text-align: center;
-    }
+.tabContent {
+  margin: 1.5rem 0 2.5rem;
+  @include breakpoint-up(medium) {
+    margin-top: 2.5rem;
+  }
+  .gameweekTables {
+    margin: 0;
+  }
 
-    img{
+  .loading {
+    margin-top: 5rem;
+  }
+}
+
+.removeFilterIcon {
+  color: $errorRed;
+}
+
+.errorMsg {
+  color: $white;
+  text-align: center;
+  font-size: $font-md;
+  background-color: $errorRed;
+  padding: 0.75rem auto;
+  border-radius: 0.75rem;
+  margin: 4rem auto;
+}
+
+.PositionAboluteMiddle {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  &--mb {
+    @include breakpoint-down(medium) {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+    }
+  }
+  &--dt {
+    @include breakpoint-up(medium) {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+    }
+  }
+}
+
+.globalHeaderInfo {
+  max-width: 35rem;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+
+  .globalImg {
+    width: 20%;
+    height: 20%;
+    max-width: 7rem;
+    margin-right: 4%;
+    border-radius: 100%;
+    border: 2px solid black;
+    @include breakpoint-up(medium) {
+      border-width: 3px;
+    }
+  }
+
+  .globalName {
+    font-size: $font-sm;
+    @include breakpoint-up(medium) {
+      font-size: $font-md;
+    }
+  }
+}
+
+.dialogContainer {
+  max-width: 28rem;
+  margin: 0 auto;
+  .MuiDialogContent-root {
+    padding: 5px 20px;
+  }
+  .MuiDialogActions-root {
+    margin-top: 5px;
+  }
+}
+
+.expandTable {
+  .expandMoreRow {
+    padding: 0.25rem 1.5rem;
+    @include breakpoint-up(medium) {
+      padding: 0.5rem 1.5rem;
+    }
+    text-align: right;
+  }
+}
+
+.tablesContainer {
+  .tableColumnHide {
+    @include breakpoint-down(small) {
+      display: none;
+    }
+  }
+  .tableHeaderTxt {
+    font-size: $font-sm;
+  }
+  .MuiTable-root {
+    border-top: 1px solid $grayishBlue;
+  }
+  .teamPlayersTable {
+    .MuiTableCell-root {
+      border-bottom: 1px solid $grayishBlue;
+    }
+    .playerImg {
+      height: 2rem;
+      width: 2rem;
+      @include breakpoint-up(medium) {
         height: 2.5rem;
         width: 2.5rem;
-
-        @include breakpoint-up(medium){
-            height: 3.25rem;
-            width: 3.25rem;
-        }
+      }
+      border: solid 2px $veryDarkBlue;
+      border-radius: 100%;
+      margin-right: 0.5rem;
     }
-}
-
-.tabContent{
-    margin: 1.5rem 0 2.5rem;
-    @include breakpoint-up(medium){
-        margin-top: 2.5rem;
+    .ageColumn {
+      min-width: fit-content;
     }
-    .gameweekTables{
-        margin: 0;
+    .teamLogo {
+      height: auto;
+      max-width: 1.75rem;
+      @include breakpoint-up(medium) {
+        max-width: 2rem;
+      }
     }
-
-    .loading{
-        margin-top: 5rem;
+    .countryTableImg {
+      img {
+        max-width: 1.75rem;
+        height: auto;
+        @include breakpoint-up(medium) {
+          max-width: 2rem;
+        }
+      }
     }
-}
-
-.removeFilterIcon{
-  color: $errorRed;  
-}
-
-.errorMsg{
-    color: $white;
-    text-align: center;
-    font-size: $font-md;
-    background-color: $errorRed;
-    padding: .75rem auto;
-    border-radius: .75rem;
-    margin: 4rem auto;
-}
-
-.PositionAboluteMiddle{
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width:100%;
-    &--mb{
-        @include breakpoint-down(medium){
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            width:100%;
-        }
+    .playerRating {
+      padding: 0.5rem;
+      border-radius: 0.25rem;
+      &__green {
+        color: white;
+        box-shadow: 0px 0px 15px 1px hsla(119, 79%, 52%, 0.4);
+        background-color: hsl(144, 100%, 25%);
+      }
+      &__red {
+        color: white;
+        box-shadow: 0px 0px 15px 1px hsla(0, 92%, 47%, 0.4);
+        background-color: hsl(4, 63%, 45%);
+      }
+      &__yellow {
+        color: white;
+        box-shadow: 0px 0px 15px 1px hsla(64, 100%, 45%, 0.4);
+        background-color: hsl(59, 100%, 40%);
+      }
+      &__bronze {
+        color: black;
+        font-weight: bold;
+        border: 1px solid black;
+        background: linear-gradient(to bottom, #cd7f32 0%, #be7023 100%);
+        box-shadow: 0px 0px 15px 1px hsla(34, 88%, 33%, 0.479);
+      }
+      &__silver {
+        color: black;
+        font-weight: bold;
+        border: 1px solid black;
+        background-color: linear-gradient(45deg, #bcc6cc, #eee, #bcc6cc);
+        box-shadow: 0px 0px 15px 1px hsla(0, 8%, 53%, 0.596);
+        background-color: silver;
+      }
+      &__gold {
+        color: black;
+        font-weight: bold;
+        border: 1px solid black;
+        background: linear-gradient(
+          45deg,
+          #b8a350 0%,
+          #eed86f 50%,
+          #eed86f 51%,
+          #fff987 100%
+        );
+        box-shadow: 0px 0px 15px 1px hsla(64, 100%, 36%, 0.774);
+        background-color: hsl(59, 100%, 40%);
+      }
     }
-    &--dt{
-        @include breakpoint-up(medium){
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            width:100%;
-        }
+    &PlayerName {
+      font-size: 1rem;
+      @include breakpoint-up(medium) {
+        font-size: 1.125rem;
+      }
     }
-}
-
-.globalHeaderInfo{
-    max-width: 35rem;
-    margin: 0 auto;
-    display: flex;
-    align-items: center;
-
-    .globalImg{
-        width: 20%;
-        height: 20%;
-        max-width: 7rem;
-        margin-right: 4%;
-        border-radius: 100%;
-        border: 2px solid black;
-        @include breakpoint-up(medium){
-            border-width: 3px;
-        }
+    &PlayerPosition {
+      font-size: $font-sm;
     }
-
-    .globalName{
-        font-size: $font-sm;
-        @include breakpoint-up(medium){
-            font-size: $font-md;
-        }
-    }
-}
-
-.dialogContainer{
-    max-width: 28rem;
-    margin: 0 auto;
-    .MuiDialogContent-root{
-        padding: 5px 20px;
-    }
-    .MuiDialogActions-root{
-        margin-top: 5px;
-    }
-}
-
-.expandTable{
-    .expandMoreRow{
-        padding: .25rem 1.5rem;
-        @include breakpoint-up(medium){
-            padding: .5rem 1.5rem;
-        }
-        text-align: right;
-    }
-}
-
-.tablesContainer{
-    .tableColumnHide{
-        @include breakpoint-down(small){
-            display: none;
-        }
-    }
-    .tableHeaderTxt{
-        font-size: $font-sm;
-
-    }
-    .MuiTable-root{
-        border-top: 1px solid $grayishBlue;
-    }
-    .teamPlayersTable{
-        .MuiTableCell-root{
-            border-bottom: 1px solid $grayishBlue;
-        }
-        .playerImg{
-            height: 2rem;
-            width: 2rem;
-             @include breakpoint-up(medium){
-                height: 2.5rem;
-                width: 2.5rem;
-            }
-            border: solid 2px $veryDarkBlue;
-            border-radius: 100%;
-            margin-right: .5rem;
-        }
-        .ageColumn{
-            min-width: fit-content;
-        }
-        .teamLogo{
-            height: auto;
-            max-width: 1.75rem;
-             @include breakpoint-up(medium){
-                max-width: 2rem;
-            }
-        }
-        .countryTableImg{
-            img{
-                max-width: 1.75rem;
-                height: auto;  
-                 @include breakpoint-up(medium){
-                    max-width: 2rem;
-                } 
-            }
-        }
-        .playerRating{
-            padding: 0.5rem;
-            border-radius: 0.25rem;
-            &__green{
-                color: white;
-                box-shadow: 0px 0px 15px 1px hsla(119, 79%, 52%, 0.4);
-                background-color: hsl(144, 100%, 25%);
-            }
-            &__red{
-                color: white;
-                box-shadow: 0px 0px 15px 1px hsla(0, 92%, 47%, 0.4);
-                background-color: hsl(4, 63%, 45%);
-            }
-            &__yellow{
-                color: white;
-                box-shadow: 0px 0px 15px 1px hsla(64, 100%, 45%, 0.4);
-                background-color: hsl(59, 100%, 40%);
-            }
-            &__bronze{
-                color: black;
-                font-weight: bold;
-                border: 1px solid black;
-                background: linear-gradient(to bottom, #CD7F32 0%, #BE7023 100%);
-                box-shadow: 0px 0px 15px 1px hsla(34, 88%, 33%, 0.479);
-            }
-            &__silver{
-                color: black;
-                font-weight: bold;
-                border: 1px solid black;
-                background-color: linear-gradient(45deg, #bcc6cc, #eee, #bcc6cc);
-                box-shadow: 0px 0px 15px 1px hsla(0, 8%, 53%, 0.596);
-                background-color: silver;
-            }
-            &__gold{
-                color: black;   
-                font-weight: bold;
-                border: 1px solid black;
-                background: linear-gradient(45deg, #b8a350 0%, #eed86f 50%, #eed86f 51%, #fff987 100%);
-                box-shadow: 0px 0px 15px 1px hsla(64, 100%, 36%, 0.774);
-                background-color: hsl(59, 100%, 40%);
-            }
-        }
-        &PlayerName{
-            font-size: 1rem;
-            @include breakpoint-up(medium){
-                font-size: 1.125rem;
-            }
-        }
-        &PlayerPosition{
-            font-size: $font-sm;
-        }
-    }
+  }
 }

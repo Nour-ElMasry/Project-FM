@@ -54,7 +54,7 @@ namespace Infrastructure.Repository
         public async Task<Team> GetTeamById(long id)
         {
             return await _context.Teams
-                .Include(t => t.CurrentTeamSheet)
+                .Include(t => t.CurrentTeamSheet).ThenInclude(t => t.TeamTactic)
                 .Include(t => t.CurrentLeague)
                 .SingleOrDefaultAsync(t => t.TeamId == id);
         }
@@ -80,6 +80,13 @@ namespace Infrastructure.Repository
         public async Task<List<Team>> GetTeamsNotAssignedToLeagues()
         {
             return await _context.Teams.Include(t => t.CurrentTeamSheet).Where(t => t.CurrentLeague == null).ToListAsync();
+        }
+
+        public async Task<Team> GetTeamWithTactics(long id)
+        {
+            return await _context.Teams
+                .Include(t => t.CurrentTeamSheet).ThenInclude(ts => ts.TeamTactic)
+                .SingleOrDefaultAsync(t => t.TeamId == id);
         }
     }
 }

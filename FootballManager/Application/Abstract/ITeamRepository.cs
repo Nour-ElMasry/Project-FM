@@ -14,5 +14,6 @@ namespace Application.Abstract
         Task<Pager<Team>> GetAllTeams(int pg);
         Task<List<Team>> GetTeamsNotAssignedToLeagues();
         Task<List<Team>> GetTeamsList();
+        Task<Team> GetTeamWithTactics(long id);
     }
 }

@@ -105,6 +105,9 @@ namespace Infrastructure.Migrations
                     b.Property<long?>("CurrentSeasonId")
                         .HasColumnType("bigint");
 
+                    b.Property<string>("LeagueLogo")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 

@@ -53,6 +53,28 @@ namespace Application.Controllers
         }
 
         [HttpGet]
+        [Route("All/campain")]
+        [Authorize]
+        public async Task<IActionResult> GetAllLeaguesForCampain()
+        {
+            _logger.LogInformation("Preparing to get all leagues for campain...");
+
+            var result = await _mediator.Send(new GetAllLeaguesForCampain());
+
+            if (result == null)
+            {
+                _logger.LogError("Couldn't get all Leagues!!!");
+                return NotFound();
+            }
+
+            var mappedResult = _mapper.Map<List<CampainLeaguesTeamsDto>>(result);
+
+            _logger.LogInformation("All leagues have been received successfully!!!");
+
+            return Ok(mappedResult);
+        }
+
+        [HttpGet]
         [Route("{id}")]
         [Authorize]
         public async Task<IActionResult> GetLeagueById(int id)

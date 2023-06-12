@@ -6,8 +6,7 @@ using Application.Dto;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Domain.Entities;
-
+using FootballManagerAPI.Dto;
 
 namespace Application.Controllers
 {
@@ -128,11 +127,11 @@ namespace Application.Controllers
 
 
         [HttpPost]
-        [Route("{id}/CreateTeam")]
+        [Route("{id}/ChooseTeam")]
         [Authorize]
-        public async Task<IActionResult> CreateUserTeam([FromBody] TeamPutPostDto team, string id)
+        public async Task<IActionResult> ChooseUserTeam(string id, [FromBody] ChooseTeamPostDto team)
         {
-            _logger.LogInformation("Preparing to create a User Team...");
+            _logger.LogInformation("Preparing to assign a User Team...");
 
             if (!ModelState.IsValid)
             {
@@ -159,27 +158,23 @@ namespace Application.Controllers
                 return Conflict();
             }
 
-            var command = _mapper.Map<CreateTeam>(team);    
-
-            var createdTeam = await _mediator.Send(command);
-
-            if(createdTeam == null)
-            {
-                _logger.LogError($"League with id {id} not found!!");
-                return NotFound();
-            }
-
             var userAssignedToTeam = await _mediator.Send(new AddManagerToTeam 
             {
                 ManagerId = userToManager.ManagerId,
-                TeamId = createdTeam.TeamId
+                TeamId = team.teamId
             });
+
+            if (userAssignedToTeam == null)
+            {
+                _logger.LogError($"Team with id {team.teamId} doesn't exist!!");
+                return NotFound();
+            }
 
             var leagueReset = await _mediator.Send(new ResetLeagues());
 
             if (leagueReset == null)
             {
-                _logger.LogError($"No Leagues found to reset!!");
+                _logger.LogError("No Leagues found to reset!!");
                 return NotFound();
             }
 
@@ -273,6 +268,50 @@ namespace Application.Controllers
             _logger.LogInformation($"Team of user with id {id} received successfully!!!");
 
             return Ok(mappedResult);
+        }
+
+        [HttpPut]
+        [Route("{id}/Team/ChangeTactic")]
+        [Route("Auth")]
+        public async Task<IActionResult> ChangeTeamTactics(string id, [FromBody] ChangeTeamTacticsDto teamTactic)
+        {
+            _logger.LogInformation($"Preparing to change user team tactics...");
+
+            if (!ModelState.IsValid)
+            {
+                _logger.LogError("Information received was invalid!!");
+                return BadRequest(ModelState);
+            }
+
+            var command = new GetTeamByUserId
+            {
+                UserId = id
+            };
+
+            var result = await _mediator.Send(command);
+
+            if (result == null)
+            {
+                _logger.LogError("User has no team!!!");
+                return Unauthorized();
+            }
+
+            var command1 = new ChangeTeamTactics
+            {
+                TeamId = result.TeamId,
+                Tactic = teamTactic.newTactic
+            };
+
+            var result1 = await _mediator.Send(command);
+
+            if (result1 == null) {
+                _logger.LogError("Tactic not available!!!");
+                return NotFound();
+            }
+
+            _logger.LogInformation("User authenticated successfully!!!");
+
+            return Ok(result);
         }
 
         [HttpPost]

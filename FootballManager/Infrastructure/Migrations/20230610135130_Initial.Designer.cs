@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20221006191045_ModifiedPlayerStats")]
-    partial class ModifiedPlayerStats
+    [Migration("20230610135130_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -106,6 +106,9 @@ namespace Infrastructure.Migrations
 
                     b.Property<long?>("CurrentSeasonId")
                         .HasColumnType("bigint");
+
+                    b.Property<string>("LeagueLogo")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");

@@ -23,28 +23,10 @@ namespace Application.CommandHandlers
 
             var league = await _unitOfWork.LeagueRepository.GetLeagueById(request.LeagueId);
 
-            if (league == null)
-                return null;
-
-
-            Random rand = new Random();
-            var teamToRemove = league.Teams[rand.Next(league.Teams.Count()) - 1];
-
-            var teamToRemovePlayers = await _unitOfWork.PlayerRepository.GetAllPlayersByTeam(teamToRemove.TeamId, 0, null);
-
-            team.Players = teamToRemovePlayers.PageResults;
-            team.CurrentTeamSheet.UpdateRating(team.Players);
-
-            await _unitOfWork.TeamRepository.UpdateTeam(team);
-
-            await _unitOfWork.FixtureRepository.ClearLeagueFixtures(league.LeagueId);
-
-            league.RemoveTeam(teamToRemove);
             league.Teams.Add(team);
             team.CurrentLeague = league;
 
             await _unitOfWork.TeamRepository.AddTeam(team);
-            await Task.Run(() => league.CreateFixtures());
             await _unitOfWork.Save();
 
             return team;

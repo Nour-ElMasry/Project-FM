@@ -18,7 +18,7 @@ public static class FixtureSimulation
         for (int i = 0; i < numberOfEvents; i++)
         {
             TeamSelection(fixture.HomeTeam, fixture.AwayTeam);
-            RandomChance(AttackChance);
+            RandomChance();
         }
 
         AddGoalsAndGames();
@@ -70,13 +70,13 @@ public static class FixtureSimulation
         AttackChance = Math.Round(((double)AttackingTeam.CurrentTeamSheet.AttackingRating / total) * 100);
     }
 
-    private static void RandomChance(double AttackingSuccessPercentage)
+    private static void RandomChance()
     {
         var range = 100000;
 
         var chance = rnd.Next(0, range);
 
-        if (chance <= AttackingSuccessPercentage * range)
+        if (chance <= AttackChance * range)
         {
             if (fixture.HomeTeam == AttackingTeam)
                 fixture.FixtureScore.HomeScore += 1;

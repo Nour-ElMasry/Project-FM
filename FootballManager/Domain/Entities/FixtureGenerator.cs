@@ -10,13 +10,13 @@ public static class FixtureGenerator
         var teamsFirstLegs = league.Teams;
 
         if (teamsFirstLegs.Count % 2 != 0)
-            throw new ArgumentException("Can't have even number of teams");
+            throw new ArgumentException("Can't have odd number of teams");
 
         currentDate = new DateTime(league.CurrentSeason.Year, 9, 1);
             
         await Task.Run(() => CreateLeg(league, teamsFirstLegs));
 
-        await Task.Run(() => ReverseLegFixtures());
+        await Task.Run(() => ReverseLegFixtures(league));
 
         return fixtures;
     }
@@ -48,7 +48,7 @@ public static class FixtureGenerator
         return Task.CompletedTask;
     }
 
-    private static Task ReverseLegFixtures()
+    private static Task ReverseLegFixtures(League league)
     {
         var AwayFixtures = new List<Fixture>();
 

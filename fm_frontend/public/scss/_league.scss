@@ -1,34 +1,39 @@
-.leagueSection{
-    .leaugeHeader{
-        .globalHeaderInfo{
-            padding: 2rem;
-            @include breakpoint-up(medium){
-                flex-direction: column;
-                text-align: center;
-                .globalImg{
-                    margin-right: 0;
-                    margin-bottom: 4%;
-                }
-            }
+.leagueSection {
+  .leaugeHeader {
+    .globalHeaderInfo {
+      padding: 2rem;
+      @include breakpoint-up(medium) {
+        flex-direction: column;
+        text-align: center;
+        .globalImg {
+          margin-right: 0;
+          margin-bottom: 0.125rem;
+          border: 0;
+          border-radius: 0;
+          width: 25%;
+          height: 25%;
         }
-        .css-1gsv261{ //Reset styles applied by mui to the tabs
-            all: unset;
-        }
+      }
     }
+    .css-1gsv261 {
+      //Reset styles applied by mui to the tabs
+      all: unset;
+    }
+  }
 
-    .leagueTable{
-        tr{
-            td{
-                @include breakpoint-up(medium){
-                    font-size: $font-md;
-                }
-            }
+  .leagueTable {
+    tr {
+      td {
+        @include breakpoint-up(medium) {
+          font-size: $font-md;
         }
-        .tableTeamLogo{
-            @include breakpoint-up(medium){
-                width: 1.75rem;
-                height: 1.75rem;
-            }
-        }
+      }
     }
+    .tableTeamLogo {
+      @include breakpoint-up(medium) {
+        width: 1.75rem;
+        height: 1.75rem;
+      }
+    }
+  }
 }

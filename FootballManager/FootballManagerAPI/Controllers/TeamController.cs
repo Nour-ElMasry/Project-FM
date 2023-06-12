@@ -113,7 +113,7 @@ namespace Application.Controllers
                 return NotFound();
             }
 
-            var mappedResult = _mapper.Map<TeamGetDto>(result);
+            var mappedResult = _mapper.Map<TeamGetAllDto>(result);
 
             _logger.LogInformation($"Team with id {id} received successfully!!!");
 

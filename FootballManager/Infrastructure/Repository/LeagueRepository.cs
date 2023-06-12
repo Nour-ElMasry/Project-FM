@@ -53,6 +53,13 @@ namespace Infrastructure.Repository
                .ToListAsync();
         }
 
+        public async Task<List<League>> GetAllLeaguesWithTeamsForCampain()
+        {
+            return await _context.Leagues
+              .Include(l => l.Teams)
+              .ToListAsync();
+        }
+
         public async Task<League> GetLeagueById(long id)
         {
             return await _context.Leagues

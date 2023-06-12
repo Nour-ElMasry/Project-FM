@@ -16,7 +16,7 @@ namespace Application.CommandHandlers
 
         public async Task<League> Handle(CreateLeague request, CancellationToken cancellationToken)
         {
-            var league = new League(request.Name);
+            var league = new League(request.Name, request.LeagueLogo);
 
             await _unitOfWork.LeagueRepository.AddLeague(league);
             await _unitOfWork.Save();

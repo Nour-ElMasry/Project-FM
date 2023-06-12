@@ -1,127 +1,112 @@
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import DialogTitle from '@mui/material/DialogTitle';
-import { Button, TextField } from '@mui/material';
-import { useEffect, useMemo, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import countryList from 'react-select-country-list';
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import DialogTitle from "@mui/material/DialogTitle";
+import { Button, TextField, MenuItem } from "@mui/material";
+import { useEffect, useState } from "react";
 import GeneralAxiosService from "../../services/GeneralAxiosService";
-import ListSelect from '../ListSelect';
+import Loading from "../Loading";
+import Carousel from "./TeamsCarousel";
 
 const CreateTeamForm = (props) => {
-    const defaults = {
-        name: "",
-        country: "",
-        venue: "",
-        leagueId: 0,
-        logo: ""
-      }
-      
-      const { register, handleSubmit, formState: { errors }, reset } = useForm(
-        {
-          defaultValues: defaults
-        }
-      );
-  
-      const countries = useMemo(() => countryList().getData().map(c => { 
-        return {
-          value: c.label,
-          label: c.label
-        };
-      }), []);
-  
-      const [leagues, setLeagues] = useState([]);
-  
-      useEffect(() => {
-        GeneralAxiosService.getMethod("https://localhost:7067/api/v1/Leagues/All/0")
-        .then((response) => setLeagues(response.data.pageResults.map(l => { 
+  const [selectedOption, setSelectedOption] = useState("");
+  const [teams, setTeams] = useState("");
+
+  const handleOptionChange = (event) => {
+    setSelectedOption(event.target.value);
+    setTeams(
+      leagues.filter((l) => l.leagueId == event.target.value)[0].leagueTeams
+    );
+  };
+
+  const [leagues, setLeagues] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  const [selectedTeam, setSelectedTeam] = useState({});
+
+  useEffect(() => {
+    GeneralAxiosService.getMethod(
+      "https://localhost:7067/api/v1/Leagues/All/campain"
+    )
+      .then((response) => {
+        setLeagues(
+          response.data.map((l) => {
+            console.log(l);
             return {
-              value: l.id,
-              label: l.name
+              leagueId: l.leagueId,
+              leagueName: l.leagueName,
+              leagueLogo: l.leagueLogo,
+              leagueTeams: l.leagueTeams.sort((a, b) =>
+                a.teamName.localeCompare(b.teamName)
+              ),
             };
-          })));
-      },[]);
-  
-      const formHandleClose = () => {
-          props.handleClose();
-      }
-      
-      const onSubmitHandle = (data) => {
-        props.handleTeamCreate(data)
-        formHandleClose()
-        reset()
-      }
-  
-      return <>
-        <Dialog className='dialogContainer' open={props.open} onClose={formHandleClose} fullWidth>
-        <DialogTitle>Create Team</DialogTitle>
+          })
+        );
+        setTeams(response.data[0].leagueTeams);
+        setSelectedOption(response.data[0].leagueId);
+      })
+      .then(() => setLoading(false));
+  }, []);
+
+  const formHandleClose = () => {
+    props.handleClose();
+  };
+
+  const onSubmitHandle = (e) => {
+    e.preventDefault();
+    console.log(e.target);
+    formHandleClose();
+    props.handleTeamChoice(selectedTeam);
+  };
+
+  return (
+    <>
+      <Dialog
+        className="dialogContainer"
+        open={props.open}
+        onClose={formHandleClose}
+        fullWidth
+      >
+        <DialogTitle>Choose Team</DialogTitle>
         <DialogContent>
-        <Box component="form" onSubmit={handleSubmit(onSubmitHandle)} sx={{ mt: 3 }}>
-            <Grid container spacing={2}>
-                <Grid item xs={12}>
+          {loading ? (
+            <Loading />
+          ) : (
+            <>
+              <Box component="form" onSubmit={onSubmitHandle} sx={{ mt: 3 }}>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} sm={12}>
                     <TextField
-                        required
-                        autoComplete='off'
-                        name="name"
-                        fullWidth
-                        label="Team Name"
-                        error={!!errors['name']}
-                        helperText={errors['name']?.message}
-                        {...register('name', {pattern:{
-                          value:  /^[A-Za-z\s]*$/,
-                          message: "Team name must only contain alphabetic characters"
-                        }})}
-                    />
+                      required={props.required}
+                      select
+                      fullWidth
+                      autoComplete="off"
+                      value={selectedOption}
+                      label="Leagues"
+                      onChange={handleOptionChange}
+                    >
+                      {leagues.map((option) => (
+                        <MenuItem key={option.leagueId} value={option.leagueId}>
+                          {option.leagueName}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                  </Grid>
                 </Grid>
-                <Grid item xs={12}>
-                    <TextField
-                        required
-                        autoComplete='off'
-                        name="venue"
-                        fullWidth
-                        label="Venue Name"
-                        error={!!errors['venue']}
-                        helperText={errors['venue']?.message}
-                        {...register('venue', {pattern:{
-                          value:  /^[A-Za-z\s]*$/,
-                          message: "Venue name must only contain alphabetic characters"
-                        }})}
-                    />
-                </Grid>
-  
-                <Grid item xs={12} sm={6}>
-                  <ListSelect
-                  required
-                  list={leagues} 
-                  label="League"
-                  formId="leagueId"
-                  errors={errors} 
-                  register={register}
-                  />
-                </Grid>
-  
-                <Grid item xs={12} sm={6}>  
-                  <ListSelect 
-                    required
-                    list={countries} 
-                    label="Country"
-                    errors={errors} 
-                    register={register}
-                    />
-                </Grid>
-            </Grid>
-            <DialogActions sx={{marginTop: "1.125rem"}}>
-              <Button onClick={formHandleClose}>Cancel</Button>
-              <Button type="submit">Create</Button>
-            </DialogActions>
-        </Box>
+                <Carousel teams={teams} setSelectedTeam={setSelectedTeam} />
+                <DialogActions sx={{ marginTop: "1.125rem" }}>
+                  <Button onClick={formHandleClose}>Cancel</Button>
+                  <Button type="submit">Confirm</Button>
+                </DialogActions>
+              </Box>
+            </>
+          )}
         </DialogContent>
-        
       </Dialog>
-      </>
-}
+    </>
+  );
+};
 
 export default CreateTeamForm;
