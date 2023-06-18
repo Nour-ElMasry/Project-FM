@@ -5,10 +5,6 @@ import VerticalToggleButtons from "./TeamTacticsToggle";
 const TeamHeader = (props) => {
   const [userTeamId] = useState(JSON.parse(localStorage.getItem("UserTeamId")));
 
-  if (userTeamId == props.teamId) {
-    console.log("same");
-  }
-
   return (
     <div>
       <div className="teamHeaderTeamInfo">
@@ -32,9 +28,13 @@ const TeamHeader = (props) => {
             value={props.ratings.defendingRating}
           />
         </div>
-        <VerticalToggleButtons teamTactic={props.teamTactic} />
+        {userTeamId === props.teamId && (
+          <VerticalToggleButtons
+            teamTactic={props.teamTactic}
+            handleTeamTacticChange={props.handleTeamTacticChange}
+          />
+        )}
       </div>
-      <div></div>
     </div>
   );
 };

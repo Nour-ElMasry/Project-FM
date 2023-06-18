@@ -3,8 +3,8 @@ public class DefendingTactic : Tactic
 {
     public DefendingTactic()
     {
-        AttackingWeight = -10;
-        DefendingWeight = 10;
+        AttackingWeight = -5;
+        DefendingWeight = 20;
     }
 }
 

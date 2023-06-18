@@ -29,7 +29,6 @@ const Leagues = () => {
       )
         .then((res) => {
           setLeague(res.data);
-          console.log(res.data);
         })
         .then(() => setLoading(false));
     }

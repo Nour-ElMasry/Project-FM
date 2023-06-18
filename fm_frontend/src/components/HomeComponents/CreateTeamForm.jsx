@@ -33,7 +33,6 @@ const CreateTeamForm = (props) => {
       .then((response) => {
         setLeagues(
           response.data.map((l) => {
-            console.log(l);
             return {
               leagueId: l.leagueId,
               leagueName: l.leagueName,
@@ -56,7 +55,6 @@ const CreateTeamForm = (props) => {
 
   const onSubmitHandle = (e) => {
     e.preventDefault();
-    console.log(e.target);
     formHandleClose();
     props.handleTeamChoice(selectedTeam);
   };

@@ -1,51 +1,52 @@
-.teamSection{
-    .teamHeader{
-        img{
-            width: 60%;
-            height: 60%;
-            max-width: 10rem;
-            margin-right: 2.5%;
-        }
-
-        &TeamInfo{
-            padding: 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-
-            max-width: 40rem;
-            @include breakpoint-up(medium){
-                margin: 0 auto;
-            }
-        }
-        &TeamName{
-            font-size: $font-mb-lg;
-            @include breakpoint-down(small){
-                font-size: 0.9375rem;
-            }
-        }
-        .MuiTabs-flexContainer{
-            @include breakpoint-down(small){
-                justify-content: center;
-            }
-        }
-        
-        .css-1gsv261{ //Reset styles applied by mui to the tabs
-            all: unset;
-        }
-
-        &Ratings{
-            text-align: center;
-            .ratingTitle{
-                font-family: 'Orbitron', sans-serif;
-                margin-bottom: 1rem;
-            }
-
-            &Rate{
-                &:not(:last-child){
-                    margin-bottom: 1.25rem;
-                }
-            }
-        }
+.teamSection {
+  .teamHeader {
+    img {
+      width: 60%;
+      height: 60%;
+      max-width: 12rem;
+      margin-right: 2.5%;
     }
+
+    &TeamInfo {
+      padding: 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      max-width: 45rem;
+      @include breakpoint-up(medium) {
+        margin: 0 auto;
+      }
+    }
+    &TeamName {
+      font-size: $font-mb-lg;
+      @include breakpoint-down(small) {
+        font-size: 0.9375rem;
+      }
+    }
+    .MuiTabs-flexContainer {
+      @include breakpoint-down(small) {
+        justify-content: center;
+      }
+    }
+
+    .css-1gsv261 {
+      //Reset styles applied by mui to the tabs
+      all: unset;
+    }
+
+    &Ratings {
+      text-align: center;
+      .ratingTitle {
+        font-family: "Orbitron", sans-serif;
+        margin-bottom: 1rem;
+      }
+
+      &Rate {
+        &:not(:last-child) {
+          margin-bottom: 1.25rem;
+        }
+      }
+    }
+  }
 }

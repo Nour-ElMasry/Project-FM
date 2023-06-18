@@ -2,7 +2,6 @@
 using AutoMapper;
 using Domain.Entities;
 using Application.Dto;
-using FootballManagerAPI.Dto;
 
 namespace Application.Profiles
 {

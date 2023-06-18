@@ -2,7 +2,6 @@
 using Application.Commands;
 using Domain.Entities;
 using MediatR;
-using Microsoft.AspNetCore.Identity;
 
 namespace Application.CommandHandlers
 {
@@ -48,6 +47,7 @@ namespace Application.CommandHandlers
                 return null;
             }
 
+            team.CurrentTeamSheet.UpdateRating(team.Players);
             await _unitOfWork.Save();
             return team;
         }

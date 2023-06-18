@@ -7,6 +7,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using FootballManagerAPI.Dto;
+using Application.CommandHandlers;
 
 namespace Application.Controllers
 {
@@ -302,7 +303,7 @@ namespace Application.Controllers
                 Tactic = teamTactic.newTactic
             };
 
-            var result1 = await _mediator.Send(command);
+            var result1 = await _mediator.Send(command1);
 
             if (result1 == null) {
                 _logger.LogError("Tactic not available!!!");
@@ -311,7 +312,9 @@ namespace Application.Controllers
 
             _logger.LogInformation("User authenticated successfully!!!");
 
-            return Ok(result);
+            var mappedResult = _mapper.Map<TeamGetDto>(result);
+
+            return Ok(mappedResult);
         }
 
         [HttpPost]
@@ -344,7 +347,31 @@ namespace Application.Controllers
 
             return Ok(result);
         }
+        
+        [HttpPut]
+        [Route("{id}/Retire")]
+        [Authorize]
+        public async Task<IActionResult> RetireUserTeam(string id)
+        {
+            _logger.LogInformation($"Preparing to retire user with id {id}...");
 
+            var command = new RetireUserTeam
+            {
+                UserId = id
+            };
+
+            var result = await _mediator.Send(command);
+
+            if (result == null)
+            {
+              _logger.LogError($"Something wrong happened");
+              return NotFound();
+            }
+
+            var mappedResult = _mapper.Map<TeamGetDto>(result);
+
+            return Ok(mappedResult);
+        }
 
         [HttpDelete]
         [Route("{id}")]

@@ -12,6 +12,7 @@ import ErrorMsg from "../ErrorMsg";
 const Team = (props) => {
   const params = useParams();
   const [team, setTeam] = useState({});
+  const [teamTactic, setTeamTactic] = useState("");
   const [loading, setLoading] = useState(true);
   const [hasError, setHasError] = useState(false);
   const [user] = useState(JSON.parse(localStorage.getItem("User")));
@@ -20,6 +21,17 @@ const Team = (props) => {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+
+  const handleTeamTacticChange = async (tactic) => {
+    await GeneralAxiosService.putMethod(
+      "https://localhost:7067/api/v1/Users/" +
+        user.customer.userId +
+        "/Team/ChangeTactic",
+      {
+        newTactic: tactic,
+      }
+    ).then((res) => setTeamTactic(res.data));
   };
 
   useEffect(() => {
@@ -31,7 +43,6 @@ const Team = (props) => {
       )
         .then((response) => {
           setTeam(response.data);
-          console.log(response.data);
         })
         .then(() => setLoading(false))
         .catch((e) => {
@@ -39,7 +50,7 @@ const Team = (props) => {
           setHasError(true);
         });
     }
-  }, [params, user, navigate]);
+  }, [params, user, navigate, teamTactic]);
 
   return (
     <section className="teamSection container container--pa">
@@ -55,6 +66,7 @@ const Team = (props) => {
             ratings={team.currentTeamSheet}
             teamLogo={team.logo}
             teamTactic={team.tactic}
+            handleTeamTacticChange={handleTeamTacticChange}
           />
           <HeaderTabs
             tabs={["Matches", "Results", "Players"]}

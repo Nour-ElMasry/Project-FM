@@ -85,6 +85,7 @@ namespace Infrastructure.Repository
         public async Task<Team> GetTeamWithTactics(long id)
         {
             return await _context.Teams
+                .Include(t => t.Players).ThenInclude(p => p.CurrentPlayerStats)
                 .Include(t => t.CurrentTeamSheet).ThenInclude(ts => ts.TeamTactic)
                 .SingleOrDefaultAsync(t => t.TeamId == id);
         }
