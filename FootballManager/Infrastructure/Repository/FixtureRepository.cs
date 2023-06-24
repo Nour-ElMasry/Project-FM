@@ -118,12 +118,10 @@ namespace Infrastructure.Repository
         public async Task<List<Fixture>> GetAllFixturesForSimulation()
         {
             return await _context.Fixtures
-                .Include(f => f.HomeTeam).ThenInclude(t => t.CurrentTeamSheet)
-                .Include(f => f.AwayTeam).ThenInclude(t => t.CurrentTeamSheet)
+                .Include(f => f.HomeTeam).ThenInclude(t => t.CurrentTeamSheet).ThenInclude(t => t.StartingEleven).ThenInclude(p => p.PlayerRecord)
+                .Include(f => f.AwayTeam).ThenInclude(t => t.CurrentTeamSheet).ThenInclude(t => t.StartingEleven).ThenInclude(p => p.PlayerRecord)
                 .Include(f => f.HomeTeam).ThenInclude(t => t.CurrentSeasonStats)
                 .Include(f => f.AwayTeam).ThenInclude(t => t.CurrentSeasonStats)
-                .Include(f => f.HomeTeam).ThenInclude(t => t.Players).ThenInclude(p => p.PlayerRecord)
-                .Include(f => f.AwayTeam).ThenInclude(t => t.Players).ThenInclude(p => p.PlayerRecord)
                 .Include(f => f.FixtureLeague)
                 .Include(f => f.FixtureScore)
                 .ToListAsync();
@@ -133,19 +131,28 @@ namespace Infrastructure.Repository
         {
             var totalGameweekFixtures = await _context.Teams.CountAsync() / 2;
 
-            return await _context.Fixtures
-                 .Where(f => !f.isPlayed)
-                 .Include(f => f.HomeTeam).ThenInclude(t => t.CurrentTeamSheet)
-                 .Include(f => f.AwayTeam).ThenInclude(t => t.CurrentTeamSheet)
-                 .Include(f => f.HomeTeam).ThenInclude(t => t.CurrentSeasonStats)
-                 .Include(f => f.AwayTeam).ThenInclude(t => t.CurrentSeasonStats)
-                 .Include(f => f.HomeTeam).ThenInclude(t => t.Players).ThenInclude(p => p.PlayerRecord)
-                 .Include(f => f.AwayTeam).ThenInclude(t => t.Players).ThenInclude(p => p.PlayerRecord)
-                 .Include(f => f.FixtureLeague)
-                 .Include(f => f.FixtureScore)
-                 .OrderBy(f => f.Date)
-                 .Take(totalGameweekFixtures)
-                 .ToListAsync();
+            var fixtures = await _context.Fixtures
+                .Where(f => !f.isPlayed)
+                .Include(f => f.HomeTeam)
+                    .ThenInclude(t => t.CurrentSeasonStats)
+                .Include(f => f.AwayTeam)
+                    .ThenInclude(t => t.CurrentSeasonStats)
+                .Include(f => f.HomeTeam)
+                    .ThenInclude(t => t.CurrentTeamSheet)
+                        .ThenInclude(t => t.StartingEleven)
+                            .ThenInclude(p => p.PlayerRecord)
+                .Include(f => f.AwayTeam)
+                    .ThenInclude(t => t.CurrentTeamSheet)
+                        .ThenInclude(t => t.StartingEleven)
+                            .ThenInclude(p => p.PlayerRecord)
+                .Include(f => f.FixtureLeague)
+                .Include(f => f.FixtureScore)
+                .OrderBy(f => f.Date)
+                .Take(totalGameweekFixtures)
+                .ToListAsync();
+
+            return fixtures;
+
         }
 
         public async Task<Fixture> GetFixtureById(long id)

@@ -14,7 +14,6 @@ public static class FixtureSimulation
 
         var numberOfEvents = rnd.Next(0, 10);
 
-
         for (int i = 0; i < numberOfEvents; i++)
         {
             TeamSelection(fixture.HomeTeam, fixture.AwayTeam);
@@ -29,8 +28,8 @@ public static class FixtureSimulation
 
     private static void PlayerStatsAddition()
     {
-        var HomeTeamPlayers = fixture.HomeTeam.Players;
-        var AwayTeamPlayers = fixture.AwayTeam.Players;
+        var HomeTeamPlayers = fixture.HomeTeam.CurrentTeamSheet.StartingEleven;
+        var AwayTeamPlayers = fixture.AwayTeam.CurrentTeamSheet.StartingEleven;
 
         HomeTeamPlayers.ForEach(p => p.PlayerRecord.AddGamePlayed());
         AwayTeamPlayers.ForEach(p => p.PlayerRecord.AddGamePlayed());
@@ -168,25 +167,28 @@ public static class FixtureSimulation
 
     private static Player RandomAttacker()
     {
-        var AttackingPlayers = AttackingTeam.Players.Where(p => p.GetType().Name == "Attacker").ToList();
-        return AttackingPlayers[rnd.Next(AttackingPlayers.Count)];
+        var AttackingPlayersTeam = AttackingTeam.CurrentTeamSheet.StartingEleven.Where(p => p.GetType().Name == "Attacker").ToList();
+        var randPlayer = rnd.Next(AttackingPlayersTeam.Count);
+        return AttackingPlayersTeam[randPlayer];
     }
 
     private static Player RandomMidfielder()
     {
-        var MidfieldPlayers = AttackingTeam.Players.Where(p => p.GetType().Name == "Midfielder").ToList();
-        return MidfieldPlayers[rnd.Next(MidfieldPlayers.Count)];
+        var MidfieldPlayersTeam = AttackingTeam.CurrentTeamSheet.StartingEleven.Where(p => p.GetType().Name == "Midfielder").ToList();
+        var randPlayer = rnd.Next(MidfieldPlayersTeam.Count);
+        return MidfieldPlayersTeam[randPlayer];
     }
 
     private static Player RandomDefender()
     {
-        var DefendingPlayers = AttackingTeam.Players.Where(p => p.GetType().Name == "Defender" || p.GetType().Name == "Goalkeeper").ToList();
-        return DefendingPlayers[rnd.Next(DefendingPlayers.Count)];
+        var DefendingPlayersTeam = AttackingTeam.CurrentTeamSheet.StartingEleven.Where(p => p.GetType().Name == "Defender" || p.GetType().Name == "Goalkeeper").ToList();
+        var randPlayer = rnd.Next(DefendingPlayersTeam.Count);
+        return DefendingPlayersTeam[randPlayer];
     }
 
     private static Player RandomPlayer()
     {
-        var players = AttackingTeam.Players;
+        var players = AttackingTeam.CurrentTeamSheet.StartingEleven;
         return players[rnd.Next(players.Count)];
     }
 }

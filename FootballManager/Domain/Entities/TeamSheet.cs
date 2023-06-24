@@ -17,7 +17,10 @@ public class TeamSheet
     [ForeignKey("TeamFormationId")]
     public Formation TeamFormation { get; set; } = new Formation(4, 3, 3);
 
+    [ForeignKey("StartingElevenPlayers")]
     public List<Player> StartingEleven { get; set; } = new();
+
+    [ForeignKey("BenchPlayers")]
     public List<Player> Bench { get; set; } = new();
 
     public TeamSheet()
@@ -126,6 +129,7 @@ public class TeamSheet
             var currentAttackers = orderedPlayers.Count(p => p.Position == "Attacker");
 
             TeamFormation.GetAlternativeFormation(currentDefenders, currentMidfielders, currentAttackers);
+            this.SetFormationPlayers(teamPlayers);
         }
     }
 }

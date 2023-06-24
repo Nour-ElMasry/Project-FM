@@ -22,6 +22,7 @@ namespace Application.CommandHandlers
                 return null;
 
             fixtures.ForEach(f => f.SimulateFixture());
+
             await _unitOfWork.Save();
 
             return fixtures;

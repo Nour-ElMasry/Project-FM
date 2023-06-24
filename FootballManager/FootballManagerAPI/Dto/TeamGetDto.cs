@@ -11,7 +11,7 @@ namespace Application.Dto
         public string Logo { get; set; }
         public Person TeamManager { get; set; }
         public SeasonStats CurrentSeasonStats { get; set; }
-        public TeamSheet CurrentTeamSheet { get; set; }
+        public TeamSheetDto CurrentTeamSheet { get; set; }
         public ShortLeagueGetDto CurrentLeague { get; set; }
 
     }

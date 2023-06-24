@@ -1,6 +1,5 @@
-﻿namespace Domain.Entities;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+namespace Domain.Entities;
 
 public class Formation
 {
