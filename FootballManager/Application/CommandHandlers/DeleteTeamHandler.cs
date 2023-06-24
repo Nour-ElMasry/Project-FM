@@ -27,7 +27,7 @@ namespace Application.CommandHandlers
             var rand = new Random();
             var replacementTeam = availableTeams[rand.Next(availableTeams.Count - 1)];
             replacementTeam.Players = ((Pager<Player>)await _unitOfWork.PlayerRepository.GetAllPlayersByTeam(team.TeamId, 0, null)).PageResults;
-            replacementTeam.CurrentTeamSheet.UpdateRating(replacementTeam.Players);
+            replacementTeam.CurrentTeamSheet.UpdateRating();
 
             replacementTeam.CurrentLeague = team.CurrentLeague;
 

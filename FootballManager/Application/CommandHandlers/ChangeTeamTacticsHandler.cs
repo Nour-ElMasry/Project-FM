@@ -47,7 +47,7 @@ namespace Application.CommandHandlers
                 return null;
             }
 
-            team.CurrentTeamSheet.UpdateRating(team.Players);
+            team.CurrentTeamSheet.UpdateRating();
             await _unitOfWork.Save();
             return team;
         }

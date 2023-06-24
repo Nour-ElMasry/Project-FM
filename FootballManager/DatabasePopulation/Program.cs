@@ -29,7 +29,7 @@ namespace ConsolePresentation
                 .BuildServiceProvider();
 
 
-            /*using (var scope = diContainer.CreateScope())
+            using (var scope = diContainer.CreateScope())
             {
                 var scopedServices = scope.ServiceProvider;
 
@@ -38,11 +38,11 @@ namespace ConsolePresentation
                 db.Database.EnsureDeleted();
 
                 db.Database.EnsureCreated();
-            }*/
+            }
 
             var mediator = diContainer.GetRequiredService<IMediator>();
 
-            dynamic leagueApi = JsonConvert.DeserializeObject<dynamic>(await GetLeague(140));
+            dynamic leagueApi = JsonConvert.DeserializeObject<dynamic>(await GetLeague(39));
 
 
             var league = await mediator.Send(new CreateLeague
@@ -51,7 +51,7 @@ namespace ConsolePresentation
                 LeagueLogo = leagueApi.response[0].league.logo
             });
 
-            dynamic leagueTeams = JsonConvert.DeserializeObject<dynamic>(await GetLeagueTeams(140));
+            dynamic leagueTeams = JsonConvert.DeserializeObject<dynamic>(await GetLeagueTeams(39));
 
             for (int i = 0; i < leagueTeams.response.Count; i++)
             {
@@ -107,6 +107,11 @@ namespace ConsolePresentation
                 {
                     LeagueId = league.LeagueId,
                     TeamId = team.TeamId
+                });
+
+                await mediator.Send(new SetTeamSheet
+                {
+                    TeamId = team.TeamId,
                 });
 
                 Thread.Sleep(7500);

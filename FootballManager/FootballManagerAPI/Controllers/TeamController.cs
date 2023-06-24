@@ -49,6 +49,14 @@ namespace Application.Controllers
             return CreatedAtAction(nameof(GetTeamById), new { id = created.TeamId }, dto);
         }
 
+        [HttpGet]
+        [Route("Formations")]
+        public async Task<IActionResult> GetFormations()
+        {
+            var query = new GetValidFormations();
+            var result = await _mediator.Send(query);
+            return Ok(result);
+        }
 
         [HttpGet]
         [Route("All/{pg?}")]

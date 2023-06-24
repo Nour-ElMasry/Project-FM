@@ -23,7 +23,7 @@ namespace Application.CommandHandlers
                 return null;
 
             team.Players.Add(player);
-            team.CurrentTeamSheet.UpdateRating(team.Players);
+            team.CurrentTeamSheet.UpdateRating();
 
             await _unitOfWork.Save();
 
