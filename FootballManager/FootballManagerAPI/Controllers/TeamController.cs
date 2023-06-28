@@ -7,6 +7,7 @@ using Application.Filters;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using FootballManagerAPI.Dto;
 
 namespace Application.Controllers
 {
@@ -50,12 +51,38 @@ namespace Application.Controllers
         }
 
         [HttpGet]
-        [Route("Formations")]
-        public async Task<IActionResult> GetFormations()
+        [Route("{id}/Formations")]
+        public async Task<IActionResult> GetFormations(long id)
         {
-            var query = new GetValidFormations();
+            var query = new GetValidFormations { 
+                TeamId = id,
+            };
             var result = await _mediator.Send(query);
             return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("{id}/LineUp")]
+        public async Task<IActionResult> GetLineUp(long id)
+        {
+            _logger.LogInformation("Preparing to get team lineup...");
+
+            var result = await _mediator.Send(new GetTeamWithLineup()
+            {
+                TeamId = id,
+            });
+
+            if (result == null)
+            {
+                _logger.LogError("Couldn't get team lineup!!");
+                return NotFound();
+            }
+
+            var mappedResult = _mapper.Map<LineUpDto>(result);
+
+            _logger.LogInformation("Team lineup received successfully!!!");
+
+            return Ok(mappedResult);
         }
 
         [HttpGet]

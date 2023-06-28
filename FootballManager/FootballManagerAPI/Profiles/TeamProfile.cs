@@ -2,6 +2,7 @@
 using AutoMapper;
 using Domain.Entities;
 using Application.Dto;
+using FootballManagerAPI.Dto;
 
 namespace Application.Profiles
 {
@@ -26,6 +27,30 @@ namespace Application.Profiles
                     LeagueName = t.CurrentLeague.Name, 
                     LeagueLogo = t.CurrentLeague.LeagueLogo
                 }));
+
+            CreateMap<Team, LineUpDto>()
+               .ForMember(td => td.TeamId, opt => opt.MapFrom(t => t.TeamId))
+               .ForMember(td => td.Formation, opt => opt.MapFrom(t => new FormationDto
+               {
+                   Defenders = t.CurrentTeamSheet.TeamFormation.Defenders,
+                   Midfielders = t.CurrentTeamSheet.TeamFormation.Midfielders,
+                   Attackers = t.CurrentTeamSheet.TeamFormation.Attackers
+               }))
+               .ForMember(td => td.StartingEleven, opt => opt.MapFrom(t => t.CurrentTeamSheet.StartingEleven.Select(p => new LineUpPlayersDto
+               {
+                   PlayerPerson = p.PlayerPerson,
+                   PlayerStats = p.CurrentPlayerStats,
+                   Position = p.Position,
+                   Id = p.PlayerId,
+               })))
+               .ForMember(td => td.Bench, opt => opt.MapFrom(t => t.CurrentTeamSheet.Bench.Select(p => new LineUpPlayersDto
+               {
+                   PlayerPerson = p.PlayerPerson,
+                   PlayerStats = p.CurrentPlayerStats,
+                   Position = p.Position,
+                   Id = p.PlayerId,
+               })));
+;
 
             CreateMap<Team, TeamGetAllDto>()
                 .ForMember(td => td.Id, opt => opt.MapFrom(t => t.TeamId))

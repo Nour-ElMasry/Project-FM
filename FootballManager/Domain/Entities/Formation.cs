@@ -42,9 +42,9 @@ public class Formation
         return ValidFormations.Contains((defenders, midfielders, attackers));
     }
 
-    public static List<Formation> GetValidFormations()
+    public static List<Formation> GetValidFormations(int defenders, int midfielders, int attackers)
     {
-        return ValidFormations.Select(f => new Formation(f.Defenders, f.Midfielders, f.Attackers)).ToList();
+        return ValidFormations.Where(f => f.Attackers<=attackers && f.Midfielders<=midfielders && f.Defenders<=defenders).Select(f => new Formation(f.Defenders, f.Midfielders, f.Attackers)).ToList();
     }
 
     public void GetAlternativeFormation(int currentDefenders, int currentMidfielders, int currentAttackers)

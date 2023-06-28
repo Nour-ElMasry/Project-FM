@@ -271,6 +271,28 @@ namespace Application.Controllers
             return Ok(mappedResult);
         }
 
+        [HttpPost]
+        [Route("{id}/Team/{teamId}/ChangeFormation")]
+        [Authorize]
+        public async Task<IActionResult> AddManagerToTeam(int teamId, [FromBody] FormationDto formation)
+        {
+            var query = new ChangeTeamFormation { 
+                TeamId = teamId, 
+                FormationAttackers = formation.Attackers, 
+                FormationMidfielders = formation.Midfielders, 
+                FormationDefenders = formation.Defenders 
+            };
+
+            var result = await _mediator.Send(query);
+
+            if (result == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(result);
+        }
+
         [HttpPut]
         [Route("{id}/Team/ChangeTactic")]
         [Route("Auth")]

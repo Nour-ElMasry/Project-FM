@@ -1,30 +1,11 @@
-import TableCell from '@mui/material/TableCell';
+import TableCell from "@mui/material/TableCell";
+import RatingSpan from "./RatingSpan";
 const RatingTableCell = (props) => {
-    const ratingIndicator = () => {
-        var classNames = 'playerRating'
-
-        if(props.rating <= 60)
-            return <span 
-            className={props.overall ? classNames + ' playerRating__bronze' 
-            : classNames + ' playerRating__red'}>
-                {props.rating}
-            </span>
-        else if(props.rating <= 80)
-            return  <span 
-            className={props.overall ? classNames + ' playerRating__silver' 
-            : classNames + ' playerRating__yellow'}>
-                {props.rating}
-            </span>
-
-            return  <span 
-            className={props.overall ? classNames + ' playerRating__gold' 
-            : classNames + ' playerRating__green'}>
-                {props.rating}
-            </span>
-    }
-    return <TableCell className={props.hide && 'tableColumnHide'} align="center">
-       {ratingIndicator()}
+  return (
+    <TableCell className={props.hide && "tableColumnHide"} align="center">
+      <RatingSpan overall={props.overall} rating={props.rating} />
     </TableCell>
-}
+  );
+};
 
 export default RatingTableCell;

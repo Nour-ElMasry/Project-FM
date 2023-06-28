@@ -15,5 +15,6 @@ namespace Application.Abstract
         Task<List<Team>> GetTeamsNotAssignedToLeagues();
         Task<List<Team>> GetTeamsList();
         Task<Team> GetTeamWithTactics(long id);
+        Task<Team> GetTeamLineup(long id);
     }
 }

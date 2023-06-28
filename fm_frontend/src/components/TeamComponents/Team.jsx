@@ -8,6 +8,7 @@ import TabPanel from "../TabComponents/TabPanel";
 import Loading from "../Loading";
 import TeamPlayers from "./TeamPlayers";
 import ErrorMsg from "../ErrorMsg";
+import TeamLineUp from "./TeamLineUp";
 
 const Team = (props) => {
   const params = useParams();
@@ -18,6 +19,7 @@ const Team = (props) => {
   const [user] = useState(JSON.parse(localStorage.getItem("User")));
   const navigate = useNavigate();
   const [value, setValue] = useState(0);
+  const [trigger, setTrigger] = useState(false);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -50,7 +52,7 @@ const Team = (props) => {
           setHasError(true);
         });
     }
-  }, [params, user, navigate, teamTactic]);
+  }, [params, user, navigate, teamTactic, trigger]);
 
   return (
     <section className="teamSection container container--pa">
@@ -69,7 +71,7 @@ const Team = (props) => {
             handleTeamTacticChange={handleTeamTacticChange}
           />
           <HeaderTabs
-            tabs={["Matches", "Results", "Players"]}
+            tabs={["Matches", "Players", "Line-up"]}
             value={value}
             handleChange={handleChange}
           />
@@ -78,13 +80,13 @@ const Team = (props) => {
       {!loading && !hasError && (
         <div className="tabContent">
           <TabPanel value={value} index={0}>
-            <TeamMatches teamId={team.id} played={false} />
+            <TeamMatches teamId={team.id} />
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <TeamMatches teamId={team.id} played={true} />
+            <TeamPlayers teamId={team.id} />
           </TabPanel>
           <TabPanel value={value} index={2}>
-            <TeamPlayers teamId={team.id} />
+            <TeamLineUp teamId={team.id} setTrigger={setTrigger} />
           </TabPanel>
         </div>
       )}

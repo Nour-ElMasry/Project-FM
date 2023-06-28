@@ -89,5 +89,17 @@ namespace Infrastructure.Repository
                 .Include(t => t.CurrentTeamSheet).ThenInclude(ts => ts.TeamTactic)
                 .SingleOrDefaultAsync(t => t.TeamId == id);
         }
+
+        public async Task<Team> GetTeamLineup(long id)
+        {
+            return await _context.Teams
+                .Include(t => t.CurrentTeamSheet).ThenInclude(ts => ts.TeamTactic)
+                .Include(t => t.CurrentTeamSheet).ThenInclude(ts => ts.StartingEleven).ThenInclude(p => p.PlayerPerson)
+                .Include(t => t.CurrentTeamSheet).ThenInclude(ts => ts.StartingEleven).ThenInclude(p => p.CurrentPlayerStats)
+                .Include(t => t.CurrentTeamSheet).ThenInclude(ts => ts.Bench).ThenInclude(p => p.PlayerPerson)
+                .Include(t => t.CurrentTeamSheet).ThenInclude(ts => ts.Bench).ThenInclude(p => p.CurrentPlayerStats)
+                .Include(t => t.CurrentTeamSheet).ThenInclude(ts => ts.TeamFormation)
+                .SingleOrDefaultAsync(t => t.TeamId == id);
+        }
     }
 }
