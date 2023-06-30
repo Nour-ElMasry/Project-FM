@@ -21,6 +21,7 @@ const ProfileCreateTeam = (props) => {
         "/ChooseTeam",
       data
     ).then((res) => {
+      console.log(res);
       props.user.customer.hasTeam = true;
       localStorage.setItem("User", JSON.stringify(props.user));
       window.location.reload();
@@ -41,7 +42,7 @@ const ProfileCreateTeam = (props) => {
       >
         <div>
           <p>It appears that you don't manage a team!</p>
-          <p>Want to create one?</p>
+          <p>Want to manage one?</p>
         </div>
         <Button
           onClick={handleClickOpen}
@@ -49,7 +50,7 @@ const ProfileCreateTeam = (props) => {
           color="success"
           variant="contained"
         >
-          Create Team
+          Choose Team
         </Button>
       </div>
     </>

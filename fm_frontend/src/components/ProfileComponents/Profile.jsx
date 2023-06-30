@@ -24,7 +24,7 @@ const Profile = () => {
         "https://localhost:7067/api/v1/Users/" +
           user.customer.userId +
           "/Retire"
-      ).then((res) => console.log(res.data));
+      ).then((res) => navigate("/home"));
     }
   };
 

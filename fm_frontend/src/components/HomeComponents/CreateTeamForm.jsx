@@ -44,6 +44,10 @@ const CreateTeamForm = (props) => {
           })
         );
         setTeams(response.data[0].leagueTeams);
+        setSelectedTeam({
+          teamId: response.data[0].leagueTeams[0].teamId,
+          teamName: response.data[0].leagueTeams[0].teamName,
+        });
         setSelectedOption(response.data[0].leagueId);
       })
       .then(() => setLoading(false));

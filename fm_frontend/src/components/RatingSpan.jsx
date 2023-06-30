@@ -1,7 +1,7 @@
 const RatingSpan = (props) => {
   var classNames = "playerRating";
 
-  if (props.rating <= 60)
+  if (props.rating < 60)
     return (
       <span
         className={
@@ -13,7 +13,7 @@ const RatingSpan = (props) => {
         {props.rating}
       </span>
     );
-  else if (props.rating <= 80)
+  else if (props.rating < 80)
     return (
       <span
         className={
